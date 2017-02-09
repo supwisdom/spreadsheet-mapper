@@ -11,6 +11,9 @@ import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static org.testng.Assert.assertEquals;
 
@@ -58,9 +61,14 @@ public class Excel2WorkbookReaderTest {
 
     Row firstRow = firstSheet.getFirstRow();
 
-    assertEquals(firstRow.getCell(1).getValue(), "Thu Nov 22 00:00:00 CST 1984");
-    assertEquals(firstRow.getCell(2).getValue(), "Thu Nov 22 00:00:00 CST 1984");
-    assertEquals(firstRow.getCell(3).getValue(), "Thu Nov 22 00:00:00 CST 1984");
-    assertEquals(firstRow.getCell(4).getValue(), "Thu Nov 22 00:00:00 CST 1984");
+    // Thu Nov 22 00:00:00 CST 1984
+    SimpleDateFormat sdf1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+
+    assertEquals(sdf2.format(sdf1.parse(firstRow.getCell(1).getValue())), "1984-11-22");
+    assertEquals(sdf2.format(sdf1.parse(firstRow.getCell(2).getValue())), "1984-11-22");
+    assertEquals(sdf2.format(sdf1.parse(firstRow.getCell(3).getValue())), "1984-11-22");
+    assertEquals(sdf2.format(sdf1.parse(firstRow.getCell(4).getValue())), "1984-11-22");
+
   }
 }
