@@ -16,22 +16,22 @@ public interface DependencyValidatorBuilder {
   /**
    * start build a single cell validate rule
    *
-   * @param name rule name
+   * @param factory {@link DependencyValidatorFactory}
    * @return {@link RuleBuilder}
-   * @see DependencyValidatorFactoryRegisterer
+   * @see SingleCellValidatorFactory
    * @see SingleCellValidator
    */
-  RuleBuilder single(String name);
+  RuleBuilder single(SingleCellValidatorFactory factory);
 
   /**
    * start build a multi cell validate rule
    *
-   * @param name rule name
+   * @param factory {@link DependencyValidatorFactory}
    * @return {@link RuleBuilder}
-   * @see DependencyValidatorFactoryRegisterer
+   * @see MultiCellValidatorFactory
    * @see MultiCellValidator
    */
-  RuleBuilder multi(String name);
+  RuleBuilder multi(MultiCellValidatorFactory factory);
 
   /**
    * build validators from supplied rules

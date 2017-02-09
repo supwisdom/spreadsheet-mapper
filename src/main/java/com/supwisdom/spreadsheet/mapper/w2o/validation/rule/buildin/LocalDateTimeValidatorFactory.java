@@ -9,6 +9,16 @@ import com.supwisdom.spreadsheet.mapper.w2o.validation.validator.cell.buildin.Lo
  */
 public class LocalDateTimeValidatorFactory implements SingleCellValidatorFactory<LocalDateTimeValidator> {
 
+  private static final LocalDateTimeValidatorFactory INSTANCE = new LocalDateTimeValidatorFactory();
+
+  private LocalDateTimeValidatorFactory() {
+    // singleton
+  }
+
+  public static LocalDateTimeValidatorFactory getInstance() {
+    return INSTANCE;
+  }
+
   @Override
   public LocalDateTimeValidator create(DependencyRuleParam param, String matchField) {
     Object additionalParam = param.getAdditionalParam();

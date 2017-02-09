@@ -9,6 +9,16 @@ import com.supwisdom.spreadsheet.mapper.w2o.validation.rule.DependencyRuleParam;
  */
 public class DigitsValidatorFactory implements SingleCellValidatorFactory<DigitsValidator> {
 
+  private static final DigitsValidatorFactory INSTANCE = new DigitsValidatorFactory();
+
+  private DigitsValidatorFactory() {
+    // singleton
+  }
+
+  public static DigitsValidatorFactory getInstance() {
+    return INSTANCE;
+  }
+
   @Override
   public DigitsValidator create(DependencyRuleParam param, String matchField) {
     return new DigitsValidator()

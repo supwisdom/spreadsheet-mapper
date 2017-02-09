@@ -10,6 +10,16 @@ import com.supwisdom.spreadsheet.mapper.w2o.validation.validator.cell.buildin.Nu
  */
 public class NumberScaleRangeValidatorFactory implements SingleCellValidatorFactory<NumberScaleRangeValidator> {
 
+  private static final NumberScaleRangeValidatorFactory INSTANCE = new NumberScaleRangeValidatorFactory();
+
+  private NumberScaleRangeValidatorFactory() {
+    // singleton
+  }
+
+  public static NumberScaleRangeValidatorFactory getInstance() {
+    return INSTANCE;
+  }
+
   @Override
   public NumberScaleRangeValidator create(DependencyRuleParam param, String matchField) {
     Object additionalParam = param.getAdditionalParam();

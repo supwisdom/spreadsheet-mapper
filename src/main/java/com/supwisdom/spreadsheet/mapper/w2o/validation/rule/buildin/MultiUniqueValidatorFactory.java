@@ -11,6 +11,16 @@ import java.util.List;
  */
 public class MultiUniqueValidatorFactory implements MultiCellValidatorFactory<MultiUniqueValidator> {
 
+  private static final MultiUniqueValidatorFactory INSTANCE = new MultiUniqueValidatorFactory();
+
+  private MultiUniqueValidatorFactory() {
+    // singleton
+  }
+
+  public static MultiUniqueValidatorFactory getInstance() {
+    return INSTANCE;
+  }
+
   @Override
   public MultiUniqueValidator create(DependencyRuleParam param, List<String> matchFields) {
     return new MultiUniqueValidator()

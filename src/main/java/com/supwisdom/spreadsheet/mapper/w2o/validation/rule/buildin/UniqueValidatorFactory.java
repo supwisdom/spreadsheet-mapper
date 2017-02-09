@@ -9,6 +9,16 @@ import com.supwisdom.spreadsheet.mapper.w2o.validation.validator.cell.buildin.Un
  */
 public class UniqueValidatorFactory implements SingleCellValidatorFactory<UniqueValidator> {
 
+  private static final UniqueValidatorFactory INSTANCE = new UniqueValidatorFactory();
+
+  private UniqueValidatorFactory() {
+    // singleton
+  }
+
+  public static UniqueValidatorFactory getInstance() {
+    return INSTANCE;
+  }
+
   @Override
   public UniqueValidator create(DependencyRuleParam param, String matchField) {
     return new UniqueValidator()

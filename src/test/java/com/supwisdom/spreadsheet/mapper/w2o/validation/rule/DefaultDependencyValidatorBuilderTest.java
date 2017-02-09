@@ -1,5 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.w2o.validation.rule;
 
+import com.supwisdom.spreadsheet.mapper.w2o.validation.rule.buildin.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -36,7 +37,7 @@ public class DefaultDependencyValidatorBuilderTest {
     DependencyValidatorBuilder builder = new DefaultDependencyValidatorBuilder();
 
     List<DependencyValidator> validators = builder
-        .single("bool")
+        .single(BooleanValidatorFactory.getInstance())
         .errorMessage("test")
         .matchFields("t1")
         .group("t1")
@@ -48,7 +49,7 @@ public class DefaultDependencyValidatorBuilderTest {
         )
         .end()
 
-        .single("numberScaleRange")
+        .single(NumberScaleRangeValidatorFactory.getInstance())
         .errorMessage("test")
         .group("t2")
         .matchFields("t2")
@@ -59,35 +60,35 @@ public class DefaultDependencyValidatorBuilderTest {
         )
         .end()
 
-        .single("localDateTime")
+        .single(LocalDateTimeValidatorFactory.getInstance())
         .errorMessage("test")
         .group("t3")
         .matchFields("t3")
         .param("yyyy-MM-dd HH:mm:ss")
         .end()
 
-        .multi("multiUnique")
+        .multi(MultiUniqueValidatorFactory.getInstance())
         .group("t4")
         .dependsOn("t1")
         .errorMessage("test")
         .matchFields("t4", "t5")
         .end()
 
-        .single("digits")
+        .single(DigitsValidatorFactory.getInstance())
         .matchFields("t6", "t7")
         .end()
 
-        .single("require")
+        .single(RequireValidatorFactory.getInstance())
         .matchFields("t1", "t2", "t3", "t4")
         .end()
 
-        .single("number")
+        .single(NumberValidatorFactory.getInstance())
         .matchFields("t8")
         .dependsOn("t7")
         .errorMessage("test")
         .end()
 
-        .single("regex")
+        .single(RegexFormatValidatorFactory.getInstance())
         .matchFields("t9")
         .errorMessage("test")
         .group("t9")
@@ -95,14 +96,14 @@ public class DefaultDependencyValidatorBuilderTest {
         .param("^[1-9]\\d*$")
         .end()
 
-        .single("localDate")
+        .single(LocalDateValidatorFactory.getInstance())
         .matchFields("t10")
         .errorMessage("test")
         .group("t10")
         .param("yyyy-MM-dd")
         .end()
 
-        .single("unique")
+        .single(UniqueValidatorFactory.getInstance())
         .matchFields("t11")
         .end()
 

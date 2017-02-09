@@ -9,6 +9,16 @@ import com.supwisdom.spreadsheet.mapper.w2o.validation.validator.cell.buildin.Re
  */
 public class RegexFormatValidatorFactory implements SingleCellValidatorFactory<RegexFormatValidator> {
 
+  private static final RegexFormatValidatorFactory INSTANCE = new RegexFormatValidatorFactory();
+
+  private RegexFormatValidatorFactory() {
+    // singleton
+  }
+
+  public static RegexFormatValidatorFactory getInstance() {
+    return INSTANCE;
+  }
+
   @Override
   public RegexFormatValidator create(DependencyRuleParam param, String matchField) {
     Object additionalParam = param.getAdditionalParam();
