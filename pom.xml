@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.xfslove</groupId>
+  <groupId>com.supwisdom</groupId>
   <artifactId>spreadsheet-mapper</artifactId>
-  <version>1.3.1</version>
+  <version>1.4.0-SNAPSHOT</version>
   <name>Spreadsheet Object Mapper</name>
   <description>java mapping library between spreadsheet and object</description>
   <packaging>jar</packaging>
-  <url>https://github.com/xfslove/spreadsheet-mapper</url>
+  <url>https://github.com/supwisdom/spreadsheet-mapper</url>
 
   <licenses>
     <license>
@@ -26,9 +26,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/xfslove/spreadsheet-mapper.git</connection>
-    <developerConnection>scm:git:git@github.com:xfslove/spreadsheet-mapper.git</developerConnection>
-    <url>https://github.com/xfslove/spreadsheet-mapper</url>
+    <connection>scm:git:https://github.com/supwisdom/spreadsheet-mapper.git</connection>
+    <developerConnection>scm:git:git@github.com:supwisdom/spreadsheet-mapper.git</developerConnection>
+    <url>https://github.com/supwisdom/spreadsheet-mapper</url>
   </scm>
 
   <profiles>
