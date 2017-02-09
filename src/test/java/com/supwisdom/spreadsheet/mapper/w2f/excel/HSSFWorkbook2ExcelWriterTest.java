@@ -1,14 +1,14 @@
 package com.supwisdom.spreadsheet.mapper.w2f.excel;
 
-import com.supwisdom.spreadsheet.mapper.f2w.excel.Excel2WorkbookReadHelper;
-import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriteHelper;
+import com.supwisdom.spreadsheet.mapper.f2w.excel.Excel2WorkbookReader;
+import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.supwisdom.spreadsheet.mapper.AssertUtil;
 import com.supwisdom.spreadsheet.mapper.TestFactory;
-import com.supwisdom.spreadsheet.mapper.f2w.WorkbookReadHelper;
+import com.supwisdom.spreadsheet.mapper.f2w.WorkbookReader;
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
 
 import java.io.File;
@@ -38,11 +38,11 @@ public class HSSFWorkbook2ExcelWriterTest {
 
     Workbook workbook = TestFactory.createWorkbook();
 
-    WorkbookWriteHelper workbookWriteHelper = new Workbook2ExcelWriteHelper(false);
+    WorkbookWriter workbookWriter = new Workbook2ExcelWriter(false);
 
-    workbookWriteHelper.write(workbook, new FileOutputStream(file));
+    workbookWriter.write(workbook, new FileOutputStream(file));
 
-    WorkbookReadHelper reader = new Excel2WorkbookReadHelper();
+    WorkbookReader reader = new Excel2WorkbookReader();
 
     Workbook workbook1 = reader.read(new FileInputStream(file));
 

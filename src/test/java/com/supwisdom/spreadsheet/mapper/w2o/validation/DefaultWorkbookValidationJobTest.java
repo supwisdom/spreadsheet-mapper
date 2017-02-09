@@ -85,8 +85,8 @@ public class DefaultWorkbookValidationJobTest {
 
     boolean result = workbookValidationJob
         .addWorkbookValidator(new SheetSizeValidator().size(2))
-        .addSheetValidationHelper(sheetValidationJob)
-        .addSheetValidationHelper(sheetValidationJob)
+        .addSheetValidationJob(sheetValidationJob)
+        .addSheetValidationJob(sheetValidationJob)
         .valid(workbook, workbookMeta);
 
     assertTrue(result);

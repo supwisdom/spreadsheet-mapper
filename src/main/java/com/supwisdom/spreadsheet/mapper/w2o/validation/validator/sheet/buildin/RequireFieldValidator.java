@@ -6,7 +6,7 @@ import com.supwisdom.spreadsheet.mapper.w2o.validation.validator.sheet.SheetVali
 import org.apache.commons.collections.CollectionUtils;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.w2o.process.setter.FieldSetter;
+import com.supwisdom.spreadsheet.mapper.w2o.compose.setter.FieldSetter;
 
 import java.util.*;
 

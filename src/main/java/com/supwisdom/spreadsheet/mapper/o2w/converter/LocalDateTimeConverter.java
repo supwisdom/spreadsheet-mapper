@@ -1,7 +1,7 @@
 package com.supwisdom.spreadsheet.mapper.o2w.converter;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
-import com.supwisdom.spreadsheet.mapper.o2w.WorkbookComposeException;
+import com.supwisdom.spreadsheet.mapper.o2w.Object2WorkbookComposeException;
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -47,7 +47,7 @@ public class LocalDateTimeConverter<T> extends FieldConverterAdapter<T, LocalDat
       return null;
     } catch (Exception e) {
       LOGGER.error(ExceptionUtils.getStackTrace(e));
-      throw new WorkbookComposeException(e);
+      throw new Object2WorkbookComposeException(e);
     }
   }
 }

@@ -28,7 +28,7 @@ public interface WorkbookValidationJob {
    * @param sheetValidationJob {@link SheetValidationJob}
    * @return {@link WorkbookValidationJob}
    */
-  WorkbookValidationJob addSheetValidationHelper(SheetValidationJob sheetValidationJob);
+  WorkbookValidationJob addSheetValidationJob(SheetValidationJob sheetValidationJob);
 
   /**
    * @param workbook     {@link Workbook}

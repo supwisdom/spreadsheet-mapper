@@ -35,7 +35,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
   }
 
   @Override
-  public WorkbookValidationJob addSheetValidationHelper(SheetValidationJob sheetValidationJob) {
+  public WorkbookValidationJob addSheetValidationJob(SheetValidationJob sheetValidationJob) {
     if (sheetValidationJob == null) {
       throw new IllegalArgumentException("sheet validation helper can not be null");
     }

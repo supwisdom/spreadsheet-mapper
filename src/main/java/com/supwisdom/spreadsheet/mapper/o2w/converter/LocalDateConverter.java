@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.o2w.WorkbookComposeException;
+import com.supwisdom.spreadsheet.mapper.o2w.Object2WorkbookComposeException;
 
 /**
  * local date text value with supplied pattern converter
@@ -48,7 +48,7 @@ public class LocalDateConverter<T> extends FieldConverterAdapter<T, LocalDateCon
       return null;
     } catch (Exception e) {
       LOGGER.error(ExceptionUtils.getStackTrace(e));
-      throw new WorkbookComposeException(e);
+      throw new Object2WorkbookComposeException(e);
     }
   }
 }
