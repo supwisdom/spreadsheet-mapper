@@ -11,7 +11,7 @@ import java.util.List;
  * <p>
  * Created by hanwen on 2017/1/20.
  */
-public interface MultiCellValidator extends DependencyValidator {
+public interface MultiCellValidator extends Validator {
 
   /**
    * the error message will be collected when validator failure if error message is not blank

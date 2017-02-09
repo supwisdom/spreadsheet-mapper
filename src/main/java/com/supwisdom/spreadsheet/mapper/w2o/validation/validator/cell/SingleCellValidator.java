@@ -9,7 +9,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
  * <p>
  * Created by hanwen on 15-12-15.
  */
-public interface SingleCellValidator extends DependencyValidator {
+public interface SingleCellValidator extends Validator {
 
   /**
    * the error message will be collected when validator failure if error message is not blank
