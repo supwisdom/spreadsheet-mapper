@@ -25,16 +25,11 @@ public class BooleanConverter<T> extends FieldConverterAdapter<T, BooleanConvert
 
   public BooleanConverter<T> trueString(String trueString) {
     this.trueString = trueString;
-    return getThis();
+    return this;
   }
 
   public BooleanConverter<T> falseString(String falseString) {
     this.falseString = falseString;
-    return getThis();
-  }
-
-  @Override
-  protected BooleanConverter<T> getThis() {
     return this;
   }
 

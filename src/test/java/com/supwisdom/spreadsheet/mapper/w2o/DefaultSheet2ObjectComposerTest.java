@@ -21,6 +21,7 @@ import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -78,15 +79,15 @@ public class DefaultSheet2ObjectComposerTest {
   static void addSetter(Sheet2ObjectComposer<TestBean> processor1) {
     processor1.addFieldSetter(new LocalDateTimeSetter<TestBean>().pattern("yyyy-MM-dd HH:mm:ss").matchField("localDateTime"));
     processor1.addFieldSetter(new LocalDateSetter<TestBean>().pattern("yyyy-MM-dd").matchField("localDate"));
-    processor1.addFieldSetter(new BooleanSetter<TestBean>().matchField("boolean1")
-        .param(
-            new BooleanParam().trueStrings("pass").falseStrings("failure")
-        ));
-    processor1.addFieldSetter(new BooleanSetter<TestBean>()
-        .param(
-            new BooleanParam().trueStrings("pass").falseStrings("failure")
-        )
-        .matchField("boolean2"));
+    processor1.addFieldSetter(new BooleanSetter<TestBean>(
+        Collections.singleton("pass"),
+        Collections.singleton("failure")
+    ).matchField("boolean1"));
+    processor1.addFieldSetter(new BooleanSetter<TestBean>(
+        Collections.singleton("pass"),
+        Collections.singleton("failure")
+    )
+    .matchField("boolean2"));
 
   }
 

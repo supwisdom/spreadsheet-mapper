@@ -12,11 +12,6 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 public class DigitsValidator extends CustomSingleCellValidatorAdapter<DigitsValidator> {
 
   @Override
-  protected DigitsValidator getThis() {
-    return this;
-  }
-
-  @Override
   protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
     return NumberUtils.isDigits(cell.getValue());
   }

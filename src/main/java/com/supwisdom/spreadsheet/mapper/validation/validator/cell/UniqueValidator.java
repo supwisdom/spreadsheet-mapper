@@ -22,11 +22,6 @@ public class UniqueValidator extends CustomSingleCellValidatorAdapter<UniqueVali
   private Set<String> cellValueHolder = new HashSet<>();
 
   @Override
-  protected UniqueValidator getThis() {
-    return this;
-  }
-
-  @Override
   protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
 
     String cellValue = cell.getValue();

@@ -23,11 +23,6 @@ public class LocalDateConverter<T> extends FieldConverterAdapter<T, LocalDateCon
 
   public LocalDateConverter<T> pattern(String pattern) {
     this.pattern = pattern;
-    return getThis();
-  }
-
-  @Override
-  protected LocalDateConverter<T> getThis() {
     return this;
   }
 

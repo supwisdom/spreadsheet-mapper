@@ -1,13 +1,14 @@
 package com.supwisdom.spreadsheet.mapper.w2o.setter;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
-import com.supwisdom.spreadsheet.mapper.validation.builder.BooleanParam;
+import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.w2o.Workbook2ObjectComposeException;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
+
+import java.util.Set;
 
 /**
  * boolean field value setter
@@ -18,16 +19,13 @@ public class BooleanSetter<T> extends FieldSetterAdapter<T, BooleanSetter<T>> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BooleanSetter.class);
 
-  private BooleanParam param;
+  private final Set<String> trueStrings;
 
-  public BooleanSetter<T> param(BooleanParam param) {
-    this.param = param;
-    return this;
-  }
+  private final Set<String> falseStrings;
 
-  @Override
-  protected BooleanSetter<T> getThis() {
-    return this;
+  public BooleanSetter(Set<String> trueStrings, Set<String> falseStrings) {
+    this.trueStrings = trueStrings;
+    this.falseStrings = falseStrings;
   }
 
   @Override
@@ -36,9 +34,9 @@ public class BooleanSetter<T> extends FieldSetterAdapter<T, BooleanSetter<T>> {
       String stringValue = cell.getValue();
       Boolean booleanValue = null;
 
-      if (param.getTrueStrings().contains(stringValue)) {
+      if (trueStrings.contains(stringValue)) {
         booleanValue = Boolean.TRUE;
-      } else if (param.getFalseStrings().contains(stringValue)) {
+      } else if (falseStrings.contains(stringValue)) {
         booleanValue = Boolean.FALSE;
       }
 

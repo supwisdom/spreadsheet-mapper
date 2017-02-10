@@ -24,11 +24,6 @@ public class LocalDateSetter<T> extends FieldSetterAdapter<T, LocalDateSetter<T>
 
   public LocalDateSetter<T> pattern(String pattern) {
     this.pattern = pattern;
-    return getThis();
-  }
-
-  @Override
-  protected LocalDateSetter<T> getThis() {
     return this;
   }
 

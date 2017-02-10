@@ -12,11 +12,6 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 public class RequireValidator extends CustomSingleCellValidatorAdapter<RequireValidator> {
 
   @Override
-  protected RequireValidator getThis() {
-    return this;
-  }
-
-  @Override
   public boolean valid(Cell cell, FieldMeta fieldMeta) {
     return customValid(cell, fieldMeta);
   }

@@ -12,11 +12,6 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 public class NumberValidator extends CustomSingleCellValidatorAdapter<NumberValidator> {
 
   @Override
-  protected NumberValidator getThis() {
-    return this;
-  }
-
-  @Override
   protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
     return NumberUtils.isNumber(cell.getValue());
   }

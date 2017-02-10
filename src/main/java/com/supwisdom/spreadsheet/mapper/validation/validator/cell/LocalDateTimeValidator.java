@@ -20,11 +20,6 @@ public class LocalDateTimeValidator extends CustomSingleCellValidatorAdapter<Loc
 
   public LocalDateTimeValidator pattern(String pattern) {
     this.pattern = pattern;
-    return getThis();
-  }
-
-  @Override
-  protected LocalDateTimeValidator getThis() {
     return this;
   }
 

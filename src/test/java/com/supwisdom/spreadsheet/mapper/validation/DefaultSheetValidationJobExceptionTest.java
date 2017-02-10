@@ -4,17 +4,17 @@ import com.supwisdom.spreadsheet.mapper.TestFactory;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.SheetBean;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.MultiCellValidator;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.SingleCellValidator;
+import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
+import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CustomMultiCellValidatorAdapter;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CustomSingleCellValidatorAdapter;
+import com.supwisdom.spreadsheet.mapper.validation.validator.cell.MultiCellValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.cell.SingleCellValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -460,11 +460,6 @@ public class DefaultSheetValidationJobExceptionTest {
       return true;
     }
 
-    @Override
-    protected TrueCellValidator getThis() {
-      return this;
-    }
-
   }
 
   static class TrueMCellValidator extends CustomMultiCellValidatorAdapter<TrueMCellValidator> {
@@ -487,11 +482,6 @@ public class DefaultSheetValidationJobExceptionTest {
     protected boolean customValid(List<Cell> cells, List<FieldMeta> fieldMetas) {
       hitValidators.add("row:true:" + group);
       return false;
-    }
-
-    @Override
-    protected TrueMCellValidator getThis() {
-      return this;
     }
 
   }
@@ -518,10 +508,6 @@ public class DefaultSheetValidationJobExceptionTest {
       return false;
     }
 
-    @Override
-    protected FalseCellValidator getThis() {
-      return this;
-    }
   }
 
   static class FalseMCellValidator extends CustomMultiCellValidatorAdapter<FalseMCellValidator> {
@@ -546,10 +532,6 @@ public class DefaultSheetValidationJobExceptionTest {
       return false;
     }
 
-    @Override
-    protected FalseMCellValidator getThis() {
-      return this;
-    }
   }
 
   static class TestCellValidator extends CustomSingleCellValidatorAdapter<TestCellValidator> {
@@ -571,10 +553,6 @@ public class DefaultSheetValidationJobExceptionTest {
       return true;
     }
 
-    @Override
-    protected TestCellValidator getThis() {
-      return this;
-    }
   }
 
   static class TestMultiValidator extends CustomMultiCellValidatorAdapter<TestMultiValidator> {
@@ -594,11 +572,6 @@ public class DefaultSheetValidationJobExceptionTest {
         counter.hit();
       }
       return true;
-    }
-
-    @Override
-    protected TestMultiValidator getThis() {
-      return this;
     }
 
   }

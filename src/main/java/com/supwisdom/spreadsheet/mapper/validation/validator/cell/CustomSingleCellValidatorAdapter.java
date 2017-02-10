@@ -1,8 +1,8 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.cell;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
-import org.apache.commons.lang3.StringUtils;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -26,25 +26,25 @@ public abstract class CustomSingleCellValidatorAdapter<V extends CustomSingleCel
 
   public V matchField(String matchField) {
     this.matchField = matchField;
-    return getThis();
+    return (V) this;
   }
 
   public V errorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
-    return getThis();
+    return (V) this;
   }
 
   public V dependsOn(String... dependsOn) {
     if (dependsOn == null) {
-      return getThis();
+      return (V) this;
     }
     Collections.addAll(this.dependsOn, dependsOn);
-    return getThis();
+    return (V) this;
   }
 
   public V group(String group) {
     this.group = group;
-    return getThis();
+    return (V) this;
   }
 
   @Override
@@ -82,5 +82,4 @@ public abstract class CustomSingleCellValidatorAdapter<V extends CustomSingleCel
    */
   protected abstract boolean customValid(Cell cell, FieldMeta fieldMeta);
 
-  protected abstract V getThis();
 }

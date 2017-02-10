@@ -22,11 +22,6 @@ public class BooleanValidator extends CustomSingleCellValidatorAdapter<BooleanVa
   }
 
   @Override
-  protected BooleanValidator getThis() {
-    return this;
-  }
-
-  @Override
   protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
     String value = cell.getValue();
     return trueStrings.contains(value) || falseStrings.contains(value);

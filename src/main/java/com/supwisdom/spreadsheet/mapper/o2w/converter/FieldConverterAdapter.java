@@ -14,15 +14,13 @@ public abstract class FieldConverterAdapter<T, V extends FieldConverterAdapter<T
 
   public V matchField(String matchField) {
     this.matchField = matchField;
-    return getThis();
+    return (V) this;
   }
 
   @Override
   public String getMatchField() {
     return matchField;
   }
-
-  protected abstract V getThis();
 
   @Override
   public abstract String getValue(T object, Cell cell, FieldMeta fieldMeta);

@@ -21,11 +21,6 @@ public class NumberScaleRangeValidator extends CustomSingleCellValidatorAdapter<
   }
 
   @Override
-  protected NumberScaleRangeValidator getThis() {
-    return this;
-  }
-
-  @Override
   protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
     String value = cell.getValue();
 

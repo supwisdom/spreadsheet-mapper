@@ -7,6 +7,7 @@ import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.validation.builder.BooleanParam;
 
+import java.util.Collections;
 import java.util.Map;
 
 import static org.testng.Assert.*;
@@ -27,20 +28,17 @@ public class BooleanSetterTest {
     // touch register
     new BeanUtilsSetter();
 
-    BooleanSetter<TestBean> setter1 = new BooleanSetter<TestBean>()
-        .matchField("boolean1")
-        .param(
-            new BooleanParam()
-                .trueStrings("pass")
-                .falseStrings("failure")
-        );
-    BooleanSetter<TestBean> setter2 = new BooleanSetter<TestBean>()
-        .param(
-            new BooleanParam()
-                .falseStrings("failure")
-                .trueStrings("pass")
-        )
-        .matchField("boolean2");
+    BooleanSetter<TestBean> setter1 = new BooleanSetter<TestBean>(
+        Collections.singleton("pass"),
+        Collections.singleton("failure")
+    )
+    .matchField("boolean1");
+
+    BooleanSetter<TestBean> setter2 = new BooleanSetter<TestBean>(
+        Collections.singleton("pass"),
+        Collections.singleton("failure")
+    )
+    .matchField("boolean2");
 
     TestBean testBean1 = new TestBean();
     setter1.set(testBean1, cellMap1.get("boolean1"), fieldMetaMap.get("boolean1"));

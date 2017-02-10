@@ -14,11 +14,6 @@ public class RegexFormatValidator extends CustomSingleCellValidatorAdapter<Regex
 
   public RegexFormatValidator regex(String regex) {
     this.regex = regex;
-    return getThis();
-  }
-
-  @Override
-  protected RegexFormatValidator getThis() {
     return this;
   }
 

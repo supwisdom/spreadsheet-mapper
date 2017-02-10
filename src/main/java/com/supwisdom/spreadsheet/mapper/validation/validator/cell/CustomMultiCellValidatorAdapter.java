@@ -1,8 +1,8 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.cell;
 
-import org.apache.commons.lang3.StringUtils;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -27,28 +27,28 @@ public abstract class CustomMultiCellValidatorAdapter<V extends CustomMultiCellV
 
   public V errorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
-    return getThis();
+    return (V) this;
   }
 
   public V matchFields(String... matchFields) {
     if (matchFields == null) {
-      return getThis();
+      return (V) this;
     }
     Collections.addAll(this.matchFields, matchFields);
-    return getThis();
+    return (V) this;
   }
 
   public V dependsOn(String... dependsOn) {
     if (dependsOn == null) {
-      return getThis();
+      return (V) this;
     }
     Collections.addAll(this.dependsOn, dependsOn);
-    return getThis();
+    return (V) this;
   }
 
   public V group(String group) {
     this.group = group;
-    return getThis();
+    return (V) this;
   }
 
   @Override
@@ -95,5 +95,4 @@ public abstract class CustomMultiCellValidatorAdapter<V extends CustomMultiCellV
    */
   protected abstract boolean customValid(List<Cell> cells, List<FieldMeta> fieldMetas);
 
-  protected abstract V getThis();
 }

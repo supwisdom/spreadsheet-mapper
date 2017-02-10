@@ -21,11 +21,6 @@ public class PlainNumberConverter<T> extends FieldConverterAdapter<T, PlainNumbe
   private static final Logger LOGGER = LoggerFactory.getLogger(PlainNumberConverter.class);
 
   @Override
-  protected PlainNumberConverter<T> getThis() {
-    return this;
-  }
-
-  @Override
   public String getValue(T object, Cell cell, FieldMeta fieldMeta) {
 
     try {

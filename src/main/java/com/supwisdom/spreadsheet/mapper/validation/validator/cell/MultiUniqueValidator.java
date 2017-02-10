@@ -43,11 +43,6 @@ public class MultiUniqueValidator extends CustomMultiCellValidatorAdapter<MultiU
     return true;
   }
 
-  @Override
-  protected MultiUniqueValidator getThis() {
-    return this;
-  }
-
   /**
    * build cache string as "field:value"
    *

@@ -1,9 +1,8 @@
 package com.supwisdom.spreadsheet.mapper.w2o.setter;
 
-
-import org.apache.commons.lang3.StringUtils;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <pre>
@@ -18,7 +17,7 @@ public abstract class FieldSetterAdapter<T, V extends FieldSetterAdapter<T, V>> 
 
   public V matchField(String matchField) {
     this.matchField = matchField;
-    return getThis();
+    return (V) this;
   }
 
   @Override
@@ -33,8 +32,6 @@ public abstract class FieldSetterAdapter<T, V extends FieldSetterAdapter<T, V>> 
     }
     customSet(object, cell, fieldMeta);
   }
-
-  protected abstract V getThis();
 
   protected abstract void customSet(T object, Cell cell, FieldMeta fieldMeta);
 }
