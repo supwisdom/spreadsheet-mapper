@@ -16,12 +16,12 @@ public interface RowValidator {
   /**
    * the error message will be collected when validator failure if error message is not blank
    *
-   * @return valid error message
+   * @return validate error message
    */
   String getErrorMessage();
 
   /**
-   * valid supplied row
+   * validate supplied row
    *
    * @param row       {@link Row}
    * @param sheetMeta {@link SheetMeta}

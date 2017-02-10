@@ -125,7 +125,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   }
 
   /*=========================
-   below is internal valid
+   below is internal validate
    ==========================*/
   private boolean validSheet(Sheet sheet, SheetMeta sheetMeta) {
     boolean result = true;

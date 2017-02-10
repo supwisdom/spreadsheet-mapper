@@ -10,7 +10,7 @@ import java.util.Set;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class BooleanValidator extends CustomSingleCellValidatorAdapter<BooleanValidator> {
+public class BooleanValidator extends CustomSingleCellValidator<BooleanValidator> {
 
   private final Set<String> trueStrings;
 
@@ -22,7 +22,7 @@ public class BooleanValidator extends CustomSingleCellValidatorAdapter<BooleanVa
   }
 
   @Override
-  protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
+  protected boolean doValidate(Cell cell, FieldMeta fieldMeta) {
     String value = cell.getValue();
     return trueStrings.contains(value) || falseStrings.contains(value);
   }

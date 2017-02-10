@@ -23,10 +23,10 @@ public class LocalDateTimeValidatorTest {
     validator.matchField("localDateTime");
     validator.pattern("yyyy-MM-dd HH:mm:ss");
     Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
-    assertTrue(validator.valid(cellMap1.get("localDateTime"), fieldMetaMap.get("localDateTime")));
+    assertTrue(validator.validate(cellMap1.get("localDateTime"), fieldMetaMap.get("localDateTime")));
 
     Map<String, Cell> cellMap2 = TestFactory.createErrorCellMap();
-    assertFalse(validator.valid(cellMap2.get("localDateTime"), fieldMetaMap.get("localDateTime")));
+    assertFalse(validator.validate(cellMap2.get("localDateTime"), fieldMetaMap.get("localDateTime")));
   }
 
 }

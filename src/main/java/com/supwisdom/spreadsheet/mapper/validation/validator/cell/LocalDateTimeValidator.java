@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class LocalDateTimeValidator extends CustomSingleCellValidatorAdapter<LocalDateTimeValidator> {
+public class LocalDateTimeValidator extends CustomSingleCellValidator<LocalDateTimeValidator> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeValidator.class);
 
@@ -24,14 +24,14 @@ public class LocalDateTimeValidator extends CustomSingleCellValidatorAdapter<Loc
   }
 
   @Override
-  protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
+  protected boolean doValidate(Cell cell, FieldMeta fieldMeta) {
     DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(pattern);
     String value = cell.getValue();
 
     try {
       dateTimeFormatter.parseLocalDateTime(value);
     } catch (IllegalArgumentException e) {
-      LOGGER.debug("{} format not valid", value);
+      LOGGER.debug("{} format not validate", value);
       return false;
     }
     return true;

@@ -24,7 +24,7 @@ import java.util.Calendar;
  * <p>
  * Created by hanwen on 15-12-18.
  */
-public class BeanUtilsSetter<T> implements Setter<T> {
+public class BeanUtilsSetter {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BeanUtilsSetter.class);
 
@@ -32,8 +32,7 @@ public class BeanUtilsSetter<T> implements Setter<T> {
     registerDefaultConverter();
   }
 
-  @Override
-  public void set(T object, Cell cell, FieldMeta fieldMeta) {
+  public void set(Object object, Cell cell, FieldMeta fieldMeta) {
     try {
       String value = cell.getValue();
       if (StringUtils.isBlank(value) || !lookup(object, fieldMeta)) {
@@ -48,7 +47,7 @@ public class BeanUtilsSetter<T> implements Setter<T> {
     }
   }
 
-  private boolean lookup(T object, FieldMeta fieldMeta) {
+  private boolean lookup(Object object, FieldMeta fieldMeta) {
     Class fieldType = FieldUtils.getFieldType(object.getClass(), fieldMeta.getName().split("\\."));
     return fieldType != null && ConvertUtils.lookup(fieldType) != null;
   }

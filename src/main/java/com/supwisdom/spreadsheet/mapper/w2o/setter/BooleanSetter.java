@@ -15,7 +15,7 @@ import java.util.Set;
  * <p>
  * Created by hanwen on 5/3/16.
  */
-public class BooleanSetter<T> extends FieldSetterAdapter<T, BooleanSetter<T>> {
+public class BooleanSetter<T> extends CustomFieldSetter<T, BooleanSetter<T>> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BooleanSetter.class);
 
@@ -29,7 +29,7 @@ public class BooleanSetter<T> extends FieldSetterAdapter<T, BooleanSetter<T>> {
   }
 
   @Override
-  public void customSet(T object, Cell cell, FieldMeta fieldMeta) {
+  public void doSetValue(T object, Cell cell, FieldMeta fieldMeta) {
     try {
       String stringValue = cell.getValue();
       Boolean booleanValue = null;

@@ -1,7 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.cell;
 
 import com.supwisdom.spreadsheet.mapper.TestFactory;
-import com.supwisdom.spreadsheet.mapper.validation.builder.BooleanParam;
 import org.testng.annotations.Test;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
@@ -33,12 +32,12 @@ public class BooleanValidatorTest {
     validator1.matchField("boolean2");
 
     Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
-    assertTrue(validator0.valid(cellMap1.get("boolean1"), fieldMetaMap.get("boolean1")));
-    assertTrue(validator1.valid(cellMap1.get("boolean2"), fieldMetaMap.get("boolean2")));
+    assertTrue(validator0.validate(cellMap1.get("boolean1"), fieldMetaMap.get("boolean1")));
+    assertTrue(validator1.validate(cellMap1.get("boolean2"), fieldMetaMap.get("boolean2")));
 
     Map<String, Cell> cellMap2 = TestFactory.createErrorCellMap();
-    assertFalse(validator0.valid(cellMap2.get("boolean1"), fieldMetaMap.get("boolean1")));
-    assertTrue(validator1.valid(cellMap2.get("boolean2"), fieldMetaMap.get("boolean2")));
+    assertFalse(validator0.validate(cellMap2.get("boolean1"), fieldMetaMap.get("boolean1")));
+    assertTrue(validator1.validate(cellMap2.get("boolean2"), fieldMetaMap.get("boolean2")));
   }
 
 }

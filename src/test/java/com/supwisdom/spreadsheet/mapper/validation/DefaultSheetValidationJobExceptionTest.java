@@ -6,8 +6,8 @@ import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.SheetBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CustomMultiCellValidatorAdapter;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CustomSingleCellValidatorAdapter;
+import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CustomMultiCellValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CustomSingleCellValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.MultiCellValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.SingleCellValidator;
 import org.apache.commons.lang3.StringUtils;
@@ -438,103 +438,71 @@ public class DefaultSheetValidationJobExceptionTest {
     }
   }
 
-  static class TrueCellValidator extends CustomSingleCellValidatorAdapter<TrueCellValidator> {
+  static class TrueCellValidator extends CustomSingleCellValidator<TrueCellValidator> {
 
     private List<String> hitValidators;
-
-    private String group;
 
     TrueCellValidator(List<String> hitValidators) {
       this.hitValidators = hitValidators;
     }
 
     @Override
-    public TrueCellValidator group(String group) {
-      this.group = group;
-      return super.group(group);
-    }
-
-    @Override
-    protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
-      hitValidators.add("cell:true:" + group);
+    protected boolean doValidate(Cell cell, FieldMeta fieldMeta) {
+      hitValidators.add("cell:true:" + getGroup());
       return true;
     }
 
   }
 
-  static class TrueMCellValidator extends CustomMultiCellValidatorAdapter<TrueMCellValidator> {
+  static class TrueMCellValidator extends CustomMultiCellValidator<TrueMCellValidator> {
 
     private List<String> hitValidators;
-
-    private String group;
 
     TrueMCellValidator(List<String> hitValidators) {
       this.hitValidators = hitValidators;
     }
 
     @Override
-    public TrueMCellValidator group(String group) {
-      this.group = group;
-      return super.group(group);
-    }
-
-    @Override
-    protected boolean customValid(List<Cell> cells, List<FieldMeta> fieldMetas) {
-      hitValidators.add("row:true:" + group);
+    protected boolean doValidate(List<Cell> cells, List<FieldMeta> fieldMetas) {
+      hitValidators.add("row:true:" + getGroup());
       return false;
     }
 
   }
 
-  static class FalseCellValidator extends CustomSingleCellValidatorAdapter<FalseCellValidator> {
+  static class FalseCellValidator extends CustomSingleCellValidator<FalseCellValidator> {
 
     private List<String> hitValidators;
-
-    private String group;
 
     FalseCellValidator(List<String> hitValidators) {
       this.hitValidators = hitValidators;
     }
 
     @Override
-    public FalseCellValidator group(String group) {
-      this.group = group;
-      return super.group(group);
-    }
-
-    @Override
-    protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
-      hitValidators.add("cell:false:" + group);
+    protected boolean doValidate(Cell cell, FieldMeta fieldMeta) {
+      hitValidators.add("cell:false:" + getGroup());
       return false;
     }
 
   }
 
-  static class FalseMCellValidator extends CustomMultiCellValidatorAdapter<FalseMCellValidator> {
+  static class FalseMCellValidator extends CustomMultiCellValidator<FalseMCellValidator> {
 
     private List<String> hitValidators;
-
-    private String group;
 
     FalseMCellValidator(List<String> hitValidators) {
       this.hitValidators = hitValidators;
     }
 
     @Override
-    public FalseMCellValidator group(String group) {
-      this.group = group;
-      return super.group(group);
-    }
-
-    @Override
-    protected boolean customValid(List<Cell> cells, List<FieldMeta> fieldMetas) {
-      hitValidators.add("row:false:" + group);
+    protected boolean doValidate(List<Cell> cells, List<FieldMeta> fieldMetas) {
+      hitValidators.add("row:false:" + getGroup());
       return false;
     }
 
   }
 
-  static class TestCellValidator extends CustomSingleCellValidatorAdapter<TestCellValidator> {
+  static class TestCellValidator extends CustomSingleCellValidator<TestCellValidator> {
 
     private Counter counter;
 
@@ -546,7 +514,7 @@ public class DefaultSheetValidationJobExceptionTest {
     }
 
     @Override
-    protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
+    protected boolean doValidate(Cell cell, FieldMeta fieldMeta) {
       if (counter != null) {
         counter.hit();
       }
@@ -555,7 +523,7 @@ public class DefaultSheetValidationJobExceptionTest {
 
   }
 
-  static class TestMultiValidator extends CustomMultiCellValidatorAdapter<TestMultiValidator> {
+  static class TestMultiValidator extends CustomMultiCellValidator<TestMultiValidator> {
 
     private Counter counter;
 
@@ -567,7 +535,7 @@ public class DefaultSheetValidationJobExceptionTest {
     }
 
     @Override
-    protected boolean customValid(List<Cell> cells, List<FieldMeta> fieldMetas) {
+    protected boolean doValidate(List<Cell> cells, List<FieldMeta> fieldMetas) {
       if (counter != null) {
         counter.hit();
       }

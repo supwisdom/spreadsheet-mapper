@@ -14,21 +14,21 @@ public interface SingleCellValidator extends Validator {
   /**
    * the error message will be collected when validator failure if error message is not blank
    *
-   * @return valid error message
+   * @return validate error message
    */
   String getErrorMessage();
 
   /**
-   * valid supplied cell
+   * validate supplied cell
    *
    * @param cell      {@link Cell}
    * @param fieldMeta {@link FieldMeta}
    * @return true if pass
    */
-  boolean valid(Cell cell, FieldMeta fieldMeta);
+  boolean validate(Cell cell, FieldMeta fieldMeta);
 
   /**
-   * @return which field this validator to valid
+   * @return which field this validator to validate
    * @see FieldMeta#getName()
    */
   String getMatchField();

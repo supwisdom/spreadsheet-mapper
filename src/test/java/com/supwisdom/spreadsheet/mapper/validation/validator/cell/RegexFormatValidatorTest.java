@@ -42,12 +42,12 @@ public class RegexFormatValidatorTest {
 
     Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
 
-    assertTrue(validator0.valid(cellMap1.get("int1"), fieldMetaMap.get("int1")));
-    assertFalse(validator1.valid(cellMap1.get("int2"), fieldMetaMap.get("int2")));
-    assertTrue(validator2.valid(cellMap1.get("long1"), fieldMetaMap.get("long1")));
-    assertFalse(validator3.valid(cellMap1.get("double1"), fieldMetaMap.get("double1")));
-    assertFalse(validator4.valid(cellMap1.get("string"), fieldMetaMap.get("string")));
-    assertFalse(validator5.valid(cellMap1.get("localDate"), fieldMetaMap.get("localDate")));
+    assertTrue(validator0.validate(cellMap1.get("int1"), fieldMetaMap.get("int1")));
+    assertFalse(validator1.validate(cellMap1.get("int2"), fieldMetaMap.get("int2")));
+    assertTrue(validator2.validate(cellMap1.get("long1"), fieldMetaMap.get("long1")));
+    assertFalse(validator3.validate(cellMap1.get("double1"), fieldMetaMap.get("double1")));
+    assertFalse(validator4.validate(cellMap1.get("string"), fieldMetaMap.get("string")));
+    assertFalse(validator5.validate(cellMap1.get("localDate"), fieldMetaMap.get("localDate")));
   }
 
 }

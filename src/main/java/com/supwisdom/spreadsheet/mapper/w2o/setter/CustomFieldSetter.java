@@ -7,31 +7,31 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * <pre>
  * field value setter adapter, easy implements customer value setter extends this.
- * extends this will skip custom set when cell value is blank (default blank value means no need set ).
+ * extends this will skip custom setValue when cell value is blank (default blank value means no need setValue ).
  * </pre>
  * Created by hanwen on 15-12-16.
  */
-public abstract class FieldSetterAdapter<T, V extends FieldSetterAdapter<T, V>> implements FieldSetter<T> {
+public abstract class CustomFieldSetter<T, V extends CustomFieldSetter<T, V>> implements FieldSetter<T> {
 
   private String matchField;
 
-  public V matchField(String matchField) {
+  final public V matchField(String matchField) {
     this.matchField = matchField;
     return (V) this;
   }
 
   @Override
-  public String getMatchField() {
+  final public String getMatchField() {
     return matchField;
   }
 
   @Override
-  public void set(T object, Cell cell, FieldMeta fieldMeta) {
+  final public void setValue(T object, Cell cell, FieldMeta fieldMeta) {
     if (StringUtils.isBlank(cell.getValue())) {
       return;
     }
-    customSet(object, cell, fieldMeta);
+    doSetValue(object, cell, fieldMeta);
   }
 
-  protected abstract void customSet(T object, Cell cell, FieldMeta fieldMeta);
+  protected abstract void doSetValue(T object, Cell cell, FieldMeta fieldMeta);
 }

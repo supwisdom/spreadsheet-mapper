@@ -38,24 +38,24 @@ public class RequireValidatorTest {
     validator7.matchField("double2");
 
     Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
-    assertTrue(validator0.valid(cellMap1.get("int1"), fieldMetaMap.get("int1")));
-    assertTrue(validator1.valid(cellMap1.get("int2"), fieldMetaMap.get("int2")));
-    assertTrue(validator2.valid(cellMap1.get("long1"), fieldMetaMap.get("long1")));
-    assertTrue(validator3.valid(cellMap1.get("long2"), fieldMetaMap.get("long2")));
-    assertTrue(validator4.valid(cellMap1.get("float1"), fieldMetaMap.get("float1")));
-    assertTrue(validator5.valid(cellMap1.get("float2"), fieldMetaMap.get("float2")));
-    assertTrue(validator6.valid(cellMap1.get("double1"), fieldMetaMap.get("double1")));
-    assertTrue(validator7.valid(cellMap1.get("double2"), fieldMetaMap.get("double2")));
+    assertTrue(validator0.validate(cellMap1.get("int1"), fieldMetaMap.get("int1")));
+    assertTrue(validator1.validate(cellMap1.get("int2"), fieldMetaMap.get("int2")));
+    assertTrue(validator2.validate(cellMap1.get("long1"), fieldMetaMap.get("long1")));
+    assertTrue(validator3.validate(cellMap1.get("long2"), fieldMetaMap.get("long2")));
+    assertTrue(validator4.validate(cellMap1.get("float1"), fieldMetaMap.get("float1")));
+    assertTrue(validator5.validate(cellMap1.get("float2"), fieldMetaMap.get("float2")));
+    assertTrue(validator6.validate(cellMap1.get("double1"), fieldMetaMap.get("double1")));
+    assertTrue(validator7.validate(cellMap1.get("double2"), fieldMetaMap.get("double2")));
 
     Map<String, Cell> cellMap2 = TestFactory.createErrorCellMap();
-    assertTrue(validator0.valid(cellMap2.get("int1"), fieldMetaMap.get("int1")));
-    assertFalse(validator1.valid(cellMap2.get("int2"), fieldMetaMap.get("int2")));
-    assertTrue(validator2.valid(cellMap2.get("long1"), fieldMetaMap.get("long1")));
-    assertFalse(validator3.valid(cellMap2.get("long2"), fieldMetaMap.get("long2")));
-    assertTrue(validator4.valid(cellMap2.get("float1"), fieldMetaMap.get("float1")));
-    assertFalse(validator5.valid(cellMap2.get("float2"), fieldMetaMap.get("float2")));
-    assertTrue(validator6.valid(cellMap2.get("double1"), fieldMetaMap.get("double1")));
-    assertFalse(validator7.valid(cellMap2.get("double2"), fieldMetaMap.get("double2")));
+    assertTrue(validator0.validate(cellMap2.get("int1"), fieldMetaMap.get("int1")));
+    assertFalse(validator1.validate(cellMap2.get("int2"), fieldMetaMap.get("int2")));
+    assertTrue(validator2.validate(cellMap2.get("long1"), fieldMetaMap.get("long1")));
+    assertFalse(validator3.validate(cellMap2.get("long2"), fieldMetaMap.get("long2")));
+    assertTrue(validator4.validate(cellMap2.get("float1"), fieldMetaMap.get("float1")));
+    assertFalse(validator5.validate(cellMap2.get("float2"), fieldMetaMap.get("float2")));
+    assertTrue(validator6.validate(cellMap2.get("double1"), fieldMetaMap.get("double1")));
+    assertFalse(validator7.validate(cellMap2.get("double2"), fieldMetaMap.get("double2")));
   }
 
 }

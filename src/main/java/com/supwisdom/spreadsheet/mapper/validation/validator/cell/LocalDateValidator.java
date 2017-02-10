@@ -12,7 +12,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class LocalDateValidator extends CustomSingleCellValidatorAdapter<LocalDateValidator> {
+public class LocalDateValidator extends CustomSingleCellValidator<LocalDateValidator> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeValidator.class);
 
@@ -24,14 +24,14 @@ public class LocalDateValidator extends CustomSingleCellValidatorAdapter<LocalDa
   }
 
   @Override
-  protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
+  protected boolean doValidate(Cell cell, FieldMeta fieldMeta) {
     DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(pattern);
     String value = cell.getValue();
 
     try {
       dateTimeFormatter.parseLocalDate(value);
     } catch (IllegalArgumentException e) {
-      LOGGER.debug("{} format not valid", value);
+      LOGGER.debug("{} format not validate", value);
       return false;
     }
     return true;

@@ -13,12 +13,12 @@ public interface SheetValidator {
   /**
    * the error message will be collected when validator failure if error message is not blank
    *
-   * @return valid error message
+   * @return validate error message
    */
   String getErrorMessage();
 
   /**
-   * valid supplied sheet
+   * validate supplied sheet
    *
    * @param sheet     {@link Sheet}
    * @param sheetMeta {@link SheetMeta}

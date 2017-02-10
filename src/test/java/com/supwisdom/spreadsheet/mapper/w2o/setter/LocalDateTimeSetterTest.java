@@ -28,10 +28,10 @@ public class LocalDateTimeSetterTest {
     LocalDateTimeSetter<TestBean> setter = new LocalDateTimeSetter<TestBean>().matchField("localDateTime").pattern("yyyy-MM-dd HH:mm:ss");
 
     TestBean testBean1 = new TestBean();
-    setter.set(testBean1, cellMap1.get("localDateTime"), fieldMetaMap.get("localDateTime"));
+    setter.setValue(testBean1, cellMap1.get("localDateTime"), fieldMetaMap.get("localDateTime"));
 
     TestBean testBean2 = new TestBean();
-    setter.set(testBean2, cellMap2.get("localDateTime"), fieldMetaMap.get("localDateTime"));
+    setter.setValue(testBean2, cellMap2.get("localDateTime"), fieldMetaMap.get("localDateTime"));
 
     assertEquals(testBean1.getLocalDateTime(), new LocalDateTime(1984, 11, 22, 0, 0, 0));
     assertNull(testBean2.getLocalDateTime());

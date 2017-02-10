@@ -1,17 +1,16 @@
 package com.supwisdom.spreadsheet.mapper.w2o;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
+import com.supwisdom.spreadsheet.mapper.model.core.Row;
+import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
+import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.*;
+import com.supwisdom.spreadsheet.mapper.w2o.setter.BeanUtilsSetter;
 import com.supwisdom.spreadsheet.mapper.w2o.setter.FieldSetter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.supwisdom.spreadsheet.mapper.model.core.Row;
-import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
-import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.w2o.setter.Setter;
-import com.supwisdom.spreadsheet.mapper.w2o.setter.BeanUtilsSetter;
 
 import java.util.*;
 
@@ -34,7 +33,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
 
   private LinkedHashMap<String, FieldSetter<T>> field2setter = new LinkedHashMap<>();
 
-  private Setter<T> defaultSetter = new BeanUtilsSetter<>();
+  private BeanUtilsSetter defaultSetter = new BeanUtilsSetter();
 
   @Override
   public Sheet2ObjectComposer<T> addFieldSetter(FieldSetter<T> fieldSetter) {
@@ -97,7 +96,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
   @Override
   public List<T> compose(Sheet sheet, SheetMeta sheetMeta) {
     if (objectFactory == null) {
-      throw new Workbook2ObjectComposeException("set object factory first");
+      throw new Workbook2ObjectComposeException("setValue object factory first");
     }
 
     List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
@@ -131,7 +130,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
         FieldSetter<T> fieldSetter = field2setter.get(fieldMeta.getName());
 
         if (fieldSetter != null) {
-          fieldSetter.set(object, cell, fieldMeta);
+          fieldSetter.setValue(object, cell, fieldMeta);
         }
 
         cellProcessListener.after(object, cell, fieldMeta);

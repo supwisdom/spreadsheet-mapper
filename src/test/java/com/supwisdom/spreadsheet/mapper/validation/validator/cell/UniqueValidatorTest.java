@@ -27,20 +27,20 @@ public class UniqueValidatorTest {
     UniqueValidator validator = new UniqueValidator();
     validator.matchField("string");
 
-    assertTrue(validator.valid(cellMap1.get("string"), fieldMetaMap.get("string")));
-    assertFalse(validator.valid(cellMap2.get("string"), fieldMetaMap.get("string")));
+    assertTrue(validator.validate(cellMap1.get("string"), fieldMetaMap.get("string")));
+    assertFalse(validator.validate(cellMap2.get("string"), fieldMetaMap.get("string")));
 
-    assertTrue(validator.valid(cellMap1.get("int1"), fieldMetaMap.get("int1")));
-    assertTrue(validator.valid(cellMap2.get("int1"), fieldMetaMap.get("int1")));
+    assertTrue(validator.validate(cellMap1.get("int1"), fieldMetaMap.get("int1")));
+    assertTrue(validator.validate(cellMap2.get("int1"), fieldMetaMap.get("int1")));
 
-    assertTrue(validator.valid(cellMap1.get("int2"), fieldMetaMap.get("int2")));
-    assertTrue(validator.valid(cellMap2.get("int2"), fieldMetaMap.get("int2")));
+    assertTrue(validator.validate(cellMap1.get("int2"), fieldMetaMap.get("int2")));
+    assertTrue(validator.validate(cellMap2.get("int2"), fieldMetaMap.get("int2")));
 
-    assertTrue(validator.valid(cellMap1.get("bigDecimal"), fieldMetaMap.get("bigDecimal")));
-    assertTrue(validator.valid(cellMap2.get("bigDecimal"), fieldMetaMap.get("bigDecimal")));
+    assertTrue(validator.validate(cellMap1.get("bigDecimal"), fieldMetaMap.get("bigDecimal")));
+    assertTrue(validator.validate(cellMap2.get("bigDecimal"), fieldMetaMap.get("bigDecimal")));
 
-    assertTrue(validator.valid(cellMap1.get("localDate"), fieldMetaMap.get("localDate")));
-    assertTrue(validator.valid(cellMap2.get("localDate"), fieldMetaMap.get("localDate")));
+    assertTrue(validator.validate(cellMap1.get("localDate"), fieldMetaMap.get("localDate")));
+    assertTrue(validator.validate(cellMap2.get("localDate"), fieldMetaMap.get("localDate")));
   }
 
 }

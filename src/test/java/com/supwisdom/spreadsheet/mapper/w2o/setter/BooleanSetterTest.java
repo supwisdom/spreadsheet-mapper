@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 import com.supwisdom.spreadsheet.mapper.TestFactory;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.validation.builder.BooleanParam;
 
 import java.util.Collections;
 import java.util.Map;
@@ -41,16 +40,16 @@ public class BooleanSetterTest {
     .matchField("boolean2");
 
     TestBean testBean1 = new TestBean();
-    setter1.set(testBean1, cellMap1.get("boolean1"), fieldMetaMap.get("boolean1"));
-    setter2.set(testBean1, cellMap1.get("boolean2"), fieldMetaMap.get("boolean2"));
+    setter1.setValue(testBean1, cellMap1.get("boolean1"), fieldMetaMap.get("boolean1"));
+    setter2.setValue(testBean1, cellMap1.get("boolean2"), fieldMetaMap.get("boolean2"));
 
     assertTrue(testBean1.isBoolean1());
     assertFalse(testBean1.getBoolean2());
 
 
     TestBean testBean2 = new TestBean();
-    setter1.set(testBean2, cellMap2.get("boolean1"), fieldMetaMap.get("boolean1"));
-    setter2.set(testBean2, cellMap2.get("boolean2"), fieldMetaMap.get("boolean2"));
+    setter1.setValue(testBean2, cellMap2.get("boolean1"), fieldMetaMap.get("boolean1"));
+    setter2.setValue(testBean2, cellMap2.get("boolean2"), fieldMetaMap.get("boolean2"));
 
     assertFalse(testBean2.isBoolean1());
     assertNull(testBean2.getBoolean2());

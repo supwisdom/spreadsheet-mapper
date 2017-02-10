@@ -11,18 +11,18 @@ import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 public interface RowProcessListener<T> {
 
   /**
-   * before object value set
+   * before object value setValue
    *
-   * @param object    value not set
+   * @param object    value not setValue
    * @param row       {@link Row}
    * @param sheetMeta {@link SheetMeta}
    */
   void before(T object, Row row, SheetMeta sheetMeta);
 
   /**
-   * after object value set
+   * after object value setValue
    *
-   * @param object    value set but same object
+   * @param object    value setValue but same object
    * @param row       {@link Row}
    * @param sheetMeta {@link SheetMeta}
    */

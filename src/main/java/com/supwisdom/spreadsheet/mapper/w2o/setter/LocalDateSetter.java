@@ -16,7 +16,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
  * <p>
  * Created by hanwen on 5/3/16.
  */
-public class LocalDateSetter<T> extends FieldSetterAdapter<T, LocalDateSetter<T>> {
+public class LocalDateSetter<T> extends CustomFieldSetter<T, LocalDateSetter<T>> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LocalDateSetter.class);
 
@@ -28,7 +28,7 @@ public class LocalDateSetter<T> extends FieldSetterAdapter<T, LocalDateSetter<T>
   }
 
   @Override
-  public void customSet(T object, Cell cell, FieldMeta fieldMeta) {
+  public void doSetValue(T object, Cell cell, FieldMeta fieldMeta) {
     try {
       DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(pattern);
       String value = cell.getValue();
@@ -38,7 +38,7 @@ public class LocalDateSetter<T> extends FieldSetterAdapter<T, LocalDateSetter<T>
       try {
         localDate = dateTimeFormatter.parseLocalDate(value);
       } catch (IllegalArgumentException e) {
-        LOGGER.debug("{} format not valid", value);
+        LOGGER.debug("{} format not validate", value);
       }
 
       PropertyUtils.setProperty(object, fieldName, localDate);

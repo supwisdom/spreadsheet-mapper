@@ -24,10 +24,10 @@ public class LocalDateValidatorTest {
     validator.pattern("yyyy-MM-dd");
 
     Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
-    assertTrue(validator.valid(cellMap1.get("localDate"), fieldMetaMap.get("localDate")));
+    assertTrue(validator.validate(cellMap1.get("localDate"), fieldMetaMap.get("localDate")));
 
     Map<String, Cell> cellMap2 = TestFactory.createErrorCellMap();
-    assertFalse(validator.valid(cellMap2.get("localDate"), fieldMetaMap.get("localDate")));
+    assertFalse(validator.validate(cellMap2.get("localDate"), fieldMetaMap.get("localDate")));
   }
 
 }

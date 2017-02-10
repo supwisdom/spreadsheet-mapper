@@ -33,15 +33,15 @@ public class MultiUniqueValidatorTest {
     List<Cell> cells1 = Arrays.asList(cellMap1.get("int1"), cellMap1.get("int2"));
     List<Cell> cells2 = Arrays.asList(cellMap2.get("int1"), cellMap1.get("int2"));
 
-    assertTrue(validator1.valid(cells1, fieldMetas));
-    assertTrue(validator1.valid(cells2, fieldMetas));
+    assertTrue(validator1.validate(cells1, fieldMetas));
+    assertTrue(validator1.validate(cells2, fieldMetas));
 
     MultiUniqueValidator validator2 = new MultiUniqueValidator();
     validator2.matchFields("string");
     validator2.group("multi.unique");
 
-    assertTrue(validator2.valid(Collections.singletonList(cellMap2.get("string")), fieldMetas));
-    assertFalse(validator2.valid(Collections.singletonList(cellMap2.get("string")), fieldMetas));
+    assertTrue(validator2.validate(Collections.singletonList(cellMap2.get("string")), fieldMetas));
+    assertFalse(validator2.validate(Collections.singletonList(cellMap2.get("string")), fieldMetas));
 
   }
 

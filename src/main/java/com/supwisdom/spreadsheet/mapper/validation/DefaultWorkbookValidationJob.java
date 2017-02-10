@@ -86,7 +86,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
   }
 
   /*==============
-    workbook valid
+    workbook validate
    ===============*/
   private void validWorkbook(Workbook workbook, WorkbookMeta workbookMeta) {
 

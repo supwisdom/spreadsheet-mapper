@@ -17,12 +17,12 @@ import java.util.Set;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class UniqueValidator extends CustomSingleCellValidatorAdapter<UniqueValidator> {
+public class UniqueValidator extends CustomSingleCellValidator<UniqueValidator> {
 
   private Set<String> cellValueHolder = new HashSet<>();
 
   @Override
-  protected boolean customValid(Cell cell, FieldMeta fieldMeta) {
+  protected boolean doValidate(Cell cell, FieldMeta fieldMeta) {
 
     String cellValue = cell.getValue();
     if (StringUtils.isBlank(cellValue)) {

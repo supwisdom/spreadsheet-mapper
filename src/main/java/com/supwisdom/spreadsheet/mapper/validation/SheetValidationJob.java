@@ -40,7 +40,7 @@ public interface SheetValidationJob {
   SheetValidationJob addDependencyValidator(Validator validator);
 
   /**
-   * execute valid
+   * execute validate
    *
    * @param sheet     {@link Sheet}
    * @param sheetMeta {@link SheetMeta}
@@ -54,7 +54,7 @@ public interface SheetValidationJob {
    * message write strategy of {@link RowValidator#getErrorMessage()} &amp; {@link SingleCellValidator#getErrorMessage()} is {@link MessageWriteStrategies#COMMENT}
    * </pre>
    *
-   * @return list of valid error messages
+   * @return list of validate error messages
    */
   List<Message> getErrorMessages();
 }

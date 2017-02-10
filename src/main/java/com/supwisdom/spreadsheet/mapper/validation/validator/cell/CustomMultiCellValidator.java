@@ -11,11 +11,11 @@ import java.util.List;
 /**
  * <pre>
  * multi cell value validator adapter, easy implements customer multi cell validator extends this.
- * extends this will skip custom valid when multi cell value is all blank, like {@link CustomSingleCellValidatorAdapter#valid(Cell, FieldMeta)}
+ * extends this will skip custom validate when multi cell value is all blank, like {@link CustomSingleCellValidator#validate(Cell, FieldMeta)}
  * </pre>
  * Created by hanwen on 2017/1/20.
  */
-public abstract class CustomMultiCellValidatorAdapter<V extends CustomMultiCellValidatorAdapter<V>> implements MultiCellValidator {
+public abstract class CustomMultiCellValidator<V extends CustomMultiCellValidator<V>> implements MultiCellValidator {
 
   private String errorMessage;
 
@@ -25,12 +25,12 @@ public abstract class CustomMultiCellValidatorAdapter<V extends CustomMultiCellV
 
   private String group;
 
-  public V errorMessage(String errorMessage) {
+  final public V errorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
     return (V) this;
   }
 
-  public V matchFields(String... matchFields) {
+  final public V matchFields(String... matchFields) {
     if (matchFields == null) {
       return (V) this;
     }
@@ -38,7 +38,7 @@ public abstract class CustomMultiCellValidatorAdapter<V extends CustomMultiCellV
     return (V) this;
   }
 
-  public V dependsOn(String... dependsOn) {
+  final public V dependsOn(String... dependsOn) {
     if (dependsOn == null) {
       return (V) this;
     }
@@ -46,18 +46,18 @@ public abstract class CustomMultiCellValidatorAdapter<V extends CustomMultiCellV
     return (V) this;
   }
 
-  public V group(String group) {
+  final public V group(String group) {
     this.group = group;
     return (V) this;
   }
 
   @Override
-  public String getErrorMessage() {
+  final public String getErrorMessage() {
     return errorMessage;
   }
 
   @Override
-  public boolean valid(List<Cell> cells, List<FieldMeta> fieldMetas) {
+  final public boolean validate(List<Cell> cells, List<FieldMeta> fieldMetas) {
 
     boolean allBlank = true;
 
@@ -68,31 +68,31 @@ public abstract class CustomMultiCellValidatorAdapter<V extends CustomMultiCellV
       }
     }
 
-    return allBlank || customValid(cells, fieldMetas);
+    return allBlank || doValidate(cells, fieldMetas);
   }
 
   @Override
-  public LinkedHashSet<String> getMatchFields() {
+  final public LinkedHashSet<String> getMatchFields() {
     return matchFields;
   }
 
   @Override
-  public String getGroup() {
+  final public String getGroup() {
     return group;
   }
 
   @Override
-  public LinkedHashSet<String> getDependsOn() {
+  final public LinkedHashSet<String> getDependsOn() {
     return dependsOn;
   }
 
   /**
-   * for customer implements valid.
+   * for customer implements validate.
    *
    * @param cells      {@link Cell}
    * @param fieldMetas {@link FieldMeta}
    * @return true if pass
    */
-  protected abstract boolean customValid(List<Cell> cells, List<FieldMeta> fieldMetas);
+  protected abstract boolean doValidate(List<Cell> cells, List<FieldMeta> fieldMetas);
 
 }

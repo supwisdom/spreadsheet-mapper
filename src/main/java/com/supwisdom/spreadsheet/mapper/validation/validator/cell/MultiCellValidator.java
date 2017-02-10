@@ -16,21 +16,21 @@ public interface MultiCellValidator extends Validator {
   /**
    * the error message will be collected when validator failure if error message is not blank
    *
-   * @return valid error message
+   * @return validate error message
    */
   String getErrorMessage();
 
   /**
-   * valid supplied cells, the sequence of cells and field metas is {@link #getMatchFields()} sequence
+   * validate supplied cells, the sequence of cells and field metas is {@link #getMatchFields()} sequence
    *
    * @param cells      {@link Cell}
    * @param fieldMetas {@link FieldMeta}
    * @return true if pass
    */
-  boolean valid(List<Cell> cells, List<FieldMeta> fieldMetas);
+  boolean validate(List<Cell> cells, List<FieldMeta> fieldMetas);
 
   /**
-   * @return which fields this validator to valid
+   * @return which fields this validator to validate
    * @see FieldMeta#getName()
    */
   LinkedHashSet<String> getMatchFields();

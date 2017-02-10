@@ -2,7 +2,6 @@ package com.supwisdom.spreadsheet.mapper.validation.validator.cell;
 
 import com.supwisdom.spreadsheet.mapper.TestFactory;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
-import com.supwisdom.spreadsheet.mapper.validation.builder.NumberScaleRangeParam;
 import org.testng.annotations.Test;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 
@@ -31,16 +30,16 @@ public class NumberScaleRangeValidatorTest {
     validator3.matchField("double2");
 
     Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
-    assertTrue(validator0.valid(cellMap1.get("float1"), fieldMetaMap.get("float1")));
-    assertTrue(validator1.valid(cellMap1.get("float2"), fieldMetaMap.get("float2")));
-    assertFalse(validator2.valid(cellMap1.get("double1"), fieldMetaMap.get("double1")));
-    assertFalse(validator3.valid(cellMap1.get("double2"), fieldMetaMap.get("double2")));
+    assertTrue(validator0.validate(cellMap1.get("float1"), fieldMetaMap.get("float1")));
+    assertTrue(validator1.validate(cellMap1.get("float2"), fieldMetaMap.get("float2")));
+    assertFalse(validator2.validate(cellMap1.get("double1"), fieldMetaMap.get("double1")));
+    assertFalse(validator3.validate(cellMap1.get("double2"), fieldMetaMap.get("double2")));
 
     Map<String, Cell> cellMap2 = TestFactory.createErrorCellMap();
-    assertFalse(validator0.valid(cellMap2.get("float1"), fieldMetaMap.get("float1")));
-    assertTrue(validator1.valid(cellMap2.get("float2"), fieldMetaMap.get("float2")));
-    assertFalse(validator2.valid(cellMap2.get("double1"), fieldMetaMap.get("double1")));
-    assertTrue(validator3.valid(cellMap2.get("double2"), fieldMetaMap.get("double2")));
+    assertFalse(validator0.validate(cellMap2.get("float1"), fieldMetaMap.get("float1")));
+    assertTrue(validator1.validate(cellMap2.get("float2"), fieldMetaMap.get("float2")));
+    assertFalse(validator2.validate(cellMap2.get("double1"), fieldMetaMap.get("double1")));
+    assertTrue(validator3.validate(cellMap2.get("double2"), fieldMetaMap.get("double2")));
   }
 
 }

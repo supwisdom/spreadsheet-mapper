@@ -23,7 +23,7 @@ public interface WorkbookValidationJob {
   WorkbookValidationJob addWorkbookValidator(WorkbookValidator workbookValidator);
 
   /**
-   * the sequence of the sheet validation helper add is the helper used to valid workbook's sheets sequence.
+   * the sequence of the sheet validation helper add is the helper used to validate workbook's sheets sequence.
    *
    * @param sheetValidationJob {@link SheetValidationJob}
    * @return {@link WorkbookValidationJob}

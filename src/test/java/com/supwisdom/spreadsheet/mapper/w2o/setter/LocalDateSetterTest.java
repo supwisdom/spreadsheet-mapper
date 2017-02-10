@@ -28,10 +28,10 @@ public class LocalDateSetterTest {
     LocalDateSetter<TestBean> setter2 = new LocalDateSetter<TestBean>().pattern("yyyy/MM/dd").matchField("localDate");
 
     TestBean testBean1 = new TestBean();
-    setter1.set(testBean1, cellMap1.get("localDate"), fieldMetaMap.get("localDate"));
+    setter1.setValue(testBean1, cellMap1.get("localDate"), fieldMetaMap.get("localDate"));
 
     TestBean testBean2 = new TestBean();
-    setter2.set(testBean2, cellMap2.get("localDate"), fieldMetaMap.get("localDate"));
+    setter2.setValue(testBean2, cellMap2.get("localDate"), fieldMetaMap.get("localDate"));
 
     assertEquals(testBean1.getLocalDate(), new LocalDate(1984, 11, 22));
     assertEquals(testBean2.getLocalDate(), new LocalDate(1984, 11, 22));

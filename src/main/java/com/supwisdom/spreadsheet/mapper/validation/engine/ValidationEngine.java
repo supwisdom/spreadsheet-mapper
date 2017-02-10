@@ -78,12 +78,12 @@ public class ValidationEngine {
 
     List<Validator> validators = validatorMap.get(v);
 
-    LOGGER.debug("do valid at group:[" + v + "] and validator numbers of this group is:[" + validators.size() + "]");
+    LOGGER.debug("do validate at group:[" + v + "] and validator numbers of this group is:[" + validators.size() + "]");
 
     for (Validator validator : validators) {
-      // if one of the group valid failure skip rest validators
+      // if one of the group validate failure skip rest validators
       if (!doValid(row, sheetMeta, validator)) {
-        LOGGER.debug("valid false at group:[" + v + "]");
+        LOGGER.debug("validate false at group:[" + v + "]");
         result.put(v, false);
         break;
       }
@@ -93,7 +93,7 @@ public class ValidationEngine {
   private boolean ifSkip(String v) {
     for (String w : vGraph.get(v)) {
       if (!result.get(w)) {
-        LOGGER.debug("skip valid at group:[" + v + "] because of depends on group:[" + w + "] validate failure");
+        LOGGER.debug("skip validate at group:[" + v + "] because of depends on group:[" + w + "] validate failure");
         return true;
       }
     }
@@ -125,7 +125,7 @@ public class ValidationEngine {
         validCells.add(row.getCell(fieldMeta.getColumnIndex()));
       }
 
-      boolean result = multiCellValidator.valid(validCells, fieldMetas);
+      boolean result = multiCellValidator.validate(validCells, fieldMetas);
 
       if (!result) {
 
@@ -157,7 +157,7 @@ public class ValidationEngine {
       }
 
       Cell cell = row.getCell(fieldMeta.getColumnIndex());
-      boolean result = singleCellValidator.valid(cell, fieldMeta);
+      boolean result = singleCellValidator.validate(cell, fieldMeta);
 
       if (!result) {
 

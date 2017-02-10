@@ -11,18 +11,18 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 public interface CellProcessListener<T> {
 
   /**
-   * before object value set
+   * before object value setValue
    *
-   * @param object    value not set
+   * @param object    value not setValue
    * @param cell      {@link Cell}
    * @param fieldMeta {@link FieldMeta}
    */
   void before(T object, Cell cell, FieldMeta fieldMeta);
 
   /**
-   * after object value set
+   * after object value setValue
    *
-   * @param object    value set but same object
+   * @param object    value setValue but same object
    * @param cell      {@link Cell}
    * @param fieldMeta {@link FieldMeta}
    */

@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  * <pre>
- * value union unique validator, it useful when you want valid some cells value union unique.
+ * value union unique validator, it useful when you want validate some cells value union unique.
  *
  * eg:
  * if you excel files has person.idCardNumber and person.idCardType, you will want check if person's identify unique,
@@ -19,13 +19,13 @@ import java.util.Set;
  * </pre>
  * Created by hanwen on 2016/12/1.
  */
-public class MultiUniqueValidator extends CustomMultiCellValidatorAdapter<MultiUniqueValidator> {
+public class MultiUniqueValidator extends CustomMultiCellValidator<MultiUniqueValidator> {
 
   // format: "field1:value1,field2:value2,..."
   private Set<String> rowValueHolder = new HashSet<>();
 
   @Override
-  protected boolean customValid(List<Cell> cells, List<FieldMeta> fieldMetas) {
+  protected boolean doValidate(List<Cell> cells, List<FieldMeta> fieldMetas) {
 
     List<String> holdStringList = new ArrayList<>();
 

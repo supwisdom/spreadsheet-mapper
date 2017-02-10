@@ -21,7 +21,7 @@ public class BeanUtilsSetterTest {
 
     Map<String, FieldMeta> fieldMetaMap = TestFactory.createFieldMetaMap();
 
-    BeanUtilsSetter<TestBean> setter = new BeanUtilsSetter<>();
+    BeanUtilsSetter setter = new BeanUtilsSetter();
 
 
     TestBean testBean = new TestBean();
