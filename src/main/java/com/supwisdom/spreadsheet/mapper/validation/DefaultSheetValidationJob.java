@@ -1,37 +1,39 @@
 package com.supwisdom.spreadsheet.mapper.validation;
 
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
-import com.supwisdom.spreadsheet.mapper.validation.engine.ValidatorDependencyGraphHelper;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
-import com.supwisdom.spreadsheet.mapper.validation.engine.ValidatorCyclicDependencyChecker;
-import com.supwisdom.spreadsheet.mapper.validation.engine.ValidationEngine;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.Validator;
+import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
+import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
+import com.supwisdom.spreadsheet.mapper.validation.engine.CellGroupValidationEngine;
+import com.supwisdom.spreadsheet.mapper.validation.validator.Dependant;
+import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.row.RowValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.sheet.SheetValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.UnionCellValidator;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by hanwen on 15-12-16.
  */
 public class DefaultSheetValidationJob implements SheetValidationJob {
 
-  /*===============
-    validators
-   ================*/
   private List<SheetValidator> sheetValidators = new ArrayList<>();
+
   private List<RowValidator> rowValidators = new ArrayList<>();
-  // dependency validators one group corresponding multi validators
-  private LinkedHashMap<String, List<Validator>> dependencyValidators = new LinkedHashMap<>();
+
+  private List<Dependant> cellValidators = new ArrayList<>();
 
   private List<Message> errorMessages = new ArrayList<>();
+
+  private transient CellGroupValidationEngine cellGroupValidationEngine;
 
   @Override
   public SheetValidationJob addSheetValidator(SheetValidator sheetValidator) {
@@ -52,20 +54,38 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   }
 
   @Override
-  public SheetValidationJob addDependencyValidator(Validator validator) {
-    if (validator == null) {
-      throw new IllegalArgumentException("dependency validator can not be null");
-    }
-    String group = validator.getGroup();
-    if (StringUtils.isBlank(group)) {
-      throw new WorkbookValidateException("dependency validator[" + validator.getClass().getName() + "] group can not be null");
+  public SheetValidationJob addCellValidator(CellValidator cellValidator) {
+
+    if (cellValidator == null) {
+      throw new IllegalArgumentException("Null cellValidator");
     }
 
-    if (!dependencyValidators.containsKey(group)) {
-      dependencyValidators.put(group, new ArrayList<Validator>());
+    String group = cellValidator.getGroup();
+    if (StringUtils.isBlank(group)) {
+      throw new WorkbookValidateException("CellValidator[" + cellValidator.getClass().getName() + "]'s group is null");
     }
-    dependencyValidators.get(group).add(validator);
+
+    this.cellValidators.add(cellValidator);
     return this;
+
+  }
+
+  @Override
+  public SheetValidationJob addUnionCellValidator(UnionCellValidator unionCellValidator) {
+
+    if (unionCellValidator == null) {
+      throw new IllegalArgumentException("Null unionCellValidator");
+    }
+
+    String group = unionCellValidator.getGroup();
+    if (StringUtils.isBlank(group)) {
+      throw new WorkbookValidateException(
+          "UnionCellValidator[" + unionCellValidator.getClass().getName() + "]'s group is null");
+    }
+
+    this.cellValidators.add(unionCellValidator);
+    return this;
+
   }
 
   @Override
@@ -74,24 +94,25 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   }
 
   @Override
-  public boolean valid(Sheet sheet, SheetMeta sheetMeta) {
-    // check dependency of this sheet
-    checkValidatorGroupDependency();
+  public boolean validate(Sheet sheet, SheetMeta sheetMeta) {
 
-    if (!validSheet(sheet, sheetMeta)) {
+    if (!executeSheetValidators(sheet, sheetMeta)) {
       return false;
     }
+
+    cellGroupValidationEngine = new CellGroupValidationEngine(sheetMeta, cellValidators);
+    cellGroupValidationEngine.initialize();
 
     boolean result = true;
     for (Row row : sheet.getRows()) {
 
-      if (!validRow(row, sheetMeta)) {
+      if (!executeRowValidators(row, sheetMeta)) {
         result = false;
         continue;
       }
 
       if (row.getIndex() >= sheetMeta.getDataStartRowIndex()) {
-        if (!validDataRow(row, sheetMeta)) {
+        if (!executeCellValidators(row, sheetMeta)) {
           result = false;
         }
       }
@@ -100,34 +121,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
     return result;
   }
 
-  /**
-   * check if dependency correct
-   */
-  private void checkValidatorGroupDependency() {
-
-    LinkedHashMap<String, LinkedHashSet<String>> vGraph = ValidatorDependencyGraphHelper.buildVGraph(dependencyValidators);
-    Set<String> allGroups = vGraph.keySet();
-
-    for (Map.Entry<String, LinkedHashSet<String>> entry : vGraph.entrySet()) {
-      String group = entry.getKey();
-      Set<String> dependsOn = entry.getValue();
-
-      Collection missingGroups = CollectionUtils.subtract(dependsOn, allGroups);
-      if (!missingGroups.isEmpty()) {
-        throw new WorkbookValidateException("[" + group + "]depends on missing group:" + missingGroups.toString());
-      }
-    }
-
-    ValidatorCyclicDependencyChecker validatorCyclicDependencyChecker = new ValidatorCyclicDependencyChecker(vGraph);
-    if (validatorCyclicDependencyChecker.cycling()) {
-      throw new WorkbookValidateException("dependency exists cycle:" + validatorCyclicDependencyChecker.getCycle().toString());
-    }
-  }
-
-  /*=========================
-   below is internal validate
-   ==========================*/
-  private boolean validSheet(Sheet sheet, SheetMeta sheetMeta) {
+  private boolean executeSheetValidators(Sheet sheet, SheetMeta sheetMeta) {
     boolean result = true;
 
     for (SheetValidator validator : sheetValidators) {
@@ -147,7 +141,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
     return result;
   }
 
-  private boolean validRow(Row row, SheetMeta sheetMeta) {
+  private boolean executeRowValidators(Row row, SheetMeta sheetMeta) {
     boolean result = true;
 
     for (RowValidator validator : rowValidators) {
@@ -163,7 +157,9 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
           for (String messageOnField : messageOnFields) {
 
             FieldMeta fieldMeta = sheetMeta.getFieldMeta(messageOnField);
-            errorMessages.add(new MessageBean(MessageWriteStrategies.COMMENT, errorMessage, row.getSheet().getIndex(), row.getIndex(), fieldMeta.getColumnIndex()));
+            errorMessages.add(
+                new MessageBean(MessageWriteStrategies.COMMENT, errorMessage, row.getSheet().getIndex(), row.getIndex(),
+                    fieldMeta.getColumnIndex()));
           }
         }
       }
@@ -172,11 +168,10 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
     return result;
   }
 
-  private boolean validDataRow(Row row, SheetMeta sheetMeta) {
-    ValidationEngine validationEngine = new ValidationEngine(dependencyValidators);
+  private boolean executeCellValidators(Row row, SheetMeta sheetMeta) {
 
-    boolean result = validationEngine.valid(row, sheetMeta);
-    errorMessages.addAll(validationEngine.getErrorMessages());
+    boolean result = cellGroupValidationEngine.validate(row, sheetMeta);
+    errorMessages.addAll(cellGroupValidationEngine.getErrorMessages());
 
     return result;
   }

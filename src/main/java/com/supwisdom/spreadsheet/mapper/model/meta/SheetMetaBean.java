@@ -15,9 +15,11 @@ public class SheetMetaBean implements SheetMeta {
 
   private int dataStartRowIndex;
 
-  private Map<String, FieldMeta> fieldMetas = new HashMap<>();
-
   private WorkbookMeta workbookMeta;
+
+  private Map<String, FieldMeta> name2FieldMeta = new HashMap<>();
+
+  private Map<Integer, FieldMeta> column2FieldMeta = new HashMap<>();
 
   public SheetMetaBean(int dataStartRowIndex) {
     this(null, dataStartRowIndex);
@@ -43,41 +45,60 @@ public class SheetMetaBean implements SheetMeta {
     return dataStartRowIndex;
   }
 
-  @Override
-  public List<FieldMeta> getFieldMetas() {
-    List<FieldMeta> fieldMetas = new ArrayList<>(this.fieldMetas.values());
+  public List<FieldMeta> getName2FieldMeta() {
+    List<FieldMeta> fieldMetas = new ArrayList<>(this.name2FieldMeta.values());
     Collections.sort(fieldMetas);
     return fieldMetas;
   }
 
   @Override
   public FieldMeta getFieldMeta(String fieldName) {
-    if (fieldMetas.isEmpty()) {
+    if (name2FieldMeta.isEmpty()) {
       return null;
     }
-    return fieldMetas.get(fieldName);
+    return name2FieldMeta.get(fieldName);
+  }
+
+  @Override
+  public FieldMeta getFieldMeta(int columnIndex) {
+    if (column2FieldMeta.isEmpty()) {
+      return null;
+    }
+    return column2FieldMeta.get(columnIndex);
   }
 
   @Override
   public void removeFieldMeta(String fieldName) {
-    if (fieldMetas.isEmpty()) {
+    if (name2FieldMeta.isEmpty()) {
       return;
     }
-    fieldMetas.remove(fieldName);
+    FieldMeta fieldMeta = name2FieldMeta.remove(fieldName);
+    if (fieldMeta != null) {
+      column2FieldMeta.remove(fieldMeta.getColumnIndex());
+    }
+
   }
 
   @Override
   public void addFieldMeta(FieldMeta fieldMeta) {
     if (fieldMeta == null) {
-      throw new IllegalArgumentException("field meta can not be null");
+      throw new IllegalArgumentException("fieldMeta is null");
     }
+
     String fieldName = fieldMeta.getName();
-    if (fieldMetas.containsKey(fieldName)) {
-      throw new IllegalArgumentException("this sheet meta contains multi field meta[" + fieldName + "]");
+    int columnIndex = fieldMeta.getColumnIndex();
+
+    if (name2FieldMeta.containsKey(fieldName)) {
+      throw new IllegalArgumentException("This sheetMeta already has FieldMeta for name [" + fieldName + "]");
+    }
+    if (column2FieldMeta.containsKey(columnIndex)) {
+      throw new IllegalArgumentException("This sheetMeta already has FieldMeta for column [" + columnIndex + "]");
     }
 
     ((FieldMetaBean) fieldMeta).setSheetMeta(this);
-    fieldMetas.put(fieldName, fieldMeta);
+    name2FieldMeta.put(fieldName, fieldMeta);
+    column2FieldMeta.put(columnIndex, fieldMeta);
+
   }
 
   @Override
@@ -100,4 +121,5 @@ public class SheetMetaBean implements SheetMeta {
         .append("dataStartRowIndex", dataStartRowIndex)
         .toString();
   }
+
 }

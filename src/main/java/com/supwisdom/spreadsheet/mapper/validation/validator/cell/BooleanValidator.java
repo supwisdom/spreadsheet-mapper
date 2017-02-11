@@ -10,7 +10,7 @@ import java.util.Set;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class BooleanValidator extends CustomSingleCellValidator<BooleanValidator> {
+public class BooleanValidator extends CustomCellValidator<BooleanValidator> {
 
   private final Set<String> trueStrings;
 

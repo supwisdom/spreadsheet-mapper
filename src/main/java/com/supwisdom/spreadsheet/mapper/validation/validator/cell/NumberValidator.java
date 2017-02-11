@@ -9,7 +9,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class NumberValidator extends CustomSingleCellValidator<NumberValidator> {
+public class NumberValidator extends CustomCellValidator<NumberValidator> {
 
   @Override
   protected boolean doValidate(Cell cell, FieldMeta fieldMeta) {

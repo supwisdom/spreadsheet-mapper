@@ -96,5 +96,7 @@ public class FieldMetaBean implements FieldMeta {
         .append("columnIndex", columnIndex)
         .toString();
   }
+
+
 }
 

@@ -37,7 +37,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
   @Override
   public WorkbookValidationJob addSheetValidationJob(SheetValidationJob sheetValidationJob) {
     if (sheetValidationJob == null) {
-      throw new IllegalArgumentException("sheet validation helper can not be null");
+      throw new IllegalArgumentException("sheet validation job can not be null");
     }
 
     sheetValidationJobs.add(sheetValidationJob);
@@ -45,7 +45,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
   }
 
   @Override
-  public boolean valid(Workbook workbook, WorkbookMeta workbookMeta) {
+  public boolean validate(Workbook workbook, WorkbookMeta workbookMeta) {
     int sizeOfSheets = workbook.sizeOfSheets();
     int sizeOfSheetMetas = workbookMeta.sizeOfSheetMetas();
     int sizeOfHelper = sheetValidationJobs.size();
@@ -54,7 +54,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
       throw new WorkbookValidateException("workbook's sheet size[" + sizeOfSheets + "] not equals workbook meta's sheet meta size[" + sizeOfSheetMetas + "]");
     }
     if (sizeOfSheets != sizeOfHelper) {
-      throw new WorkbookValidateException("workbook's sheet size[" + sizeOfSheets + "] not equals sheet validation helper size[" + sizeOfHelper + "]");
+      throw new WorkbookValidateException("workbook's sheet size[" + sizeOfSheets + "] not equals sheet validation job size[" + sizeOfHelper + "]");
     }
 
     validWorkbook(workbook, workbookMeta);
@@ -71,7 +71,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
       Sheet sheet = workbook.getSheet(i);
       SheetMeta sheetMeta = workbookMeta.getSheetMeta(i);
 
-      if (!sheetValidationJob.valid(sheet, sheetMeta)) {
+      if (!sheetValidationJob.validate(sheet, sheetMeta)) {
         errorMessages.addAll(sheetValidationJob.getErrorMessages());
         sheetValidResult = false;
       }

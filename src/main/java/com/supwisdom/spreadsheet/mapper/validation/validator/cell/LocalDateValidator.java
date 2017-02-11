@@ -12,7 +12,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class LocalDateValidator extends CustomSingleCellValidator<LocalDateValidator> {
+public class LocalDateValidator extends CustomCellValidator<LocalDateValidator> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeValidator.class);
 

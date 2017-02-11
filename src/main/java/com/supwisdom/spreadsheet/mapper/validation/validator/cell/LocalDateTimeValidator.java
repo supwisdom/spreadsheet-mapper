@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class LocalDateTimeValidator extends CustomSingleCellValidator<LocalDateTimeValidator> {
+public class LocalDateTimeValidator extends CustomCellValidator<LocalDateTimeValidator> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeValidator.class);
 

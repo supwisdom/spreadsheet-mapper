@@ -99,7 +99,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
       throw new Workbook2ObjectComposeException("setValue object factory first");
     }
 
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getName2FieldMeta();
     Map<Integer, FieldMeta> columnIndex2fieldMeta = buildFieldMetaMap(fieldMetas);
 
     List<T> dataOfSheet = new ArrayList<>();

@@ -40,13 +40,20 @@ public interface SheetMeta extends Serializable {
   /**
    * @return list of field meta ordered by field meta column index
    */
-  List<FieldMeta> getFieldMetas();
+  List<FieldMeta> getName2FieldMeta();
 
   /**
    * @param fieldName field name
    * @return field meta of field name
    */
   FieldMeta getFieldMeta(String fieldName);
+
+  /**
+   * 根据column index (1-based) 获得FieldMeta
+   * @param columnIndex
+   * @return
+   */
+  FieldMeta getFieldMeta(int columnIndex);
 
   /**
    * remove field meta of field name

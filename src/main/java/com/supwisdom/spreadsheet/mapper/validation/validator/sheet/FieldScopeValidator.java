@@ -48,7 +48,7 @@ public class FieldScopeValidator implements SheetValidator {
   @Override
   public boolean valid(Sheet sheet, SheetMeta sheetMeta) {
 
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getName2FieldMeta();
 
     for (FieldMeta fieldMeta : fieldMetas) {
       if (!fieldScopes.contains(fieldMeta.getName())) {

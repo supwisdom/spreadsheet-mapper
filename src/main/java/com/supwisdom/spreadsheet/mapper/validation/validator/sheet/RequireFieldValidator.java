@@ -1,7 +1,7 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.sheet;
 
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.SingleCellValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidator;
 import org.apache.commons.collections.CollectionUtils;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
@@ -14,7 +14,7 @@ import java.util.*;
  * required field validator
  *
  * all validators matches by field,
- * if field lost means all the ({@link SingleCellValidator} and {@link FieldSetter}) of this field will skip.
+ * if field lost means all the ({@link CellValidator} and {@link FieldSetter}) of this field will skip.
  * this validator useful to detect if excel files contains all the fields you want after.
  *
  * eg: class A has fields [A, B...].
@@ -50,7 +50,7 @@ public class RequireFieldValidator implements SheetValidator {
   @Override
   public boolean valid(Sheet sheet, SheetMeta sheetMeta) {
 
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getName2FieldMeta();
 
     List<String> fields = new ArrayList<>();
     for (FieldMeta fieldMeta : fieldMetas) {

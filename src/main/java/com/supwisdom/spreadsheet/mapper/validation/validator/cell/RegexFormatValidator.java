@@ -8,7 +8,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class RegexFormatValidator extends CustomSingleCellValidator<RegexFormatValidator> {
+public class RegexFormatValidator extends CustomCellValidator<RegexFormatValidator> {
 
   private String regex;
 

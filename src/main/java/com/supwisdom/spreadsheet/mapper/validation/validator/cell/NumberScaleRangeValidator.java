@@ -9,7 +9,7 @@ import org.apache.commons.lang3.math.NumberUtils;
  * <p>
  * Created by hanwen on 2017/1/11.
  */
-public class NumberScaleRangeValidator extends CustomSingleCellValidator<NumberScaleRangeValidator> {
+public class NumberScaleRangeValidator extends CustomCellValidator<NumberScaleRangeValidator> {
 
   private final int gte;
 

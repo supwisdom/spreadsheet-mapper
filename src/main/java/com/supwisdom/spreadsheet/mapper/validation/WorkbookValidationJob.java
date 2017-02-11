@@ -10,7 +10,7 @@ import com.supwisdom.spreadsheet.mapper.validation.validator.workbook.WorkbookVa
 import java.util.List;
 
 /**
- * workbook validation helper
+ * workbook validation job
  * <p>
  * Created by hanwen on 2017/1/4.
  */
@@ -23,7 +23,7 @@ public interface WorkbookValidationJob {
   WorkbookValidationJob addWorkbookValidator(WorkbookValidator workbookValidator);
 
   /**
-   * the sequence of the sheet validation helper add is the helper used to validate workbook's sheets sequence.
+   * the sequence of the sheet validation job add is the helper used to validate workbook's sheets sequence.
    *
    * @param sheetValidationJob {@link SheetValidationJob}
    * @return {@link WorkbookValidationJob}
@@ -34,9 +34,9 @@ public interface WorkbookValidationJob {
    * @param workbook     {@link Workbook}
    * @param workbookMeta {@link WorkbookMeta}
    * @return true if pass all
-   * @see SheetValidationJob#valid(Sheet, SheetMeta)
+   * @see SheetValidationJob#validate(Sheet, SheetMeta)
    */
-  boolean valid(Workbook workbook, WorkbookMeta workbookMeta);
+  boolean validate(Workbook workbook, WorkbookMeta workbookMeta);
 
   /**
    * @return error messages
