@@ -5,6 +5,7 @@ import com.supwisdom.spreadsheet.mapper.validation.builder.cell.CellBuildUnit;
 import com.supwisdom.spreadsheet.mapper.validation.builder.cell.CellValidatorFactory;
 import com.supwisdom.spreadsheet.mapper.validation.builder.unioncell.UnionCellBuildUnit;
 import com.supwisdom.spreadsheet.mapper.validation.builder.unioncell.UnionCellValidatorFactory;
+import com.supwisdom.spreadsheet.mapper.validation.validator.Dependant;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.UnionCellValidator;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class CellValidatorBatchBuilder {
 
-  protected List<Object> cellValidators = new ArrayList<>();
+  protected List<Dependant> cellValidators = new ArrayList<>();
 
   public CellBuildUnit start(CellValidatorFactory factory) {
     return new CellBuildUnit(this, factory);
@@ -36,7 +37,7 @@ public class CellValidatorBatchBuilder {
 
   public void addToSheetValidationJob(SheetValidationJob sheetValidationJob) {
 
-    for (Object cellValidator : cellValidators) {
+    for (Dependant cellValidator : cellValidators) {
 
       if (CellValidator.class.isAssignableFrom(cellValidator.getClass())) {
 
@@ -48,11 +49,13 @@ public class CellValidatorBatchBuilder {
 
       }
 
+      throw new RuntimeException("Not supported dependant: " + cellValidator.getClass().getName());
+
     }
 
   }
 
-  public List getCellValidators() {
+  public List<Dependant> build() {
     return this.cellValidators;
   }
 

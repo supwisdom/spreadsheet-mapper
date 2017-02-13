@@ -45,7 +45,8 @@ public class SheetMetaBean implements SheetMeta {
     return dataStartRowIndex;
   }
 
-  public List<FieldMeta> getName2FieldMeta() {
+  @Override
+  public List<FieldMeta> getFieldMetas() {
     List<FieldMeta> fieldMetas = new ArrayList<>(this.name2FieldMeta.values());
     Collections.sort(fieldMetas);
     return fieldMetas;

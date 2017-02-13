@@ -159,8 +159,8 @@ public class AssertUtil {
     assertEquals(s1.getSheetName(), s2.getSheetName());
     assertEquals(s1.getDataStartRowIndex(), s2.getDataStartRowIndex());
 
-    List<FieldMeta> fm1 = s1.getName2FieldMeta();
-    List<FieldMeta> fm2 = s2.getName2FieldMeta();
+    List<FieldMeta> fm1 = s1.getFieldMetas();
+    List<FieldMeta> fm2 = s2.getFieldMetas();
     assertEquals(fm1.size(), fm2.size());
 
     for (int i = 0; i < fm1.size(); i++) {

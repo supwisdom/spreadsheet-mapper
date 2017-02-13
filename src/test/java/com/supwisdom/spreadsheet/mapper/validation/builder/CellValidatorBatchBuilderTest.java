@@ -105,7 +105,7 @@ public class CellValidatorBatchBuilderTest {
         .matchFields("t11")
         .end()
 
-        .getCellValidators();
+        .build();
 
     assertEquals(validators.size(), 14);
 

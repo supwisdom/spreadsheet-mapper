@@ -50,7 +50,7 @@ public class RequireFieldValidator implements SheetValidator {
   @Override
   public boolean valid(Sheet sheet, SheetMeta sheetMeta) {
 
-    List<FieldMeta> fieldMetas = sheetMeta.getName2FieldMeta();
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
 
     List<String> fields = new ArrayList<>();
     for (FieldMeta fieldMeta : fieldMetas) {

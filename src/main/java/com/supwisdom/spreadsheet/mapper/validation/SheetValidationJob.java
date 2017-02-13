@@ -5,9 +5,9 @@ import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidator;
-import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.UnionCellValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.row.RowValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.sheet.SheetValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.UnionCellValidator;
 
 import java.util.List;
 
