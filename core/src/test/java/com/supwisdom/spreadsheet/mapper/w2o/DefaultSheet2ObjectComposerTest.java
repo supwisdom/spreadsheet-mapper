@@ -75,11 +75,11 @@ public class DefaultSheet2ObjectComposerTest {
   }
 
   static void addSetter(Sheet2ObjectComposer<TestBean> processor1) {
-    processor1.addFieldSetter(new BooleanSetter<TestBean>(
+    processor1.addFieldSetter(new BooleanSetter(
         Collections.singleton("pass"),
         Collections.singleton("failure")
     ).matchField("boolean1"));
-    processor1.addFieldSetter(new BooleanSetter<TestBean>(
+    processor1.addFieldSetter(new BooleanSetter(
         Collections.singleton("pass"),
         Collections.singleton("failure")
     )

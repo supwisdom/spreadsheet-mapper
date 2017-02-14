@@ -6,7 +6,7 @@ import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.*;
-import com.supwisdom.spreadsheet.mapper.w2o.setter.BeanUtilsSetter;
+import com.supwisdom.spreadsheet.mapper.w2o.setter.DefaultFieldSetter;
 import com.supwisdom.spreadsheet.mapper.w2o.setter.FieldSetter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -33,10 +33,10 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
 
   private LinkedHashMap<String, FieldSetter<T>> field2setter = new LinkedHashMap<>();
 
-  private BeanUtilsSetter defaultSetter = new BeanUtilsSetter();
+  private DefaultFieldSetter defaultSetter = new DefaultFieldSetter();
 
   @Override
-  public Sheet2ObjectComposer<T> addFieldSetter(FieldSetter<T> fieldSetter) {
+  public Sheet2ObjectComposer<T> addFieldSetter(FieldSetter fieldSetter) {
     if (fieldSetter == null) {
       throw new IllegalArgumentException("field setter can not be null");
     }
@@ -125,7 +125,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
         cellProcessListener.before(object, cell, fieldMeta);
 
         // use default setter first
-        defaultSetter.set(object, cell, fieldMeta);
+        defaultSetter.setValue(object, cell, fieldMeta);
 
         FieldSetter<T> fieldSetter = field2setter.get(fieldMeta.getName());
 

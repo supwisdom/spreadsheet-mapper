@@ -30,13 +30,13 @@ public class DefaultObject2WorkbookComposer implements Object2WorkbookComposer {
   public Workbook compose(List<List> dataOfSheets, WorkbookMeta workbookMeta) {
     int sizeOfData = CollectionUtils.size(dataOfSheets);
     int sizeOfSheetMetas = workbookMeta.sizeOfSheetMetas();
-    int sizeOfHelper = object2SheetComposers.size();
+    int sizeOfSheetComposer = object2SheetComposers.size();
 
     if (sizeOfData != sizeOfSheetMetas) {
-      throw new Object2WorkbookComposeException("data's size[" + sizeOfData + "] not equals workbook meta's sheet meta size[" + sizeOfSheetMetas + "]");
+      throw new Object2WorkbookComposeException(sizeOfSheetMetas + " sheet meta(s) but found " + sizeOfData +  " data list(s)");
     }
-    if (sizeOfHelper != sizeOfData) {
-      throw new Object2WorkbookComposeException("data's size[" + sizeOfData + "] not equals sheet compose helper size[" + sizeOfHelper + "]");
+    if (sizeOfSheetComposer != sizeOfData) {
+      throw new Object2WorkbookComposeException(sizeOfData + " data list(s) but found " + sizeOfSheetComposer +  " sheet composer(s)");
     }
 
     Workbook workbook = new WorkbookBean();

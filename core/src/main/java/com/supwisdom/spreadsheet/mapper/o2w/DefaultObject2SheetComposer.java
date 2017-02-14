@@ -1,16 +1,15 @@
 package com.supwisdom.spreadsheet.mapper.o2w;
 
 import com.supwisdom.spreadsheet.mapper.model.core.*;
+import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.HeaderMeta;
-import com.supwisdom.spreadsheet.mapper.o2w.converter.FieldConverter;
+import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
+import com.supwisdom.spreadsheet.mapper.o2w.converter.DefaultToStringConverter;
+import com.supwisdom.spreadsheet.mapper.o2w.converter.ToStringConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
-import com.supwisdom.spreadsheet.mapper.o2w.converter.Converter;
-import com.supwisdom.spreadsheet.mapper.o2w.converter.BeanUtilsConverter;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,25 +23,26 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultObject2SheetComposer.class);
 
-  private LinkedHashMap<String, FieldConverter<T>> field2converter = new LinkedHashMap<>();
+  private LinkedHashMap<String, ToStringConverter<T>> field2Converter = new LinkedHashMap<>();
 
-  private Converter<T> defaultConverter = new BeanUtilsConverter<>();
+  private DefaultToStringConverter defaultToStringConverter = new DefaultToStringConverter();
 
   @Override
-  public Object2SheetComposer<T> addFieldConverter(FieldConverter<T> fieldConverter) {
-    if (fieldConverter == null) {
+  public Object2SheetComposer<T> addFieldConverter(ToStringConverter<T> toStringConverter) {
+    if (toStringConverter == null) {
       throw new IllegalArgumentException("field converter can not be null");
     }
 
-    String matchField = fieldConverter.getMatchField();
+    String matchField = toStringConverter.getMatchField();
     if (StringUtils.isBlank(matchField)) {
       throw new IllegalArgumentException("field value setter match field can not be null");
     }
-    if (field2converter.containsKey(matchField)) {
-      throw new IllegalArgumentException("sheet compose helper contains multi field converter at field[" + matchField + "]");
+    if (field2Converter.containsKey(matchField)) {
+      throw new IllegalArgumentException(
+          "sheet compose helper contains multi field converter at field[" + matchField + "]");
     }
 
-    field2converter.put(matchField, fieldConverter);
+    field2Converter.put(matchField, toStringConverter);
     return this;
   }
 
@@ -125,26 +125,27 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
     Map<Integer, FieldMeta> columnIndex2fieldMeta = buildFieldMetaMap(fieldMetas);
 
     for (int i = 1; i <= lastColumnNum; i++) {
-      Cell cell = new CellBean();
-      FieldMeta fieldMeta = columnIndex2fieldMeta.get(i);
 
-      if (fieldMeta == null) {
-        LOGGER.debug("no field meta at column index:[" + i + "], will create an empty cell");
-
-        row.addCell(cell);
+      if (object == null) {
+        LOGGER.debug("data object null, create an empty cell");
+        row.addCell(new CellBean());
         continue;
       }
 
-      // use default converter first
-      cell = new CellBean(defaultConverter.getValue(object, cell, fieldMeta));
+      FieldMeta fieldMeta = columnIndex2fieldMeta.get(i);
 
-      FieldConverter<T> converter = field2converter.get(fieldMeta.getName());
-
-      if (converter != null) {
-        cell = new CellBean(converter.getValue(object, cell, fieldMeta));
+      if (fieldMeta == null) {
+        LOGGER.debug("No field meta for column[{}], create an empty cell", i);
+        row.addCell(new CellBean());
+        continue;
       }
 
-      row.addCell(cell);
+      String fieldName = fieldMeta.getName();
+
+      ToStringConverter converter = field2Converter.get(fieldName);
+      converter = converter == null ? defaultToStringConverter : converter;
+      row.addCell(new CellBean(converter.getString(object, fieldMeta)));
+
     }
   }
 

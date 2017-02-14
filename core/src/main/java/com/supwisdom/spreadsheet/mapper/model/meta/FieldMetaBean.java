@@ -15,6 +15,7 @@ public class FieldMetaBean implements FieldMeta {
 
   private int columnIndex;
 
+  // row index -> HeaderMeta
   private Map<Integer, HeaderMeta> headerMetas = new HashMap<>();
 
   private SheetMeta sheetMeta;

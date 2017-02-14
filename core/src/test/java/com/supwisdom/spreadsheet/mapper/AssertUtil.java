@@ -2,11 +2,8 @@ package com.supwisdom.spreadsheet.mapper;
 
 import com.supwisdom.spreadsheet.mapper.model.core.*;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.model.meta.HeaderMeta;
-import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.*;
@@ -140,33 +137,4 @@ public class AssertUtil {
     assertNull(testBean.getBoolean2());
   }
 
-  public static void assertSheetMetaEquals(SheetMeta s1, SheetMeta s2) {
-    assertEquals(s1.getSheetIndex(), s2.getSheetIndex());
-    assertEquals(s1.getSheetName(), s2.getSheetName());
-    assertEquals(s1.getDataStartRowIndex(), s2.getDataStartRowIndex());
-
-    List<FieldMeta> fm1 = s1.getFieldMetas();
-    List<FieldMeta> fm2 = s2.getFieldMetas();
-    assertEquals(fm1.size(), fm2.size());
-
-    for (int i = 0; i < fm1.size(); i++) {
-      assertFieldMetaEquals(fm1.get(i), fm2.get(i));
-    }
-  }
-
-  public static void assertFieldMetaEquals(FieldMeta f1, FieldMeta f2) {
-    assertEquals(f1.getColumnIndex(), f2.getColumnIndex());
-    assertEquals(f1.getName(), f2.getName());
-    List<HeaderMeta> hm1 = f1.getHeaderMetas();
-    List<HeaderMeta> hm2 = f2.getHeaderMetas();
-    assertEquals(hm1.size(), hm2.size());
-    for (int i = 0; i < hm1.size(); i++) {
-      assertHeaderMetaEquals(hm1.get(i), hm2.get(i));
-    }
-  }
-
-  public static void assertHeaderMetaEquals(HeaderMeta h1, HeaderMeta h2) {
-    assertEquals(h1.getRowIndex(), h2.getRowIndex());
-    assertEquals(h1.getValue(), h2.getValue());
-  }
 }
