@@ -1,0 +1,39 @@
+package com.supwisdom.spreadsheet.mapper.w2o.setter;
+
+import com.supwisdom.spreadsheet.mapper.TestBean;
+import com.supwisdom.spreadsheet.mapper.TestFactory;
+import com.supwisdom.spreadsheet.mapper.model.core.Cell;
+import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
+import org.joda.time.LocalDateTime;
+import org.testng.annotations.Test;
+
+import java.util.Map;
+
+import static org.testng.Assert.*;
+
+/**
+ * Created by qianjia on 2017/2/14.
+ */
+public class LocalDateTimeSetterTest {
+
+  @Test
+  public void testSet() throws Exception {
+
+    Map<String, FieldMeta> fieldMetaMap = TestFactory.createFieldMetaMap();
+
+    Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
+    Map<String, Cell> cellMap2 = TestFactory.createErrorCellMap();
+
+    LocalDateTimeSetter<TestBean> setter = new LocalDateTimeSetter<TestBean>().matchField("localDateTime").pattern("yyyy-MM-dd HH:mm:ss");
+
+    TestBean testBean1 = new TestBean();
+    setter.setValue(testBean1, cellMap1.get("localDateTime"), fieldMetaMap.get("localDateTime"));
+
+    TestBean testBean2 = new TestBean();
+    setter.setValue(testBean2, cellMap2.get("localDateTime"), fieldMetaMap.get("localDateTime"));
+
+    assertEquals(testBean1.getLocalDateTime(), new LocalDateTime(1984, 11, 22, 0, 0, 0));
+    assertNull(testBean2.getLocalDateTime());
+  }
+
+}
