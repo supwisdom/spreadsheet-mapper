@@ -2,7 +2,7 @@ package com.supwisdom.spreadsheet.mapper.o2w;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
-import com.supwisdom.spreadsheet.mapper.o2w.converter.FieldConverter;
+import com.supwisdom.spreadsheet.mapper.o2w.converter.ToStringConverter;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ import java.util.List;
 public interface Object2SheetComposer<T> {
 
   /**
-   * {@link FieldConverter} unique with {@link FieldConverter#getMatchField()} in one sheet (one to one)
+   * {@link ToStringConverter} unique with {@link ToStringConverter#getMatchField()} in one sheet (one to one)
    *
-   * @param fieldConverter {@link FieldConverter}
+   * @param toStringConverter {@link ToStringConverter}
    * @return {@link Object2SheetComposer}
    */
-  Object2SheetComposer<T> addFieldConverter(FieldConverter<T> fieldConverter);
+  Object2SheetComposer<T> addFieldConverter(ToStringConverter<T> toStringConverter);
 
   /**
    * @param dataOfSheet list of data, may null

@@ -23,7 +23,7 @@ public interface Sheet2ObjectComposer<T> {
    * @return {@link Sheet2ObjectComposer}
    * @see FieldSetter
    */
-  Sheet2ObjectComposer<T> addFieldSetter(FieldSetter<T> fieldSetter);
+  Sheet2ObjectComposer<T> addFieldSetter(FieldSetter fieldSetter);
 
   /**
    * @param objectFactory {@link ObjectFactory}

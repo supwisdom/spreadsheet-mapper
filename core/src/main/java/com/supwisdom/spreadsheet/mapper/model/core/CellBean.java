@@ -9,7 +9,7 @@ import java.util.Objects;
  */
 public class CellBean implements Cell {
 
-  private int index = 1;
+  private int index = -1;
 
   private String value;
 

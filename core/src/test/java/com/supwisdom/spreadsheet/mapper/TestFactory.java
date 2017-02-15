@@ -12,50 +12,6 @@ import java.util.Map;
  */
 public class TestFactory {
 
-  public static TestBean createBean1() {
-
-    TestBean testBean = new TestBean();
-
-    testBean.setInt1(10000);
-    testBean.setInt2(-20000);
-
-    testBean.setLong1(10000000000000L);
-    testBean.setLong2(20000000000000L);
-
-    testBean.setFloat1(0.001F);
-    testBean.setFloat2(0.00000002F);
-
-    testBean.setDouble1(0.00000000000000000001D);
-    testBean.setDouble2(0.00000000000000000002D);
-
-    testBean.setBoolean1(true);
-    testBean.setBoolean2(false);
-
-    testBean.setString("Scarlett Johansson");
-
-    testBean.setBigDecimal(BigDecimal.valueOf(0.00000000000000000001));
-
-    return testBean;
-  }
-
-  public static TestBean createBean2() {
-
-    TestBean testBean = new TestBean();
-
-    testBean.setInt1(1);
-
-    testBean.setLong1(1L);
-
-    testBean.setFloat1(0.1F);
-
-    testBean.setDouble1(0.00001D);
-
-    testBean.setString("Scarlett Johansson");
-
-    testBean.setBoolean1(false);
-
-    return testBean;
-  }
 
   public static Map<String, FieldMeta> createFieldMetaMap() {
 
