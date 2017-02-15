@@ -14,16 +14,8 @@ public class LambdaFieldSetter2<T> extends FieldSetterTemplate<T, LambdaFieldSet
 
   private TriConsumer<T, Cell, FieldMeta> lambda;
 
-  public LambdaFieldSetter2() {
-  }
-
   public LambdaFieldSetter2(TriConsumer<T, Cell, FieldMeta> lambda) {
-    lambda(lambda);
-  }
-
-  public LambdaFieldSetter2<T> lambda(TriConsumer<T, Cell, FieldMeta> lambda) {
     this.lambda = lambda;
-    return this;
   }
 
   @Override

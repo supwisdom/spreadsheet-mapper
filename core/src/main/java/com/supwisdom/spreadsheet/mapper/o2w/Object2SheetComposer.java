@@ -19,7 +19,7 @@ public interface Object2SheetComposer<T> {
    * @param toStringConverter {@link ToStringConverter}
    * @return {@link Object2SheetComposer}
    */
-  Object2SheetComposer<T> addFieldConverter(ToStringConverter<T> toStringConverter);
+  Object2SheetComposer<T> addFieldConverter(ToStringConverter toStringConverter);
 
   /**
    * @param dataOfSheet list of data, may null

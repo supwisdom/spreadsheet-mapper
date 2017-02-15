@@ -15,8 +15,7 @@ public class LambdaFieldSetter2Test {
   @Test
   public void testLambda() throws Exception {
 
-    LambdaFieldSetter2<TestBean> setter = new LambdaFieldSetter2<>();
-    setter.lambda((o, cell, field) -> o.setLong1(2L));
+    LambdaFieldSetter2<TestBean> setter = new LambdaFieldSetter2<>((o, cell, field) -> o.setLong1(2L));
 
     TestBean testBean = new TestBean();
     setter.setValue(testBean, new CellBean("abc"), new FieldMetaBean("long1", 1));

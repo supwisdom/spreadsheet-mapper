@@ -28,7 +28,7 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
   private DefaultToStringConverter defaultToStringConverter = new DefaultToStringConverter();
 
   @Override
-  public Object2SheetComposer<T> addFieldConverter(ToStringConverter<T> toStringConverter) {
+  public Object2SheetComposer<T> addFieldConverter(ToStringConverter toStringConverter) {
     if (toStringConverter == null) {
       throw new IllegalArgumentException("field converter can not be null");
     }

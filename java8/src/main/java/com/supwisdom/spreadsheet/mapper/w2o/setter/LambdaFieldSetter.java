@@ -12,11 +12,9 @@ public class LambdaFieldSetter<P> extends FieldSetterTemplate<Object, LambdaFiel
 
   private Function<String, P> lambda;
 
-  public LambdaFieldSetter lambda(Function<String, P> lambda) {
+  public LambdaFieldSetter(Function<String, P> lambda) {
     this.lambda = lambda;
-    return this;
   }
-
   @Override
   protected P convertProperty(String cellValue) {
     return lambda.apply(cellValue);
