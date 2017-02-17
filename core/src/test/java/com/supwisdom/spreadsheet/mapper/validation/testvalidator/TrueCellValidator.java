@@ -2,11 +2,11 @@ package com.supwisdom.spreadsheet.mapper.validation.testvalidator;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CustomCellValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidatorTemplate;
 
 import java.util.List;
 
-public class TrueCellValidator extends CustomCellValidator<TrueCellValidator> {
+public class TrueCellValidator extends CellValidatorTemplate<TrueCellValidator> {
 
   private List<String> hitValidators;
 

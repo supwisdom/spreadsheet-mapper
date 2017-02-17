@@ -4,7 +4,7 @@ import com.supwisdom.spreadsheet.mapper.TestFactory;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.SheetBean;
 import com.supwisdom.spreadsheet.mapper.model.core.WorkbookBean;
-import com.supwisdom.spreadsheet.mapper.validation.validator.workbook.SheetSizeValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.workbook.SheetAmountValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -42,40 +42,40 @@ public class DefaultWorkbookValidationJobTest {
     TestCellValidator testCellValidator1 = new TestCellValidator(counter);
     testCellValidator1.matchField("int1");
     testCellValidator1.group("int1");
-    sheetValidationJob.addCellValidator(testCellValidator1);
+    sheetValidationJob.addValidator(testCellValidator1);
     TestCellValidator testCellValidator2 = new TestCellValidator(counter);
     testCellValidator2.matchField("int2");
     testCellValidator2.group("int2");
-    sheetValidationJob.addCellValidator(testCellValidator2);
+    sheetValidationJob.addValidator(testCellValidator2);
     TestCellValidator testCellValidator3 = new TestCellValidator(counter);
     testCellValidator3.matchField("long1");
     testCellValidator3.group("long1");
-    sheetValidationJob.addCellValidator(testCellValidator3);
+    sheetValidationJob.addValidator(testCellValidator3);
     TestCellValidator testCellValidator4 = new TestCellValidator(counter);
     testCellValidator4.matchField("long2");
     testCellValidator4.group("long2");
-    sheetValidationJob.addCellValidator(testCellValidator4);
+    sheetValidationJob.addValidator(testCellValidator4);
     TestCellValidator testCellValidator5 = new TestCellValidator(counter);
     testCellValidator5.matchField("float1");
     testCellValidator5.group("float1");
-    sheetValidationJob.addCellValidator(testCellValidator5);
+    sheetValidationJob.addValidator(testCellValidator5);
     TestCellValidator testCellValidator6 = new TestCellValidator(counter);
     testCellValidator6.matchField("float2");
     testCellValidator6.group("float2");
-    sheetValidationJob.addCellValidator(testCellValidator6);
+    sheetValidationJob.addValidator(testCellValidator6);
     TestCellValidator testCellValidator7 = new TestCellValidator(counter);
     testCellValidator7.matchField("string");
     testCellValidator7.group("string");
-    sheetValidationJob.addCellValidator(testCellValidator6);
+    sheetValidationJob.addValidator(testCellValidator6);
 
     TestMultiValidator testMultiValidator1 = new TestMultiValidator(counter);
     testMultiValidator1.group("int1");
     testMultiValidator1.matchFields("int1", "int2");
-    sheetValidationJob.addUnionCellValidator(testMultiValidator1);
+    sheetValidationJob.addValidator(testMultiValidator1);
     TestMultiValidator testMultiValidator2 = new TestMultiValidator(counter);
     testMultiValidator2.group("int2");
     testMultiValidator2.matchFields("int1", "int2");
-    sheetValidationJob.addUnionCellValidator(testMultiValidator2);
+    sheetValidationJob.addValidator(testMultiValidator2);
 
 
     Workbook workbook = new WorkbookBean();
@@ -87,7 +87,7 @@ public class DefaultWorkbookValidationJobTest {
     workbookMeta.addSheetMeta(TestFactory.createSheetMeta(true));
 
     boolean result = workbookValidationJob
-        .addWorkbookValidator(new SheetSizeValidator().size(2))
+        .addValidator(new SheetAmountValidator(2))
         .addSheetValidationJob(sheetValidationJob)
         .addSheetValidationJob(sheetValidationJob)
         .validate(workbook, workbookMeta);

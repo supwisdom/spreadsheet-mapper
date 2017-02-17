@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * Created by hanwen on 15-12-16.
  */
-public class DefaultSheetValidationJob implements SheetValidationJob {
+public class DefaultSheetValidationJob implements SheetValidationJob<DefaultSheetValidationJob> {
 
   private List<SheetValidator> sheetValidators = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   private transient CellGroupValidationEngine cellGroupValidationEngine;
 
   @Override
-  public SheetValidationJob addSheetValidator(SheetValidator sheetValidator) {
+  public DefaultSheetValidationJob addValidator(SheetValidator sheetValidator) {
     if (sheetValidator == null) {
       throw new IllegalArgumentException("sheet validator can not be null");
     }
@@ -45,7 +45,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   }
 
   @Override
-  public SheetValidationJob addRowValidator(RowValidator rowValidator) {
+  public DefaultSheetValidationJob addValidator(RowValidator rowValidator) {
     if (rowValidator == null) {
       throw new IllegalArgumentException("row validator can not be null");
     }
@@ -54,7 +54,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   }
 
   @Override
-  public SheetValidationJob addCellValidator(CellValidator cellValidator) {
+  public DefaultSheetValidationJob addValidator(CellValidator cellValidator) {
 
     if (cellValidator == null) {
       throw new IllegalArgumentException("Null cellValidator");
@@ -71,7 +71,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   }
 
   @Override
-  public SheetValidationJob addUnionCellValidator(UnionCellValidator unionCellValidator) {
+  public DefaultSheetValidationJob addValidator(UnionCellValidator unionCellValidator) {
 
     if (unionCellValidator == null) {
       throw new IllegalArgumentException("Null unionCellValidator");
@@ -88,6 +88,15 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
 
   }
 
+  /**
+   * <ul>
+   *   <li>{@link SheetValidator}校验失败的消息是{@link MessageWriteStrategies#TEXT_BOX}</li>
+   *   <li>{@link RowValidator}校验失败的消息是{@link MessageWriteStrategies#COMMENT}，在每个{@link RowValidator#getErrorFields()}上</li>
+   *   <li>{@link CellValidator}校验失败的消息是{@link MessageWriteStrategies#COMMENT}，在失败的field上</li>
+   *   <li>{@link UnionCellValidator}校验失败的消息是{@link MessageWriteStrategies#COMMENT}，在失败的field上</li>
+   * </ul>
+   *
+   */
   @Override
   public List<Message> getErrorMessages() {
     return errorMessages;
@@ -122,11 +131,12 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   }
 
   private boolean executeSheetValidators(Sheet sheet, SheetMeta sheetMeta) {
+
     boolean result = true;
 
     for (SheetValidator validator : sheetValidators) {
 
-      if (!validator.valid(sheet, sheetMeta)) {
+      if (!validator.validate(sheet, sheetMeta)) {
         result = false;
 
         String errorMessage = validator.getErrorMessage();
@@ -142,16 +152,17 @@ public class DefaultSheetValidationJob implements SheetValidationJob {
   }
 
   private boolean executeRowValidators(Row row, SheetMeta sheetMeta) {
+
     boolean result = true;
 
     for (RowValidator validator : rowValidators) {
 
-      if (!validator.valid(row, sheetMeta)) {
+      if (!validator.validate(row, sheetMeta)) {
         result = false;
 
         String errorMessage = validator.getErrorMessage();
 
-        Set<String> messageOnFields = validator.getMessageOnFields();
+        Set<String> messageOnFields = validator.getErrorFields();
         if (StringUtils.isNotBlank(errorMessage) && CollectionUtils.isNotEmpty(messageOnFields)) {
 
           for (String messageOnField : messageOnFields) {

@@ -2,11 +2,11 @@ package com.supwisdom.spreadsheet.mapper.validation.testvalidator;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.CustomUnionCellValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.UnionCellValidatorTemplate;
 
 import java.util.List;
 
-public class TestMultiValidator extends CustomUnionCellValidator<TestMultiValidator> {
+public class TestMultiValidator extends UnionCellValidatorTemplate<TestMultiValidator> {
 
   private Counter counter;
 

@@ -1,15 +1,13 @@
 package com.supwisdom.spreadsheet.mapper.m2f;
 
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
-import com.supwisdom.spreadsheet.mapper.m2f.excel.strategy.MessageWriteStrategy;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
+import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
 
 import java.io.OutputStream;
 import java.util.Collection;
 
 /**
- * message write helper
- * <p>
+ * 将{@link Message}写到spreadsheet的工具
  * Created by hanwen on 2017/1/3.
  */
 public interface MessageWriter {

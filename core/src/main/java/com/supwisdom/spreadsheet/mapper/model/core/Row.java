@@ -4,50 +4,51 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * row
- * <p>
+ * Spreadsheet的行
  * Created by hanwen on 15-12-16.
  */
 public interface Row extends Serializable {
 
   /**
-   * @return row index 1-based
+   * @return 第几行 1-based
    */
   int getIndex();
 
   /**
-   * @return cells of this row ordered by column index
+   * @return 自己拥有的 {@link Cell}
    */
   List<Cell> getCells();
 
   /**
-   * @return cells size of this row
+   * @return 单元格数量
    */
   int sizeOfCells();
 
   /**
-   * get cell by column index
+   * 根据第几列获得单元格
    *
-   * @param columnIndex 1-based
-   * @return cell
+   * @param columnIndex 第几列，1-based
+   * @return 单元格
    */
   Cell getCell(int columnIndex);
 
   /**
-   * add cell
+   * 添加单元格
    *
-   * @param cell cell
-   * @return true if success
+   * @param cell 单元格
+   * @return FIXME 似乎没有必要
    */
   boolean addCell(Cell cell);
 
   /**
+   * FIXME 似乎没有必要
+   *
    * @return first cell of this row
    */
   Cell getFirstCell();
 
   /**
-   * @return the sheet of this
+   * @return 所属的 {@link Sheet}
    */
   Sheet getSheet();
 

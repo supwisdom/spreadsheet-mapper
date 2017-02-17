@@ -15,10 +15,10 @@ public class LambdaFieldSetter2Test {
   @Test
   public void testLambda() throws Exception {
 
-    LambdaFieldSetter2<TestBean> setter = new LambdaFieldSetter2<>((o, cell, field) -> o.setLong1(2L));
+    LambdaPropertySetter2<TestBean> setter = new LambdaPropertySetter2<>((o, cell, field) -> o.setLong1(2L));
 
     TestBean testBean = new TestBean();
-    setter.setValue(testBean, new CellBean("abc"), new FieldMetaBean("long1", 1));
+    setter.setProperty(testBean, new CellBean("abc"), new FieldMetaBean("long1", 1));
 
     assertEquals(testBean.getLong1(), new Long(2L));
   }

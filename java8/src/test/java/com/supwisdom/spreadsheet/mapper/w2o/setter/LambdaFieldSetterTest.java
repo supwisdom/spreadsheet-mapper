@@ -14,10 +14,10 @@ public class LambdaFieldSetterTest {
   @Test
   public void testLambda() throws Exception {
 
-    LambdaFieldSetter setter = new LambdaFieldSetter(s -> 1L);
+    LambdaPropertySetter setter = new LambdaPropertySetter(s -> 1L);
 
     TestBean testBean = new TestBean();
-    setter.setValue(testBean, new CellBean("abc"), new FieldMetaBean("long1", 1));
+    setter.setProperty(testBean, new CellBean("abc"), new FieldMetaBean("long1", 1));
 
     assertEquals(testBean.getLong1(), new Long(1L));
   }

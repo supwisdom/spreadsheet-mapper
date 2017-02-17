@@ -4,17 +4,15 @@ import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 
 /**
- * regex format validator
- * <p>
+ * 正则表达式校验器
  * Created by hanwen on 2017/1/11.
  */
-public class RegexFormatValidator extends CustomCellValidator<RegexFormatValidator> {
+public class RegexFormatValidator extends CellValidatorTemplate<RegexFormatValidator> {
 
   private String regex;
 
-  public RegexFormatValidator regex(String regex) {
+  public RegexFormatValidator(String regex) {
     this.regex = regex;
-    return this;
   }
 
   @Override

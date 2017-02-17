@@ -35,16 +35,12 @@ public class CellValidatorBatchBuilderTest {
     CellValidatorBatchBuilder builder = new CellValidatorBatchBuilder();
 
     List validators = builder
-        .start(BooleanValidatorFactory.getInstance())
+        .start(ValueScopeValidatorFactory.getInstance())
         .errorMessage("test")
         .matchFields("t1")
         .group("t1")
         .dependsOn("t2", "t3")
-        .param(
-            new BooleanParam()
-                .trueStrings("y")
-                .falseStrings("n")
-        )
+        .param(new ValueScopeParam(new String[] { "y", "n" }))
         .end()
 
         .start(NumberScaleRangeValidatorFactory.getInstance())
@@ -182,7 +178,6 @@ public class CellValidatorBatchBuilderTest {
       assertEquals(v12.getErrorMessage(), "test");
       assertEquals(v12.getDependsOn(), new LinkedHashSet<>(Collections.singleton("t8")));
     }
-
 
     {
       CellValidator v14 = (CellValidator) validators.get(11);

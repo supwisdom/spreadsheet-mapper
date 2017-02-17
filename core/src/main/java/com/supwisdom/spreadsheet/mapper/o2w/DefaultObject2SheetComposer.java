@@ -4,8 +4,8 @@ import com.supwisdom.spreadsheet.mapper.model.core.*;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.HeaderMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
-import com.supwisdom.spreadsheet.mapper.o2w.converter.DefaultToStringConverter;
-import com.supwisdom.spreadsheet.mapper.o2w.converter.ToStringConverter;
+import com.supwisdom.spreadsheet.mapper.o2w.converter.DefaultPropertyStringifier;
+import com.supwisdom.spreadsheet.mapper.o2w.converter.PropertyStringifier;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,17 +23,17 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultObject2SheetComposer.class);
 
-  private LinkedHashMap<String, ToStringConverter<T>> field2Converter = new LinkedHashMap<>();
+  private LinkedHashMap<String, PropertyStringifier<T>> field2Converter = new LinkedHashMap<>();
 
-  private DefaultToStringConverter defaultToStringConverter = new DefaultToStringConverter();
+  private DefaultPropertyStringifier defaultToStringConverter = new DefaultPropertyStringifier();
 
   @Override
-  public Object2SheetComposer<T> addFieldConverter(ToStringConverter toStringConverter) {
-    if (toStringConverter == null) {
+  public Object2SheetComposer<T> addFieldConverter(PropertyStringifier propertyStringifier) {
+    if (propertyStringifier == null) {
       throw new IllegalArgumentException("field converter can not be null");
     }
 
-    String matchField = toStringConverter.getMatchField();
+    String matchField = propertyStringifier.getMatchField();
     if (StringUtils.isBlank(matchField)) {
       throw new IllegalArgumentException("field value setter match field can not be null");
     }
@@ -42,7 +42,7 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
           "sheet compose helper contains multi field converter at field[" + matchField + "]");
     }
 
-    field2Converter.put(matchField, toStringConverter);
+    field2Converter.put(matchField, propertyStringifier);
     return this;
   }
 
@@ -142,9 +142,9 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
 
       String fieldName = fieldMeta.getName();
 
-      ToStringConverter converter = field2Converter.get(fieldName);
+      PropertyStringifier converter = field2Converter.get(fieldName);
       converter = converter == null ? defaultToStringConverter : converter;
-      row.addCell(new CellBean(converter.getString(object, fieldMeta)));
+      row.addCell(new CellBean(converter.getPropertyString(object, fieldMeta)));
 
     }
   }

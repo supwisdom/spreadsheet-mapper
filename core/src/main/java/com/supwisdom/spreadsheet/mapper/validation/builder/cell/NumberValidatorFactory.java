@@ -3,6 +3,7 @@ package com.supwisdom.spreadsheet.mapper.validation.builder.cell;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.NumberValidator;
 
 /**
+ * {@link NumberValidator}工厂
  * Created by hanwen on 2017/1/22.
  */
 public class NumberValidatorFactory implements CellValidatorFactory<NumberValidator> {
@@ -16,7 +17,7 @@ public class NumberValidatorFactory implements CellValidatorFactory<NumberValida
   public static NumberValidatorFactory getInstance() {
     return INSTANCE;
   }
-  
+
   @Override
   public NumberValidator create(CellBuildUnitParam param) {
     return new NumberValidator()

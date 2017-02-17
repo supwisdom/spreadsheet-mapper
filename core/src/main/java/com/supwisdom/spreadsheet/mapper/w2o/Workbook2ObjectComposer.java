@@ -8,25 +8,29 @@ import com.supwisdom.spreadsheet.mapper.model.meta.WorkbookMeta;
 import java.util.List;
 
 /**
- * workbook process helper, simply adapter of sheet process helper
- * <p>
+ * 将{@link Workbook}转换成List&lt;List&lt;Object&gt;&gt;的工具
  * Created by hanwen on 2017/1/4.
  */
 public interface Workbook2ObjectComposer {
 
   /**
-   * the sequence of the sheet process helper add is the helper used to process workbook's sheets sequence.
+   * 添加{@link Sheet2ObjectComposer}。
+   * 如果Workbook有多个Sheet，添加的顺序应该和Workbook中的Sheet的顺序对应。
    *
    * @param sheet2ObjectComposer {@link Sheet2ObjectComposer}
-   * @return {@link Workbook2ObjectComposer}
+   * @return 自己
    */
   Workbook2ObjectComposer addSheet2ObjectComposer(Sheet2ObjectComposer sheet2ObjectComposer);
 
   /**
+   * 将{@link Workbook}里的{@link Sheet}转换成Object，每个{@link Sheet}有对应的List&lt;Object&gt; <br>
+   * 需要注意的是：Workbook的Sheet数量、WorkbookMeta的SheetMeta数量、Sheet2ObjectComposer数量必须保持一致
+   *
    * @param workbook     {@link Workbook}
    * @param workbookMeta {@link WorkbookMeta}
-   * @return list of sheet list data
+   * @return 所有Sheet的转换结果
    * @see Sheet2ObjectComposer#compose(Sheet, SheetMeta)
    */
   List<List> compose(Workbook workbook, WorkbookMeta workbookMeta);
+  
 }

@@ -4,58 +4,55 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * <pre>
- * field meta include:
- * 1. field name (like: object's field1, field2, etc.)
- *    this is importance, is determined all cell value of the same column index reflect which field of object
- * 2. field at column index
- * 3. list of header meta of this field (see {@link HeaderMeta})
- * </pre>
+ * Sheet中每列的元信息，包含以下信息：
+ * <ol>
+ * <li>列的名字</li>
+ * <li>自己在Sheet中的第几列</li>
+ * <li>表头元信息，如果表头有多行，那么就有多个</li>
+ * </ol>
  * Created by hanwen on 2016/12/30.
  */
 public interface FieldMeta extends Serializable, Comparable<FieldMeta> {
 
   /**
-   * @return field name
+   * @return 名字
    */
   String getName();
 
   /**
-   * which column
-   *
-   * @return 1-based
+   * @return 第几列，1-based
    */
   int getColumnIndex();
 
   /**
-   * @return list of header meta ordered by header meta row index
+   * @return 表头元信息
    */
   List<HeaderMeta> getHeaderMetas();
 
   /**
-   * get header at row index
+   * 获得第几行的表头元信息
    *
-   * @param rowIndex 1-based
-   * @return header meta
+   * @param rowIndex 第几行，1-based
+   * @return 表头元
    */
   HeaderMeta getHeaderMeta(int rowIndex);
 
   /**
-   * remove header at row index
+   * 移除第几行的表头元信息
    *
-   * @param rowIndex 1-based
+   * @param rowIndex 第几行，1-based
    */
   void removeHeaderMeta(int rowIndex);
 
   /**
-   * add header meta
+   * 添加表头元信息
    *
-   * @param headerMeta header meta
+   * @param headerMeta 表头元信息
    */
   void addHeaderMeta(HeaderMeta headerMeta);
 
   /**
-   * @return the sheet meta of this
+   * @return 自己属于哪个 {@link SheetMeta}
    */
   SheetMeta getSheetMeta();
 }

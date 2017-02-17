@@ -1,34 +1,32 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.workbook;
 
-
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
 import com.supwisdom.spreadsheet.mapper.model.meta.WorkbookMeta;
 
+import java.util.Set;
+
 /**
- * workbook template validator
- * <p>
+ * 工作簿校验器
  * Created by hanwen on 4/26/16.
  */
 public interface WorkbookValidator {
 
   /**
-   * the error message will be collected when validator failure if error message is not blank
-   *
-   * @return validate error message
+   * @return 错误消息
    */
   String getErrorMessage();
 
   /**
-   * validate supplied workbook
+   * 验证工作簿
    *
    * @param workbook     {@link Workbook}
    * @param workbookMeta {@link WorkbookMeta}
-   * @return true if pass
+   * @return true代表验证通过，false代表验证失败
    */
-  boolean valid(Workbook workbook, WorkbookMeta workbookMeta);
+  boolean validate(Workbook workbook, WorkbookMeta workbookMeta);
 
   /**
-   * @return message on which sheet
+   * @return 校验失败的sheet的index
    */
-  Integer getMessageOnSheet();
+  Set<Integer> getErrorSheetIndices();
 }

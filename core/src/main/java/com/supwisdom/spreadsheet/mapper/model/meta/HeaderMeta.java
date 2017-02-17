@@ -3,29 +3,27 @@ package com.supwisdom.spreadsheet.mapper.model.meta;
 import java.io.Serializable;
 
 /**
- * <pre>
- * header meta include:
- * 1. header at row index
- * 2. header value
- * </pre>
+ * 表头元信息，包括
+ * <ol>
+ * <li>第几行</li>
+ * <li>内容</li>
+ * </ol>
  * Created by hanwen on 2016/12/29.
  */
 public interface HeaderMeta extends Serializable, Comparable<HeaderMeta> {
 
   /**
-   * header at which row
-   *
-   * @return 1-based
+   * @return 第几行，1-based
    */
   int getRowIndex();
 
   /**
-   * @return header value
+   * @return 表头内容
    */
   String getValue();
 
   /**
-   * @return the field meta meta of this
+   * @return 所属的 {@link FieldMeta}
    */
   FieldMeta getFieldMeta();
 }

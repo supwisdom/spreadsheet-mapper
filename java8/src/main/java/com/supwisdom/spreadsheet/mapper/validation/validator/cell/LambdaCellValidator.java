@@ -8,7 +8,7 @@ import java.util.function.BiFunction;
 /**
  * Created by qianjia on 2017/2/14.
  */
-public class LambdaCellValidator extends CustomCellValidator<LambdaCellValidator> {
+public class LambdaCellValidator extends CellValidatorTemplate<LambdaCellValidator> {
 
   private BiFunction<Cell, FieldMeta, Boolean> biFunction;
 

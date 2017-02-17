@@ -1,36 +1,32 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.row;
 
-
-import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
+import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 
 import java.util.Set;
 
 /**
- * row validator, after sheet validators.
- * <p>
+ * 行校验器
  * Created by hanwen on 4/26/16.
  */
 public interface RowValidator {
 
   /**
-   * the error message will be collected when validator failure if error message is not blank
-   *
-   * @return validate error message
+   * @return 错误消息
    */
   String getErrorMessage();
 
   /**
-   * validate supplied row
+   * 验证行
    *
    * @param row       {@link Row}
    * @param sheetMeta {@link SheetMeta}
-   * @return true if pass
+   * @return true代表验证通过，false代表验证失败
    */
-  boolean valid(Row row, SheetMeta sheetMeta);
+  boolean validate(Row row, SheetMeta sheetMeta);
 
   /**
-   * @return error message on which fields
+   * @return 验证失败相关的field
    */
-  Set<String> getMessageOnFields();
+  Set<String> getErrorFields();
 }

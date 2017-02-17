@@ -18,7 +18,7 @@ public class TrueTestSheetValidator implements SheetValidator {
   }
 
   @Override
-  public boolean valid(Sheet sheet, SheetMeta sheetMeta) {
+  public boolean validate(Sheet sheet, SheetMeta sheetMeta) {
     counter.hit();
     ;
     return true;

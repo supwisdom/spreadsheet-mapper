@@ -1,47 +1,48 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.unioncell;
 
-import com.supwisdom.spreadsheet.mapper.TestFactory;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
-import org.testng.annotations.Test;
+import com.supwisdom.spreadsheet.mapper.model.core.CellBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Created by hanwen on 2017/1/4.
  */
 public class UnionUniqueValidatorTest {
 
-  @Test
-  public void testCustomValidate() throws Exception {
+  private UnionUniqueValidator validator = new UnionUniqueValidator();
 
-    UnionUniqueValidator validator1 = new UnionUniqueValidator();
-    validator1.matchFields("int1", "int2");
-    validator1.group("multi.unique");
+  @DataProvider
+  public Object[][] testDoValidateParam() {
 
-    Map<String, FieldMeta> fieldMetaMap = TestFactory.createFieldMetaMap();
-    List<FieldMeta> fieldMetas = Arrays.asList(fieldMetaMap.get("int1"), fieldMetaMap.get("int2"));
+    return new Object[][] {
+        new Object[] { new String[] { "a" }, true },
+        new Object[] { new String[] { "a" }, false },
+        new Object[] { new String[] { "a", "b" }, true },
+        new Object[] { new String[] { "a", "c" }, true },
+        new Object[] { new String[] { "a", "b" }, false },
+        new Object[] { new String[] { "a", null }, true },
+        new Object[] { new String[] { "a", null }, false }
+    };
+  }
 
-    Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
-    Map<String, Cell> cellMap2 = TestFactory.createCellMap2();
-    List<Cell> cells1 = Arrays.asList(cellMap1.get("int1"), cellMap1.get("int2"));
-    List<Cell> cells2 = Arrays.asList(cellMap2.get("int1"), cellMap1.get("int2"));
+  @Test(dataProvider = "testDoValidateParam")
+  public void testDoValidate(String[] cellValues, boolean expected) throws Exception {
 
-    assertTrue(validator1.validate(cells1, fieldMetas));
-    assertTrue(validator1.validate(cells2, fieldMetas));
+    List<Cell> cellBeans = new ArrayList<>();
+    for (String cellValue : cellValues) {
+      cellBeans.add(new CellBean(cellValue));
+    }
 
-    UnionUniqueValidator validator2 = new UnionUniqueValidator();
-    validator2.matchFields("string");
-    validator2.group("multi.unique");
-
-    assertTrue(validator2.validate(Collections.singletonList(cellMap2.get("string")), fieldMetas));
-    assertFalse(validator2.validate(Collections.singletonList(cellMap2.get("string")), fieldMetas));
+    boolean valid = validator.doValidate(cellBeans, Collections.<FieldMeta>emptyList());
+    assertEquals(valid, expected);
 
   }
 

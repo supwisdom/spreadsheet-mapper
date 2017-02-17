@@ -12,7 +12,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.CellProcessListener;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.RowProcessListener;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.SheetProcessListener;
-import com.supwisdom.spreadsheet.mapper.w2o.setter.BooleanSetter;
+import com.supwisdom.spreadsheet.mapper.w2o.setter.BooleanPropertySetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -75,11 +75,11 @@ public class DefaultSheet2ObjectComposerTest {
   }
 
   static void addSetter(Sheet2ObjectComposer<TestBean> processor1) {
-    processor1.addFieldSetter(new BooleanSetter(
+    processor1.addFieldSetter(new BooleanPropertySetter(
         Collections.singleton("pass"),
         Collections.singleton("failure")
     ).matchField("boolean1"));
-    processor1.addFieldSetter(new BooleanSetter(
+    processor1.addFieldSetter(new BooleanPropertySetter(
         Collections.singleton("pass"),
         Collections.singleton("failure")
     )

@@ -1,5 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.m2f.excel.strategy;
 
+import com.supwisdom.spreadsheet.mapper.m2f.MessageWriteStrategy;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
 import org.apache.commons.collections.CollectionUtils;
@@ -127,7 +128,7 @@ public class SingleCommentInCellStrategy implements MessageWriteStrategy {
     anchor.setCol2(colIndex - 1 + comment.getHeight());
     anchor.setRow2(rowIndex - 1 + comment.getLength());
 
-    // Create the comment and setValue the text
+    // Create the comment and setProperty the text
     Drawing drawing = sheet.createDrawingPatriarch();
     org.apache.poi.ss.usermodel.Comment poiComment = drawing.createCellComment(anchor);
     RichTextString str = factory.createRichTextString(comment.getMessage());

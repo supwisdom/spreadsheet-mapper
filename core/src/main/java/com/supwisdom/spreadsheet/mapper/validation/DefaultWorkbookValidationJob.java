@@ -1,14 +1,16 @@
 package com.supwisdom.spreadsheet.mapper.validation;
 
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
-import org.apache.commons.collections.CollectionUtils;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.WorkbookMeta;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
+import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
+import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
+import com.supwisdom.spreadsheet.mapper.validation.validator.row.RowValidator;
+import com.supwisdom.spreadsheet.mapper.validation.validator.sheet.SheetValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.workbook.WorkbookValidator;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * Created by hanwen on 2017/1/4.
  */
-public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
+public class DefaultWorkbookValidationJob implements WorkbookValidationJob<DefaultWorkbookValidationJob> {
 
   private List<WorkbookValidator> workbookValidators = new ArrayList<>();
 
@@ -25,7 +27,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
   private List<Message> errorMessages = new ArrayList<>();
 
   @Override
-  public WorkbookValidationJob addWorkbookValidator(WorkbookValidator workbookValidator) {
+  public DefaultWorkbookValidationJob addValidator(WorkbookValidator workbookValidator) {
     if (workbookValidator == null) {
       throw new IllegalArgumentException("workbook validator can not be null");
     }
@@ -35,7 +37,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
   }
 
   @Override
-  public WorkbookValidationJob addSheetValidationJob(SheetValidationJob sheetValidationJob) {
+  public DefaultWorkbookValidationJob addSheetValidationJob(SheetValidationJob sheetValidationJob) {
     if (sheetValidationJob == null) {
       throw new IllegalArgumentException("sheet validation job can not be null");
     }
@@ -51,10 +53,13 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
     int sizeOfHelper = sheetValidationJobs.size();
 
     if (sizeOfSheets != sizeOfSheetMetas) {
-      throw new WorkbookValidateException("workbook's sheet size[" + sizeOfSheets + "] not equals workbook meta's sheet meta size[" + sizeOfSheetMetas + "]");
+      throw new WorkbookValidateException(
+          "workbook's sheet size[" + sizeOfSheets + "] not equals workbook meta's sheet meta size[" + sizeOfSheetMetas
+              + "]");
     }
     if (sizeOfSheets != sizeOfHelper) {
-      throw new WorkbookValidateException("workbook's sheet size[" + sizeOfSheets + "] not equals sheet validation job size[" + sizeOfHelper + "]");
+      throw new WorkbookValidateException(
+          "workbook's sheet size[" + sizeOfSheets + "] not equals sheet validation job size[" + sizeOfHelper + "]");
     }
 
     validWorkbook(workbook, workbookMeta);
@@ -80,6 +85,12 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
     return sheetValidResult;
   }
 
+  /**
+   * <ul>
+   *   <li>{@link WorkbookValidator}校验失败的消息是{@link MessageWriteStrategies#TEXT_BOX}，在每个{@link WorkbookValidator#getErrorSheetIndices()}上</li>
+   *   <li>{@link DefaultSheetValidationJob#getErrorMessages()}</li>
+   * </ul>
+   */
   @Override
   public List<Message> getErrorMessages() {
     return errorMessages;
@@ -91,9 +102,12 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob {
   private void validWorkbook(Workbook workbook, WorkbookMeta workbookMeta) {
 
     for (WorkbookValidator validator : workbookValidators) {
-      if (!validator.valid(workbook, workbookMeta) && validator.getMessageOnSheet() != null) {
+      if (!validator.validate(workbook, workbookMeta)) {
 
-        errorMessages.add(new MessageBean(MessageWriteStrategies.TEXT_BOX, validator.getErrorMessage(), validator.getMessageOnSheet()));
+        for (Integer sheetIndex : validator.getErrorSheetIndices()) {
+          errorMessages.add(new MessageBean(MessageWriteStrategies.TEXT_BOX, validator.getErrorMessage(), sheetIndex));
+        }
+
       }
     }
 

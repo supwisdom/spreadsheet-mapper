@@ -1,5 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.m2f.excel.strategy;
 
+import com.supwisdom.spreadsheet.mapper.m2f.MessageWriteStrategy;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
 import com.supwisdom.spreadsheet.mapper.model.shapes.TextBoxBean;

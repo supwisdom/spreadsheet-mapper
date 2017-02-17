@@ -3,6 +3,7 @@ package com.supwisdom.spreadsheet.mapper.w2f.excel;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
+import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
 import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriteException;
 import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriter;
 import org.apache.commons.lang3.StringUtils;
@@ -12,14 +13,12 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * workbook to excel writer decorator
- * <p>
+ * 将WorkBook写到Excel的工具
  * Created by hanwen on 2016/12/30.
  */
 public class Workbook2ExcelWriter implements WorkbookWriter {
@@ -40,9 +39,9 @@ public class Workbook2ExcelWriter implements WorkbookWriter {
   }
 
   /**
-   * workbook to excel writer use {@link SXSSFWorkbook} or {@link HSSFWorkbook}
+   * 写出到.xls或.xlsx文件
    *
-   * @param xlsx true use {@link SXSSFWorkbook} else use {@link HSSFWorkbook}
+   * @param xlsx true代表写出到.xlsx文件，false代表写出到xls文件
    */
   public Workbook2ExcelWriter(boolean xlsx) {
     // sxssf keep 100 rows in memory, exceeding rows will be flushed to disk

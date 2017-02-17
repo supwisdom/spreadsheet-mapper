@@ -1,5 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.validation;
 
+//import com.supwisdom.spreadsheet.mapper.TestFactory;
 import com.supwisdom.spreadsheet.mapper.TestFactory;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.SheetBean;
@@ -47,92 +48,92 @@ public class DefaultSheetValidationJobTest {
     testCellValidator1.group("int1");
     testCellValidator1.matchField("int1");
     testCellValidator1.dependsOn("int2");
-    sheetValidationJob.addCellValidator(testCellValidator1);
+    sheetValidationJob.addValidator(testCellValidator1);
     TestCellValidator testCellValidator2 = new TestCellValidator(counter);
     testCellValidator2.group("int2");
     testCellValidator2.matchField("int2");
     testCellValidator2.dependsOn("long1");
-    sheetValidationJob.addCellValidator(testCellValidator2);
+    sheetValidationJob.addValidator(testCellValidator2);
     TestCellValidator testCellValidator3 = new TestCellValidator(counter);
     testCellValidator3.group("long1");
     testCellValidator3.matchField("long1");
     testCellValidator3.dependsOn("long2");
-    sheetValidationJob.addCellValidator(testCellValidator3);
+    sheetValidationJob.addValidator(testCellValidator3);
     TestCellValidator testCellValidator4 = new TestCellValidator(counter);
     testCellValidator4.group("long2");
     testCellValidator4.matchField("long2");
     testCellValidator4.dependsOn("double2");
-    sheetValidationJob.addCellValidator(testCellValidator4);
+    sheetValidationJob.addValidator(testCellValidator4);
     TestCellValidator testCellValidator5 = new TestCellValidator(counter);
     testCellValidator5.group("float1");
     testCellValidator5.matchField("float1");
     testCellValidator5.dependsOn("float2");
-    sheetValidationJob.addCellValidator(testCellValidator5);
+    sheetValidationJob.addValidator(testCellValidator5);
     TestCellValidator testCellValidator6 = new TestCellValidator(counter);
     testCellValidator6.group("float2");
     testCellValidator6.matchField("float2");
     testCellValidator6.dependsOn("double2");
-    sheetValidationJob.addCellValidator(testCellValidator6);
+    sheetValidationJob.addValidator(testCellValidator6);
     TestCellValidator testCellValidator7 = new TestCellValidator(counter);
     testCellValidator7.group("double1");
     testCellValidator7.matchField("double1");
     testCellValidator7.dependsOn("float1");
-    sheetValidationJob.addCellValidator(testCellValidator7);
+    sheetValidationJob.addValidator(testCellValidator7);
     TestCellValidator testCellValidator8 = new TestCellValidator(counter);
     testCellValidator8.group("double2");
     testCellValidator8.matchField("double2");
     testCellValidator8.dependsOn("string");
-    sheetValidationJob.addCellValidator(testCellValidator8);
+    sheetValidationJob.addValidator(testCellValidator8);
     TestCellValidator testCellValidator9 = new TestCellValidator(counter);
     testCellValidator9.group("string");
     testCellValidator9.matchField("string");
     testCellValidator9.dependsOn("boolean1");
-    sheetValidationJob.addCellValidator(testCellValidator9);
+    sheetValidationJob.addValidator(testCellValidator9);
     TestCellValidator testCellValidator10 = new TestCellValidator(counter);
     testCellValidator10.group("string");
     testCellValidator10.matchField("string");
     testCellValidator10.dependsOn("boolean2");
-    sheetValidationJob.addCellValidator(testCellValidator10);
+    sheetValidationJob.addValidator(testCellValidator10);
     TestCellValidator testCellValidator11 = new TestCellValidator(counter);
     testCellValidator11.group("boolean1");
     testCellValidator11.matchField("boolean1");
     testCellValidator11.dependsOn("bigDecimal");
-    sheetValidationJob.addCellValidator(testCellValidator11);
+    sheetValidationJob.addValidator(testCellValidator11);
     TestCellValidator testCellValidator12 = new TestCellValidator(counter);
     testCellValidator12.group("boolean2");
     testCellValidator12.matchField("boolean2");
     testCellValidator12.dependsOn("boolean1");
-    sheetValidationJob.addCellValidator(testCellValidator12);
+    sheetValidationJob.addValidator(testCellValidator12);
     TestCellValidator testCellValidator13 = new TestCellValidator(counter);
     testCellValidator13.group("bigDecimal");
     testCellValidator13.matchField("bigDecimal");
-    sheetValidationJob.addCellValidator(testCellValidator13);
+    sheetValidationJob.addValidator(testCellValidator13);
 
     TestMultiValidator testMultiValidator1 = new TestMultiValidator(counter);
     testMultiValidator1.group("int2");
     testMultiValidator1.matchFields("int2", "double1");
     testMultiValidator1.dependsOn("double1");
-    sheetValidationJob.addUnionCellValidator(testMultiValidator1);
+    sheetValidationJob.addValidator(testMultiValidator1);
     TestMultiValidator testMultiValidator2 = new TestMultiValidator(counter);
     testMultiValidator2.group("long1");
     testMultiValidator2.matchFields("int2", "double1");
     testMultiValidator2.dependsOn("float1");
-    sheetValidationJob.addUnionCellValidator(testMultiValidator2);
+    sheetValidationJob.addValidator(testMultiValidator2);
     TestMultiValidator testMultiValidator3 = new TestMultiValidator(counter);
     testMultiValidator3.group("double1");
     testMultiValidator3.matchFields("int2", "double1");
     testMultiValidator3.dependsOn("string");
-    sheetValidationJob.addUnionCellValidator(testMultiValidator3);
+    sheetValidationJob.addValidator(testMultiValidator3);
     TestMultiValidator testMultiValidator4 = new TestMultiValidator(counter);
     testMultiValidator4.group("double1");
     testMultiValidator4.matchFields("int2", "double1");
     testMultiValidator4.dependsOn("boolean2");
-    sheetValidationJob.addUnionCellValidator(testMultiValidator4);
+    sheetValidationJob.addValidator(testMultiValidator4);
     TestMultiValidator testMultiValidator5 = new TestMultiValidator(counter);
     testMultiValidator5.group("double1");
     testMultiValidator5.matchFields("int2", "double1");
     testMultiValidator5.dependsOn("boolean1");
-    sheetValidationJob.addUnionCellValidator(testMultiValidator5);
+    sheetValidationJob.addValidator(testMultiValidator5);
 
     boolean valid = sheetValidationJob.validate(sheet, sheetMeta);
     assertTrue(valid);
@@ -161,57 +162,57 @@ public class DefaultSheetValidationJobTest {
     falseMCellValidator3.group("float1");
     falseMCellValidator3.matchFields("int1", "double1", "float1");
     falseMCellValidator3.dependsOn("double1");
-    sheetValidationJob.addUnionCellValidator(falseMCellValidator3);
+    sheetValidationJob.addValidator(falseMCellValidator3);
 
     TrueCellValidator trueCellValidator1 = new TrueCellValidator(hitValidators);
     trueCellValidator1.group("float2");
     trueCellValidator1.matchField("float2");
     trueCellValidator1.dependsOn("double1");
-    sheetValidationJob.addCellValidator(trueCellValidator1);
+    sheetValidationJob.addValidator(trueCellValidator1);
     FalseCellValidator falseCellValidator1 = new FalseCellValidator(hitValidators);
     falseCellValidator1.group("int1");
     falseCellValidator1.matchField("int1");
     falseCellValidator1.dependsOn("int2");
-    sheetValidationJob.addCellValidator(falseCellValidator1);
+    sheetValidationJob.addValidator(falseCellValidator1);
     TrueCellValidator trueCellValidator2 = new TrueCellValidator(hitValidators);
     trueCellValidator2.group("int1");
     trueCellValidator2.matchField("int1");
     trueCellValidator2.dependsOn("long1");
-    sheetValidationJob.addCellValidator(trueCellValidator2);
+    sheetValidationJob.addValidator(trueCellValidator2);
     TrueCellValidator trueCellValidator3 = new TrueCellValidator(hitValidators);
     trueCellValidator3.group("int2");
     trueCellValidator3.matchField("int2");
     trueCellValidator3.dependsOn("long2");
-    sheetValidationJob.addCellValidator(trueCellValidator3);
+    sheetValidationJob.addValidator(trueCellValidator3);
     TrueCellValidator trueCellValidator4 = new TrueCellValidator(hitValidators);
     trueCellValidator4.group("long1");
     trueCellValidator4.matchField("long1");
     trueCellValidator4.dependsOn("float2");
-    sheetValidationJob.addCellValidator(trueCellValidator4);
+    sheetValidationJob.addValidator(trueCellValidator4);
     TrueCellValidator trueCellValidator5 = new TrueCellValidator(hitValidators);
     trueCellValidator5.group("long2");
     trueCellValidator5.matchField("long2");
     trueCellValidator5.dependsOn("float1");
-    sheetValidationJob.addCellValidator(trueCellValidator5);
+    sheetValidationJob.addValidator(trueCellValidator5);
     FalseCellValidator falseCellValidator2 = new FalseCellValidator(hitValidators);
     falseCellValidator2.group("float1");
     falseCellValidator2.matchField("float1");
-    sheetValidationJob.addCellValidator(falseCellValidator2);
+    sheetValidationJob.addValidator(falseCellValidator2);
     TrueCellValidator trueCellValidator6 = new TrueCellValidator(hitValidators);
     trueCellValidator6.group("double1");
     trueCellValidator6.matchField("double1");
-    sheetValidationJob.addCellValidator(trueCellValidator6);
+    sheetValidationJob.addValidator(trueCellValidator6);
 
     TrueMCellValidator trueMCellValidator1 = new TrueMCellValidator(hitValidators);
     trueMCellValidator1.group("int1");
     trueMCellValidator1.matchFields("int1", "double1", "float1");
     trueMCellValidator1.dependsOn("double1");
-    sheetValidationJob.addUnionCellValidator(trueMCellValidator1);
+    sheetValidationJob.addValidator(trueMCellValidator1);
     TrueMCellValidator trueMCellValidator2 = new TrueMCellValidator(hitValidators);
     trueMCellValidator2.group("long2");
     trueMCellValidator2.matchFields("int1", "double1", "float1");
     trueMCellValidator2.dependsOn("float2");
-    sheetValidationJob.addUnionCellValidator(trueMCellValidator2);
+    sheetValidationJob.addValidator(trueMCellValidator2);
     boolean result = sheetValidationJob.validate(sheet, sheetMeta);
     assertFalse(result);
 
@@ -242,13 +243,13 @@ public class DefaultSheetValidationJobTest {
     testCellValidator9.matchField("string");
 
     SheetValidationJob sheetValidationJob1 = new DefaultSheetValidationJob();
-    sheetValidationJob1.addCellValidator(testCellValidator7);
-    sheetValidationJob1.addCellValidator(testCellValidator8);
-    sheetValidationJob1.addCellValidator(testCellValidator9);
+    sheetValidationJob1.addValidator(testCellValidator7);
+    sheetValidationJob1.addValidator(testCellValidator8);
+    sheetValidationJob1.addValidator(testCellValidator9);
 
-    sheetValidationJob1.addRowValidator(trueTestRowValidator);
+    sheetValidationJob1.addValidator(trueTestRowValidator);
 
-    sheetValidationJob1.addSheetValidator(trueTestSheetValidator);
+    sheetValidationJob1.addValidator(trueTestSheetValidator);
 
     boolean valid = sheetValidationJob1.validate(sheet, sheetMeta);
 
@@ -278,11 +279,11 @@ public class DefaultSheetValidationJobTest {
     testCellValidator9.matchField("string");
 
     SheetValidationJob sheetValidationJob1 = new DefaultSheetValidationJob();
-    sheetValidationJob1.addCellValidator(testCellValidator7);
-    sheetValidationJob1.addCellValidator(testCellValidator8);
-    sheetValidationJob1.addCellValidator(testCellValidator9);
+    sheetValidationJob1.addValidator(testCellValidator7);
+    sheetValidationJob1.addValidator(testCellValidator8);
+    sheetValidationJob1.addValidator(testCellValidator9);
 
-    sheetValidationJob1.addRowValidator(falseTestRowValidator);
+    sheetValidationJob1.addValidator(falseTestRowValidator);
 
     boolean valid = sheetValidationJob1.validate(sheet, sheetMeta);
 
@@ -306,9 +307,9 @@ public class DefaultSheetValidationJobTest {
     testCellValidator7.matchField("double1");
 
     SheetValidationJob sheetValidationJob1 = new DefaultSheetValidationJob();
-    sheetValidationJob1.addCellValidator(testCellValidator7);
+    sheetValidationJob1.addValidator(testCellValidator7);
 
-    sheetValidationJob1.addSheetValidator(falseTestSheetValidator);
+    sheetValidationJob1.addValidator(falseTestSheetValidator);
 
     boolean valid = sheetValidationJob1.validate(sheet, sheetMeta);
 
@@ -336,17 +337,17 @@ public class DefaultSheetValidationJobTest {
 
     DefaultSheetValidationJob defaultSheetValidationJob = new DefaultSheetValidationJob();
 
-    defaultSheetValidationJob.addCellValidator(
+    defaultSheetValidationJob.addValidator(
         new TestCellValidator(counter).group("int1").matchField("int1"));
-    defaultSheetValidationJob.addCellValidator(
+    defaultSheetValidationJob.addValidator(
         new TestCellValidator(counter).group("int2").matchField("int2").dependsOn("int1"));
-    defaultSheetValidationJob.addUnionCellValidator(
+    defaultSheetValidationJob.addValidator(
         new TestMultiValidator(counter).group("int1").matchFields("long1", "long2"));
-    defaultSheetValidationJob.addCellValidator(
+    defaultSheetValidationJob.addValidator(
         new TestCellValidator(counter).group("string").matchField("string"));
-    defaultSheetValidationJob.addCellValidator(
+    defaultSheetValidationJob.addValidator(
         new TestCellValidator(counter).group("float1").matchField("float1").dependsOn("int2"));
-    defaultSheetValidationJob.addCellValidator(
+    defaultSheetValidationJob.addValidator(
         new TestCellValidator(counter).group("float2").matchField("float2").dependsOn("int2"));
 
     boolean valid = defaultSheetValidationJob.validate(sheet, sheetMeta);

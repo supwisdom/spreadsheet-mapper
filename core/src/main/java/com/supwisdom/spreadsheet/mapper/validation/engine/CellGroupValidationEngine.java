@@ -69,8 +69,8 @@ public class CellGroupValidationEngine {
   /**
    * 构建 CellValidator 分组
    *
-   * @param cellValidators
-   * @return
+   * @param cellValidators {@link CellValidator}或{@link UnionCellValidator}
+   * @return 分组
    */
   protected LinkedHashMap<String, List<Dependant>> buildCellValidatorGroups(List<Dependant> cellValidators) {
 
@@ -92,8 +92,8 @@ public class CellGroupValidationEngine {
   /**
    * 构建分组依赖树
    *
-   * @param group2Validators
-   * @return
+   * @param group2Validators Validator分组
+   * @return 依赖关系
    */
   protected LinkedHashMap<String, LinkedHashSet<String>> buildDependencyTree(
       LinkedHashMap<String, List<Dependant>> group2Validators) {
@@ -121,7 +121,7 @@ public class CellGroupValidationEngine {
   /**
    * 断言不存在丢失的group
    *
-   * @param dependencyTree
+   * @param dependencyTree 依赖关系
    */
   protected void assertNoMissingGroup(LinkedHashMap<String, LinkedHashSet<String>> dependencyTree) {
 
@@ -144,7 +144,7 @@ public class CellGroupValidationEngine {
   /**
    * 断言不存在循环依赖
    *
-   * @param dependencyTree
+   * @param dependencyTree 依赖关系
    */
   protected void assertNoCyclic(LinkedHashMap<String, LinkedHashSet<String>> dependencyTree) {
 

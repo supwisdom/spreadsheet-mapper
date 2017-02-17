@@ -8,31 +8,27 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
- * multi cells validator, after row validators.
+ * 联合单元格校验器
  * Created by hanwen on 2017/1/20.
  */
 public interface UnionCellValidator extends Dependant {
 
   /**
-   * 获得匹配的field组
-   *
-   * @return
+   * @return 匹配的field（复数），对应{@link FieldMeta#getName()}
    */
   LinkedHashSet<String> getMatchFields();
 
   /**
-   * the error message will be collected when validator failure if error message is not blank
-   *
-   * @return validate error message
+   * @return 错误消息
    */
   String getErrorMessage();
 
   /**
-   * validate supplied cells, the sequence of cells and field metas is
+   * 验证多个单元格
    *
    * @param cells      {@link Cell}
    * @param fieldMetas {@link FieldMeta}
-   * @return true if pass
+   * @return true代表验证通过，false代表验证失败
    */
   boolean validate(List<Cell> cells, List<FieldMeta> fieldMetas);
 

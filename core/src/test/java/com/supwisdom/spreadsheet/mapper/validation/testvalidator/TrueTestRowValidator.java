@@ -25,13 +25,13 @@ public class TrueTestRowValidator implements RowValidator {
   }
 
   @Override
-  public boolean valid(Row row, SheetMeta sheetMeta) {
+  public boolean validate(Row row, SheetMeta sheetMeta) {
     counter.hit();
     return true;
   }
 
   @Override
-  public Set<String> getMessageOnFields() {
+  public Set<String> getErrorFields() {
     return messageOnFields;
   }
 }

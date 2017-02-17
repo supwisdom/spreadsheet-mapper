@@ -1,9 +1,10 @@
 package com.supwisdom.spreadsheet.mapper.w2o.listener;
 
-import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
+import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 
 /**
+ * 什么都不做的{@link RowProcessListener}
  * Created by hanwen on 2017/1/3.
  */
 public final class NoopRowProcessListener<T> implements RowProcessListener<T> {

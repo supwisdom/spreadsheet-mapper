@@ -2,6 +2,9 @@ package com.supwisdom.spreadsheet.mapper.validation.builder.cell;
 
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.DateTimeFormatValidator;
 
+/**
+ * {@link DateTimeFormatValidator}工厂
+ */
 public class DateTimeFormatValidatorFactory implements CellValidatorFactory<DateTimeFormatValidator> {
 
   private static final DateTimeFormatValidatorFactory INSTANCE = new DateTimeFormatValidatorFactory();

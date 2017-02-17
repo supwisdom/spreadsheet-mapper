@@ -12,12 +12,18 @@ import java.text.ParseException;
  * 日期时间格式校验
  * Created by qianjia on 2017/2/14.
  */
-public class DateTimeFormatValidator extends CustomCellValidator<DateTimeFormatValidator> {
+public class DateTimeFormatValidator extends CellValidatorTemplate<DateTimeFormatValidator> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DateTimeFormatValidator.class);
 
   private String pattern;
 
+  /**
+   * 日期格式
+   *
+   * @param pattern 日期格式，见 {@link java.text.SimpleDateFormat}
+   * @return 自己
+   */
   public DateTimeFormatValidator pattern(String pattern) {
     this.pattern = pattern;
     return this;

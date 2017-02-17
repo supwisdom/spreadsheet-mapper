@@ -7,7 +7,7 @@ import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMetaBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
-import com.supwisdom.spreadsheet.mapper.o2w.converter.NumberToStringConverter;
+import com.supwisdom.spreadsheet.mapper.o2w.converter.NumberPropertyStringifier;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -201,8 +201,8 @@ public class DefaultObject2SheetComposerTest {
     datum.add(t2);
 
     DefaultObject2SheetComposer sheetComposer = new DefaultObject2SheetComposer();
-    sheetComposer.addFieldConverter(new NumberToStringConverter().matchField("int1"));
-    sheetComposer.addFieldConverter(new NumberToStringConverter().matchField("int2"));
+    sheetComposer.addFieldConverter(new NumberPropertyStringifier().matchField("int1"));
+    sheetComposer.addFieldConverter(new NumberPropertyStringifier().matchField("int2"));
     Sheet sheet = sheetComposer.compose(datum, sheetMeta);
 
     assertEquals(sheet.getName(), "sheet");
@@ -256,8 +256,8 @@ public class DefaultObject2SheetComposerTest {
     datum.add(t2);
 
     DefaultObject2SheetComposer sheetComposer = new DefaultObject2SheetComposer();
-    sheetComposer.addFieldConverter(new NumberToStringConverter().matchField("int1"));
-    sheetComposer.addFieldConverter(new NumberToStringConverter().matchField("int2"));
+    sheetComposer.addFieldConverter(new NumberPropertyStringifier().matchField("int1"));
+    sheetComposer.addFieldConverter(new NumberPropertyStringifier().matchField("int2"));
     Sheet sheet = sheetComposer.compose(datum, sheetMeta);
 
     assertEquals(sheet.getName(), "sheet");

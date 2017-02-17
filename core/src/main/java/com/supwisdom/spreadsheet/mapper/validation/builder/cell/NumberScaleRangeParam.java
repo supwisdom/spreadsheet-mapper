@@ -1,9 +1,5 @@
 package com.supwisdom.spreadsheet.mapper.validation.builder.cell;
 
-/**
- * the number scale range additional param
- * Created by hanwen on 2017/1/23.
- */
 public class NumberScaleRangeParam {
 
   private int gte;

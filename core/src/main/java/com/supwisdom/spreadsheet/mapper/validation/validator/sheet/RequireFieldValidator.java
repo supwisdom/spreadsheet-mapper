@@ -1,54 +1,31 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.sheet;
 
-import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidator;
-import org.apache.commons.collections.CollectionUtils;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
-import com.supwisdom.spreadsheet.mapper.w2o.setter.FieldSetter;
+import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.*;
 
 /**
- * <pre>
- * required field validator
- *
- * all validators matches by field,
- * if field lost means all the ({@link CellValidator} and {@link FieldSetter}) of this field will skip.
- * this validator useful to detect if excel files contains all the fields you want after.
- *
- * eg: class A has fields [A, B...].
- * if you want modify A, B, supplied the {@link RequireFieldValidator#requireFields} as [A, B]. when the excel files lost A or B,
- * this validator will get false.
- * </pre>
+ * 必须提供某些field校验器，比如一个{@link SheetMeta}有{@link FieldMeta} A、C，本校验器规定必须有field A、B，那么就会验证失败。
+ * 简而言之，本校验器规定的范围必须是{@link SheetMeta}的{@link FieldMeta}的子集。
  * Created by hanwen on 4/26/16.
  */
-public class RequireFieldValidator implements SheetValidator {
+public class RequireFieldValidator extends SheetValidatorTemplate<RequireFieldValidator> {
 
   private Set<String> requireFields = new HashSet<>();
 
-  private String errorMessage;
-
-  public RequireFieldValidator requireFields(String... requireFields) {
-    if (requireFields == null) {
-      return this;
-    }
-    Collections.addAll(this.requireFields, requireFields);
-    return this;
+  public RequireFieldValidator(Collection<String> requireFields) {
+    this.requireFields = new HashSet<>(requireFields);
   }
 
-  public RequireFieldValidator errorMessage(String errorMessage) {
-    this.errorMessage = errorMessage;
-    return this;
+  public RequireFieldValidator(String[] requireFields) {
+    this.requireFields = new HashSet<>(Arrays.asList(requireFields));
   }
 
   @Override
-  public String getErrorMessage() {
-    return errorMessage;
-  }
-
-  @Override
-  public boolean valid(Sheet sheet, SheetMeta sheetMeta) {
+  public boolean validate(Sheet sheet, SheetMeta sheetMeta) {
 
     List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
 

@@ -3,28 +3,23 @@ package com.supwisdom.spreadsheet.mapper.model.core;
 import java.io.Serializable;
 
 /**
- * cell
- * <p>
+ * Spreadsheet的单元格
  * Created by hanwen on 15-12-16.
  */
 public interface Cell extends Serializable {
 
   /**
-   * cell value
-   *
-   * @return value
+   * @return 单元格里的值
    */
   String getValue();
 
   /**
-   * cell column index
-   *
-   * @return 1-based
+   * @return 第几列，1-based
    */
   int getIndex();
 
   /**
-   * @return the row of this
+   * @return 所属的 {@link Row}
    */
   Row getRow();
 }

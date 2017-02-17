@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * {@link CellValidator} {@link UnionCellValidator}批量Builder
  * Created by hanwen on 2017/1/20.
  */
 public class CellValidatorBatchBuilder {
@@ -27,25 +28,30 @@ public class CellValidatorBatchBuilder {
     return new UnionCellBuildUnit(this, factory);
   }
 
-  public void addCellValidator(CellValidator cellValidator) {
+  public void addValidator(CellValidator cellValidator) {
     this.cellValidators.add(cellValidator);
   }
 
-  public void addUnionCellValidator(UnionCellValidator unionCellValidator) {
+  public void addValidator(UnionCellValidator unionCellValidator) {
     this.cellValidators.add(unionCellValidator);
   }
 
+  /**
+   * 添加{@link SheetValidationJob}
+   *
+   * @param sheetValidationJob {@link SheetValidationJob}
+   */
   public void addToSheetValidationJob(SheetValidationJob sheetValidationJob) {
 
     for (Dependant cellValidator : cellValidators) {
 
       if (CellValidator.class.isAssignableFrom(cellValidator.getClass())) {
 
-        sheetValidationJob.addCellValidator((CellValidator) cellValidator);
+        sheetValidationJob.addValidator((CellValidator) cellValidator);
 
       } else if (UnionCellValidator.class.isAssignableFrom(cellValidator.getClass())) {
 
-        sheetValidationJob.addUnionCellValidator((UnionCellValidator) cellValidator);
+        sheetValidationJob.addValidator((UnionCellValidator) cellValidator);
 
       } else {
 

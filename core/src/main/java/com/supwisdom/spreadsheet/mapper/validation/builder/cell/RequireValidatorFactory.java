@@ -3,6 +3,7 @@ package com.supwisdom.spreadsheet.mapper.validation.builder.cell;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.RequireValidator;
 
 /**
+ * {@link RequireValidator}工厂
  * Created by hanwen on 2017/1/22.
  */
 public class RequireValidatorFactory implements CellValidatorFactory<RequireValidator> {

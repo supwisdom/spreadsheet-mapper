@@ -4,25 +4,25 @@ import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 
 /**
- * listener of cell value to field processor
- * <p>
- * Created by hanwen on 2017/1/3.
+ * 在将{@link Cell}里的值设置到Object的property里时的监听器
+ *
+ * @param <T> Object的类型
  */
 public interface CellProcessListener<T> {
 
   /**
-   * before object value setValue
+   * 在设置property之前
    *
-   * @param object    value not setValue
+   * @param object    被设置值的Object
    * @param cell      {@link Cell}
    * @param fieldMeta {@link FieldMeta}
    */
   void before(T object, Cell cell, FieldMeta fieldMeta);
 
   /**
-   * after object value setValue
+   * 在设置property之后
    *
-   * @param object    value setValue but same object
+   * @param object    被设置值的Object
    * @param cell      {@link Cell}
    * @param fieldMeta {@link FieldMeta}
    */

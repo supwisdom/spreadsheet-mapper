@@ -9,7 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.supwisdom.spreadsheet.mapper.f2w.WorkbookReadException;
-import com.supwisdom.spreadsheet.mapper.m2f.excel.strategy.MessageWriteStrategy;
+import com.supwisdom.spreadsheet.mapper.m2f.MessageWriteStrategy;
 import com.supwisdom.spreadsheet.mapper.m2f.excel.strategy.SingleCommentInCellStrategy;
 import com.supwisdom.spreadsheet.mapper.m2f.excel.strategy.SingleTextBoxInSheetStrategy;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;

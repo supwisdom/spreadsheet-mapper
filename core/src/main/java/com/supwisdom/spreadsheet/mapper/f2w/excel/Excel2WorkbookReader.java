@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * excel to workbook reader decorator
+ * 读取Excel文件的工具，支持.xls、.xlsx格式
  * Created by hanwen on 2017/1/3.
  */
 public class Excel2WorkbookReader implements WorkbookReader {

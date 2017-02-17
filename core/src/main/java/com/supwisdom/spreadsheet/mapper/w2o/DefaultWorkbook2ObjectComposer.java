@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 默认的{@link Workbook2ObjectComposer}
  * Created by hanwen on 2017/1/4.
  */
 public class DefaultWorkbook2ObjectComposer implements Workbook2ObjectComposer {
@@ -25,30 +26,40 @@ public class DefaultWorkbook2ObjectComposer implements Workbook2ObjectComposer {
     return this;
   }
 
+  /**
+   * 执行顺序是挨个转换Workbook中的Sheet，并调用对应的Sheet2ObjectComposer
+   *
+   * @param workbook     {@link Workbook}
+   * @param workbookMeta {@link WorkbookMeta}
+   * @return 每个Sheet的转换结果
+   */
   @Override
   public List<List> compose(Workbook workbook, WorkbookMeta workbookMeta) {
     int sizeOfSheets = workbook.sizeOfSheets();
     int sizeOfSheetMetas = workbookMeta.sizeOfSheetMetas();
-    int sizeOfHelper = sheet2ObjectComposers.size();
+    int sizeOfComposer = sheet2ObjectComposers.size();
 
     if (sizeOfSheets != sizeOfSheetMetas) {
-      throw new Workbook2ObjectComposeException("workbook's sheet size[" + sizeOfSheets + "] not equals workbook meta's sheet meta size[" + sizeOfSheetMetas + "]");
+      throw new Workbook2ObjectComposeException(
+          "Workbook has " + sizeOfSheets + " Sheet(s) but WorkBookMeta has " + sizeOfSheetMetas + " SheetMeta(s)");
     }
-    if (sizeOfSheets != sizeOfHelper) {
-      throw new Workbook2ObjectComposeException("workbook's sheet size[" + sizeOfSheets + "] not equals sheet process helper size[" + sizeOfHelper + "]");
-    }
-
-    List<List> objects = new ArrayList<>();
-
-    for (int i = 1; i <= sizeOfSheets; i++) {
-
-      Sheet2ObjectComposer sheet2ObjectComposer = sheet2ObjectComposers.get(i - 1);
-      Sheet sheet = workbook.getSheet(i);
-      SheetMeta sheetMeta = workbookMeta.getSheetMeta(i);
-
-      objects.add(sheet2ObjectComposer.compose(sheet, sheetMeta));
+    if (sizeOfSheets != sizeOfComposer) {
+      throw new Workbook2ObjectComposeException(
+          "Workbook has " + sizeOfSheets + " Sheet(s) but there are " + sizeOfComposer
+              + " Sheet2ObjectComposer(s) provided");
     }
 
-    return objects;
+    List<List> objectLists = new ArrayList<>();
+
+    for (int sheetIndex = 1; sheetIndex <= sizeOfSheets; sheetIndex++) {
+
+      Sheet2ObjectComposer sheet2ObjectComposer = sheet2ObjectComposers.get(sheetIndex - 1);
+      Sheet sheet = workbook.getSheet(sheetIndex);
+      SheetMeta sheetMeta = workbookMeta.getSheetMeta(sheetIndex);
+
+      objectLists.add(sheet2ObjectComposer.compose(sheet, sheetMeta));
+    }
+
+    return objectLists;
   }
 }

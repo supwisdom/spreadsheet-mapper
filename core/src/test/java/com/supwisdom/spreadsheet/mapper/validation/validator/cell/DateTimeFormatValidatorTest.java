@@ -13,7 +13,7 @@ import static org.testng.Assert.assertEquals;
 public class DateTimeFormatValidatorTest {
 
   @DataProvider
-  public Object[][] param() {
+  public Object[][] testDoValidateParam() {
 
     return new Object[][] {
         new Object[] { "yyyy-MM-dd HH:mm:ss", "2012-12-12 12:12:12", true },
@@ -26,7 +26,7 @@ public class DateTimeFormatValidatorTest {
 
   }
 
-  @Test(dataProvider = "param")
+  @Test(dataProvider = "testDoValidateParam")
   public void testDoValidate(String pattern, String value, boolean expectedResult) throws Exception {
 
     DateTimeFormatValidator validator = new DateTimeFormatValidator();

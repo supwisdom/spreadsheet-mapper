@@ -2,24 +2,23 @@ package com.supwisdom.spreadsheet.mapper.o2w;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
-import com.supwisdom.spreadsheet.mapper.o2w.converter.ToStringConverter;
+import com.supwisdom.spreadsheet.mapper.o2w.converter.PropertyStringifier;
 
 import java.util.List;
 
 /**
  * sheet compose helper, generated all cell type is string (include number, date etc.).
- * <p>
  * Created by hanwen on 15-12-16.
  */
 public interface Object2SheetComposer<T> {
 
   /**
-   * {@link ToStringConverter} unique with {@link ToStringConverter#getMatchField()} in one sheet (one to one)
+   * {@link PropertyStringifier} unique with {@link PropertyStringifier#getMatchField()} in one sheet (one to one)
    *
-   * @param toStringConverter {@link ToStringConverter}
+   * @param propertyStringifier {@link PropertyStringifier}
    * @return {@link Object2SheetComposer}
    */
-  Object2SheetComposer<T> addFieldConverter(ToStringConverter toStringConverter);
+  Object2SheetComposer<T> addFieldConverter(PropertyStringifier propertyStringifier);
 
   /**
    * @param dataOfSheet list of data, may null

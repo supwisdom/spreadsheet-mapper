@@ -3,6 +3,7 @@ package com.supwisdom.spreadsheet.mapper.validation.builder.cell;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.RegexFormatValidator;
 
 /**
+ * {@link RegexFormatValidator}工厂
  * Created by hanwen on 2017/1/22.
  */
 public class RegexFormatValidatorFactory implements CellValidatorFactory<RegexFormatValidator> {
@@ -25,11 +26,10 @@ public class RegexFormatValidatorFactory implements CellValidatorFactory<RegexFo
       throw new IllegalArgumentException("the regex format validator additional param not satisfied, need [String]");
     }
 
-    return new RegexFormatValidator()
+    return new RegexFormatValidator((String) additionalParam)
         .matchField(param.getMatchField())
         .errorMessage(param.getErrorMessage())
         .group(param.getGroup())
-        .dependsOn(param.getDependsOn().toArray(new String[0]))
-        .regex((String) additionalParam);
+        .dependsOn(param.getDependsOn().toArray(new String[0]));
   }
 }

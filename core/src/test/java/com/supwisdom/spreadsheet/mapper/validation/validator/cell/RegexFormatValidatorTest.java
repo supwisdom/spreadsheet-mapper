@@ -1,49 +1,39 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.cell;
 
-import com.supwisdom.spreadsheet.mapper.TestFactory;
-import com.supwisdom.spreadsheet.mapper.model.core.Cell;
+import com.supwisdom.spreadsheet.mapper.model.core.CellBean;
+import com.supwisdom.spreadsheet.mapper.model.meta.FieldMetaBean;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 
-import java.util.Map;
-
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Created by hanwen on 2017/1/4.
  */
 public class RegexFormatValidatorTest {
 
-  @Test
-  public void testCustomValidate() throws Exception {
+  @DataProvider
+  public Object[][] testDoValidateParam() {
 
-    Map<String, FieldMeta> fieldMetaMap = TestFactory.createFieldMetaMap();
+    String regexp = "^[1-9]\\d*$";
 
-    RegexFormatValidator validator0 = new RegexFormatValidator();
-    validator0.regex("^[1-9]\\d*$");
-    validator0.matchField("int1");
-    RegexFormatValidator validator1 = new RegexFormatValidator();
-    validator1.regex("^[1-9]\\d*$");
-    validator1.matchField("int2");
-    RegexFormatValidator validator2 = new RegexFormatValidator();
-    validator2.regex("^[1-9]\\d*$");
-    validator2.matchField("long1");
-    RegexFormatValidator validator3 = new RegexFormatValidator();
-    validator3.regex("^[1-9]\\d*$");
-    validator3.matchField("double1");
-    RegexFormatValidator validator4 = new RegexFormatValidator();
-    validator4.regex("^[1-9]\\d*$");
-    validator4.matchField("string");
+    return new Object[][] {
+        new Object[] { regexp, "1", true },
+        new Object[] { regexp, " 1", false },
+        new Object[] { regexp, "1.1 ", false },
+        new Object[] { regexp, "1d", false },
+        new Object[] { regexp, "1L", false },
+        new Object[] { regexp, "-1", false }
+    };
+  }
 
+  @Test(dataProvider = "testDoValidateParam")
+  public void testDoValidate(String regexp, String cellValue, boolean expected) throws Exception {
 
-    Map<String, Cell> cellMap1 = TestFactory.createCellMap1();
+    RegexFormatValidator validator = new RegexFormatValidator(regexp);
+    boolean valid = validator.doValidate(new CellBean(cellValue), new FieldMetaBean("sth", 1));
+    assertEquals(valid, expected);
 
-    assertTrue(validator0.validate(cellMap1.get("int1"), fieldMetaMap.get("int1")));
-    assertFalse(validator1.validate(cellMap1.get("int2"), fieldMetaMap.get("int2")));
-    assertTrue(validator2.validate(cellMap1.get("long1"), fieldMetaMap.get("long1")));
-    assertFalse(validator3.validate(cellMap1.get("double1"), fieldMetaMap.get("double1")));
-    assertFalse(validator4.validate(cellMap1.get("string"), fieldMetaMap.get("string")));
   }
 
 }

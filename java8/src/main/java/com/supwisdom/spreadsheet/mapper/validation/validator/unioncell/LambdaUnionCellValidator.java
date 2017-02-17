@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 /**
  * Created by qianjia on 2017/2/14.
  */
-public class LambdaUnionCellValidator extends CustomUnionCellValidator<LambdaUnionCellValidator> {
+public class LambdaUnionCellValidator extends UnionCellValidatorTemplate<LambdaUnionCellValidator> {
 
   private BiFunction<List<Cell>, List<FieldMeta>, Boolean> biFunction;
 

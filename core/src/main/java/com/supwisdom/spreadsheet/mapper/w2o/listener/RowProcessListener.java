@@ -2,27 +2,28 @@ package com.supwisdom.spreadsheet.mapper.w2o.listener;
 
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
+import com.supwisdom.spreadsheet.mapper.w2o.ObjectFactory;
 
 /**
- * listener of row to object processor
- * <p>
- * Created by hanwen on 2017/1/3.
+ * 在将{@link Row}转换成Object时的监听器
+ *
+ * @param <T> Object的类型
  */
 public interface RowProcessListener<T> {
 
   /**
-   * before object value setValue
+   * 在给Object设置值之前
    *
-   * @param object    value not setValue
+   * @param object    被设置值的Object，此时的Object是刚被{@link ObjectFactory}创建出来的
    * @param row       {@link Row}
    * @param sheetMeta {@link SheetMeta}
    */
   void before(T object, Row row, SheetMeta sheetMeta);
 
   /**
-   * after object value setValue
+   * 在给Object设置值之后
    *
-   * @param object    value setValue but same object
+   * @param object    被设置值的Object
    * @param row       {@link Row}
    * @param sheetMeta {@link SheetMeta}
    */

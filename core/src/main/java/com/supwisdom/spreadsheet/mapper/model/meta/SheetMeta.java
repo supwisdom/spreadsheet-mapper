@@ -1,76 +1,72 @@
 package com.supwisdom.spreadsheet.mapper.model.meta;
 
-import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
-
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * <pre>
- * sheet meta include:
- * list of field meta (see {@link FieldMeta})
- * data start at which row ({@link #getDataStartRowIndex()})
- * sheet name ({@link Sheet#getName()})
- * sheet index ({@link Sheet#getIndex()})
- * </pre>
+ * Sheet元信息，包含以下信息：
+ * <ol>
+ * <li>自己的名字</li>
+ * <li>自己在Workbook中是第几个Sheet</li>
+ * <li>真实数据是从第几行开始的</li>
+ * <li>{@link FieldMeta}</li>
+ * </ol>
  * Created by hanwen on 2016/12/27.
  */
 public interface SheetMeta extends Serializable {
 
   /**
-   * @return sheet index
+   * @return 自己是第几个sheet，1-based
    */
   int getSheetIndex();
 
   /**
-   * @return sheet name
+   * @return Sheet名字
    */
   String getSheetName();
 
   /**
-   * <pre>
-   * data row start at index
-   * data start at which row (must be after header rows if has)
-   * </pre>
-   *
-   * @return 1-based
+   * @return 数据是从第几行开始的，因为前几行可能是一些表头信息，1-based
    */
   int getDataStartRowIndex();
 
   /**
-   * @return list of field meta ordered by field meta column index
+   * @return {@link FieldMeta}s
    */
   List<FieldMeta> getFieldMetas();
 
   /**
+   * 根据{@link FieldMeta#getName()}来获得{@link FieldMeta}
+   *
    * @param fieldName field name
-   * @return field meta of field name
+   * @return {@link FieldMeta}
    */
   FieldMeta getFieldMeta(String fieldName);
 
   /**
-   * 根据column index (1-based) 获得FieldMeta
+   * 根据column index (1-based) 获得{@link FieldMeta}
+   *
    * @param columnIndex
-   * @return
+   * @return {@link FieldMeta}
    */
   FieldMeta getFieldMeta(int columnIndex);
 
   /**
-   * remove field meta of field name
+   * 根据{@link FieldMeta#getName()}来获移除{@link FieldMeta}
    *
    * @param fieldName field name
    */
   void removeFieldMeta(String fieldName);
 
   /**
-   * add field meta
+   * 添加{@link FieldMeta}
    *
    * @param fieldMeta field meta
    */
   void addFieldMeta(FieldMeta fieldMeta);
 
   /**
-   * @return the workbook meta of this
+   * @return 自己所属的 {@link WorkbookMeta}
    */
   WorkbookMeta getWorkbookMeta();
 }
