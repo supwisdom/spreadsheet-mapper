@@ -47,10 +47,11 @@ public class CellValidatorBatchBuilder {
 
         sheetValidationJob.addUnionCellValidator((UnionCellValidator) cellValidator);
 
+      } else {
+
+        throw new RuntimeException("Not supported dependant: " + cellValidator.getClass().getName());
+        
       }
-
-      throw new RuntimeException("Not supported dependant: " + cellValidator.getClass().getName());
-
     }
 
   }
