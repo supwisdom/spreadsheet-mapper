@@ -1,74 +1,90 @@
 package com.supwisdom.spreadsheet.mapper.f2w.excel;
 
-import com.supwisdom.spreadsheet.mapper.AssertUtil;
 import com.supwisdom.spreadsheet.mapper.f2w.WorkbookReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
-
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
-/**
- * Created by hanwen on 2017/1/5.
- */
-@Test(groups = "Excel2WorkbookReaderTest")
 public class Excel2WorkbookReaderTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Excel2WorkbookReaderTest.class);
+  @Test
+  public void testReadXls() throws Exception {
 
-  @BeforeClass
-  public void before() {
-    LOGGER.debug("-------------------starting test workbook read helper-------------------");
+    WorkbookReader reader = new Excel2WorkbookReader();
+
+    Workbook workbook = reader.read(getClass().getResourceAsStream("test.xls"));
+
+    assertWorkbookGood(workbook);
+
   }
 
   @Test
-  public void testRead() throws Exception {
-
-    InputStream is1 = getClass().getResourceAsStream("test.xls");
+  public void testReadXlsx() throws Exception {
 
     WorkbookReader reader = new Excel2WorkbookReader();
 
-    Workbook workbook1 = reader.read(is1);
+    Workbook workbook = reader.read(getClass().getResourceAsStream("test.xlsx"));
 
-    AssertUtil.assertWorkbookEquals(workbook1, true);
-
-    InputStream is2 = getClass().getResourceAsStream("test.xlsx");
-
-    Workbook workbook2 = reader.read(is2);
-
-    AssertUtil.assertWorkbookEquals(workbook2, true);
-  }
-
-  @Test(dependsOnMethods = "testRead")
-  public void testReadDate() throws Exception {
-
-    InputStream is1 = getClass().getResourceAsStream("dateFormatTest.xlsx");
-
-    WorkbookReader reader = new Excel2WorkbookReader();
-
-    Workbook workbook = reader.read(is1);
-
-    Sheet firstSheet = workbook.getFirstSheet();
-
-    Row firstRow = firstSheet.getFirstRow();
-
-    // Thu Nov 22 00:00:00 CST 1984
-    SimpleDateFormat sdf1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-
-    assertEquals(sdf2.format(sdf1.parse(firstRow.getCell(1).getValue())), "1984-11-22");
-    assertEquals(sdf2.format(sdf1.parse(firstRow.getCell(2).getValue())), "1984-11-22");
-    assertEquals(sdf2.format(sdf1.parse(firstRow.getCell(3).getValue())), "1984-11-22");
-    assertEquals(sdf2.format(sdf1.parse(firstRow.getCell(4).getValue())), "1984-11-22");
+    assertWorkbookGood(workbook);
 
   }
+
+  private void assertWorkbookGood(Workbook workbook) {
+
+    assertEquals(workbook.getSheets().size(), 1);
+    Sheet sheet = workbook.getSheet(1);
+    assertNotNull(sheet);
+    assertEquals(sheet.getIndex(), 1);
+    assertEquals(sheet.getName(), "Sheet0");
+    assertEquals(sheet.getRows().size(), 2);
+
+    Row row1 = sheet.getRow(1);
+    assertNotNull(row1);
+    assertEquals(row1.getCells().size(), 13);
+
+    assertCellGood(row1.getCell(1), 1, "常规");
+    assertCellGood(row1.getCell(2), 2, "数值");
+    assertCellGood(row1.getCell(3), 3, "货币");
+    assertCellGood(row1.getCell(4), 4, "会计专用");
+    assertCellGood(row1.getCell(5), 5, "日期");
+    assertCellGood(row1.getCell(6), 6, "时间");
+    assertCellGood(row1.getCell(7), 7, "百分比");
+    assertCellGood(row1.getCell(8), 8, "分数");
+    assertCellGood(row1.getCell(9), 9, "科学计数");
+    assertCellGood(row1.getCell(10), 10, "文本");
+    assertCellGood(row1.getCell(11), 11, "特殊");
+    assertCellGood(row1.getCell(12), 12, "自定义");
+    assertCellGood(row1.getCell(13), 13, "布尔");
+
+    Row row2 = sheet.getRow(2);
+    assertNotNull(row2);
+    assertEquals(row2.getCells().size(), 13);
+
+    assertCellGood(row2.getCell(1), 1, "树维");
+    assertCellGood(row2.getCell(2), 2, "123456");
+    assertCellGood(row2.getCell(3), 3, "-123.32");
+    assertCellGood(row2.getCell(4), 4, "123.4");
+    assertCellGood(row2.getCell(5), 5, "Sun Feb 12 00:00:00 CST 2017");
+    assertCellGood(row2.getCell(6), 6, "Sun Dec 31 23:00:00 CST 1899");
+    assertCellGood(row2.getCell(7), 7, "0.5");
+    assertCellGood(row2.getCell(8), 8, "0.3");
+    assertCellGood(row2.getCell(9), 9, "31008");
+    assertCellGood(row2.getCell(10), 10, "文本2");
+    assertCellGood(row2.getCell(11), 11, "31008");
+    assertCellGood(row2.getCell(12), 12, "Sun Dec 31 23:00:00 CST 1899");
+    assertCellGood(row2.getCell(13), 13, "true");
+
+  }
+
+  private void assertCellGood(Cell cell, int expectedIndex, String expectedValue) {
+    assertNotNull(cell);
+    assertEquals(cell.getIndex(), expectedIndex);
+    assertEquals(cell.getValue(), expectedValue);
+  }
+
 }

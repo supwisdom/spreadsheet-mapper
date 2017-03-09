@@ -15,7 +15,25 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * 读取Excel文件的工具，支持.xls、.xlsx格式
+ * 读取Excel文件的工具，支持.xls、.xlsx格式。单元格的里的所有内容都会被转换成String。<br>
+ * 支持以下单元格格式：
+ * <ol>
+ *   <li>常规-数字。转换结果和单元格内容一致。</li>
+ *   <li>常规-文本。转换结果和单元格内容一致。</li>
+ *   <li>常规-布尔。转换为true 或者 false。</li>
+ *   <li>数值。转换结果和单元格内容一致。</li>
+ *   <li>货币。转换结果为数字，没有货币符号</li>
+ *   <li>会计专用。转换结果为数字，没有货币符号</li>
+ *   <li>日期。转换成EEE MMM dd HH:mm:ss zzz yyyy的字符串</li>
+ *   <li>时间。和日期一样，不过要注意年月日是1899-12-31</li>
+ *   <li>百分比。转换结果为数字，没有百分号。</li>
+ *   <li>分数。转换结果为数字，没有分数。</li>
+ *   <li>科学计数。转换结果为数字，没有科学记数法。</li>
+ *   <li>文本。转换结果和单元格内容一致。</li>
+ *   <li>特殊。转换结果为数字。</li>
+ *   <li>自定义。如果是日期，转换结果同日期。</li>
+ *   <li>公式。不支持</li>
+ * </ol>
  * Created by hanwen on 2017/1/3.
  */
 public class Excel2WorkbookReader implements WorkbookReader {
