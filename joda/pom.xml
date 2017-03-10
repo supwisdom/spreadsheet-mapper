@@ -6,10 +6,12 @@
     <groupId>com.supwisdom</groupId>
     <artifactId>spreadsheet-mapper-parent</artifactId>
     <version>1.0.1-SNAPSHOT</version>
+    <relativePath>../parent</relativePath>
   </parent>
   
   <groupId>com.supwisdom</groupId>
   <artifactId>spreadsheet-mapper-joda</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
   <name>Spreadsheet Mapper - Joda support</name>
   <description>Spreadsheet Mapper - Joda support</description>
   <packaging>jar</packaging>
