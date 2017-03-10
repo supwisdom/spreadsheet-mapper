@@ -1,12 +1,12 @@
 package com.supwisdom.spreadsheet.mapper.validation.engine;
 
+import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriteStrategies;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
-import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriteStrategies;
 import com.supwisdom.spreadsheet.mapper.validation.validator.Dependant;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.UnionCellValidator;
@@ -241,6 +241,11 @@ public class CellGroupValidationEngine {
     return errorMessages;
   }
 
+  public void clearResults() {
+    this.errorMessages.clear();
+    this.result.clear();
+  }
+
   private void validateGroup(Row row, SheetMeta sheetMeta, String group) {
 
     LinkedHashSet<String> upstreamGroups = dependencyTree.get(group);
@@ -291,7 +296,7 @@ public class CellGroupValidationEngine {
 
     if (UnionCellValidator.class.isAssignableFrom(dependant.getClass())) {
 
-      return executeValidator((UnionCellValidator) dependant, sheetMeta, row, columnIndices);
+      return executeValidator(columnIndices, sheetMeta, row, (UnionCellValidator) dependant);
 
     } else if (CellValidator.class.isAssignableFrom(dependant.getClass())) {
 
@@ -303,8 +308,8 @@ public class CellGroupValidationEngine {
     return false;
   }
 
-  private boolean executeValidator(UnionCellValidator validator, SheetMeta sheetMeta, Row row,
-      List<Integer> columnIndices) {
+  private boolean executeValidator(List<Integer> columnIndices, SheetMeta sheetMeta, Row row,
+      UnionCellValidator validator) {
 
     if (CollectionUtils.isEmpty(columnIndices)) {
       LOGGER.debug("Skip UnionCellValidator [{}]", validator.getClass().getName());
@@ -323,15 +328,12 @@ public class CellGroupValidationEngine {
 
     if (!result) {
 
-      String errorMessage = validator.getErrorMessage();
-
-      if (StringUtils.isNotBlank(errorMessage)) {
-
-        for (FieldMeta fieldMeta : fieldMetas) {
-          errorMessages.add(
-              new MessageBean(ExcelMessageWriteStrategies.COMMENT, errorMessage, row.getSheet().getIndex(), row.getIndex(),
-                  fieldMeta.getColumnIndex()));
-        }
+      String errorMessage = StringUtils.defaultIfBlank(validator.getErrorMessage(), "Invalid");
+      for (FieldMeta fieldMeta : fieldMetas) {
+        errorMessages.add(
+            new MessageBean(ExcelMessageWriteStrategies.COMMENT, StringUtils.defaultIfBlank(errorMessage, "Invalid"), row.getSheet().getIndex(),
+                row.getIndex(),
+                fieldMeta.getColumnIndex()));
       }
 
     }
@@ -357,13 +359,10 @@ public class CellGroupValidationEngine {
 
     if (!result) {
 
-      String errorMessage = validator.getErrorMessage();
-
-      if (StringUtils.isNotBlank(errorMessage)) {
-        errorMessages.add(
-            new MessageBean(ExcelMessageWriteStrategies.COMMENT, errorMessage,
-                row.getSheet().getIndex(), row.getIndex(), fieldMeta.getColumnIndex()));
-      }
+      String errorMessage = StringUtils.defaultIfBlank(validator.getErrorMessage(), "Invalid");
+      errorMessages.add(
+          new MessageBean(ExcelMessageWriteStrategies.COMMENT, errorMessage,
+              row.getSheet().getIndex(), row.getIndex(), fieldMeta.getColumnIndex()));
 
     }
 

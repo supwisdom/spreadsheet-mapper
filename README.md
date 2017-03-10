@@ -10,21 +10,21 @@
 <dependency>
     <groupId>com.supwisdom</groupId>
     <artifactId>spreadsheet-mapper-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 
 <!-- （可选）对joda的支持 -->
 <dependency>
     <groupId>com.supwisdom</groupId>
     <artifactId>spreadsheet-mapper-joda</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 
 <!-- （可选）对java8的支持 -->
 <dependency>
     <groupId>com.supwisdom</groupId>
     <artifactId>spreadsheet-mapper-java8</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 
 ```

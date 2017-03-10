@@ -7,20 +7,20 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * sheet数量校验器，不得超过给定的数值
+ * sheet数量校验器，必须等于给定的数值
  * Created by hanwen on 4/26/16.
  */
 public class SheetAmountValidator extends WorkbookValidatorTemplate<SheetAmountValidator> {
 
-  private int maxSize;
+  private int sheetAmount;
 
-  public SheetAmountValidator(int maxSize) {
-    this.maxSize = maxSize;
+  public SheetAmountValidator(int sheetAmount) {
+    this.sheetAmount = sheetAmount;
   }
 
   @Override
   public boolean validate(Workbook workbook, WorkbookMeta workbookMeta) {
-    return workbook.sizeOfSheets() == maxSize;
+    return workbook.sizeOfSheets() == sheetAmount;
   }
 
   @Override
