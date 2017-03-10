@@ -7,7 +7,11 @@ import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
+ * 读取工作表的例子
  * Created by qianjia on 2017/3/9.
  */
 public class WorkbookReaderExample {
@@ -23,8 +27,13 @@ public class WorkbookReaderExample {
 
     System.out.println("--------Start Read Xls--------");
     WorkbookReader workbookReader = new Excel2WorkbookReader();
-    Workbook workbook = workbookReader.read(WorkbookReaderExample.class.getResourceAsStream("test.xls"));
-    print(workbook);
+    try (InputStream inputStream = WorkbookReaderExample.class.getResourceAsStream("test.xls")) {
+      Workbook workbook = workbookReader.read(inputStream);
+      print(workbook);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
     System.out.println("--------End Read Xls--------");
 
   }
