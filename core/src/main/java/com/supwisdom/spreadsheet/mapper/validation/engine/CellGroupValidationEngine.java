@@ -6,7 +6,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
+import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriteStrategies;
 import com.supwisdom.spreadsheet.mapper.validation.validator.Dependant;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidator;
 import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.UnionCellValidator;
@@ -329,7 +329,7 @@ public class CellGroupValidationEngine {
 
         for (FieldMeta fieldMeta : fieldMetas) {
           errorMessages.add(
-              new MessageBean(MessageWriteStrategies.COMMENT, errorMessage, row.getSheet().getIndex(), row.getIndex(),
+              new MessageBean(ExcelMessageWriteStrategies.COMMENT, errorMessage, row.getSheet().getIndex(), row.getIndex(),
                   fieldMeta.getColumnIndex()));
         }
       }
@@ -361,7 +361,7 @@ public class CellGroupValidationEngine {
 
       if (StringUtils.isNotBlank(errorMessage)) {
         errorMessages.add(
-            new MessageBean(MessageWriteStrategies.COMMENT, errorMessage,
+            new MessageBean(ExcelMessageWriteStrategies.COMMENT, errorMessage,
                 row.getSheet().getIndex(), row.getIndex(), fieldMeta.getColumnIndex()));
       }
 

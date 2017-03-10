@@ -43,6 +43,7 @@
     <module>core</module>
     <module>joda</module>
     <module>java8</module>
+    <module>examples</module>
   </modules>
   
   <profiles>

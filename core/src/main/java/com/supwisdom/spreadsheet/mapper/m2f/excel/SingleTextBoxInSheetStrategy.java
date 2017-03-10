@@ -1,23 +1,22 @@
-package com.supwisdom.spreadsheet.mapper.m2f.excel.strategy;
+package com.supwisdom.spreadsheet.mapper.m2f.excel;
 
 import com.supwisdom.spreadsheet.mapper.m2f.MessageWriteStrategy;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
+import com.supwisdom.spreadsheet.mapper.model.shapes.TextBox;
 import com.supwisdom.spreadsheet.mapper.model.shapes.TextBoxBean;
+import com.supwisdom.spreadsheet.mapper.model.shapes.TextBoxStyle;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.*;
-import com.supwisdom.spreadsheet.mapper.model.shapes.TextBox;
-import com.supwisdom.spreadsheet.mapper.model.shapes.TextBoxStyle;
 
 import java.util.*;
 
 /**
- * use text box to write messages strategy and one sheet one text box
- * <p>
+ * 将{@link Message}以文本框的形式，写到excel文件中的策略。<br>
+ * 注意：在写入注释之前，会将excel文件中原先存在的文本框都删除掉。
  * Created by hanwen on 2017/1/3.
  */
 public class SingleTextBoxInSheetStrategy implements MessageWriteStrategy {
@@ -26,7 +25,7 @@ public class SingleTextBoxInSheetStrategy implements MessageWriteStrategy {
 
   @Override
   public String getStrategy() {
-    return MessageWriteStrategies.TEXT_BOX;
+    return ExcelMessageWriteStrategies.TEXT_BOX;
   }
 
   @Override
@@ -53,7 +52,6 @@ public class SingleTextBoxInSheetStrategy implements MessageWriteStrategy {
     List<TextBox> textBoxes = transferToTextBoxes(messages);
 
     for (TextBox textBox : textBoxes) {
-
 
       while (numberOfSheets < textBox.getSheetIndex()) {
         workbook.createSheet();
@@ -108,7 +106,8 @@ public class SingleTextBoxInSheetStrategy implements MessageWriteStrategy {
     TextBoxStyle style = textBox.getStyle();
 
     XSSFDrawing drawingPatriarch = xssfSheet.createDrawingPatriarch();
-    XSSFClientAnchor anchor = drawingPatriarch.createAnchor(0, 0, 0, 0, style.getCol1() - 1, style.getRow1() - 1, style.getCol2() - 1, style.getRow2() - 1);
+    XSSFClientAnchor anchor = drawingPatriarch
+        .createAnchor(0, 0, 0, 0, style.getCol1() - 1, style.getRow1() - 1, style.getCol2() - 1, style.getRow2() - 1);
 
     XSSFTextBox textbox = drawingPatriarch.createTextbox(anchor);
     textbox.setText(new XSSFRichTextString(textBox.getMessage()));
@@ -122,19 +121,22 @@ public class SingleTextBoxInSheetStrategy implements MessageWriteStrategy {
     // current remove all the text boxes in sheet rudely
     List<HSSFShape> textboxes = new ArrayList<>();
     for (HSSFShape shape : drawingPatriarch.getChildren()) {
-      if (shape instanceof HSSFTextbox) {
+      if (shape instanceof HSSFTextbox && !(shape instanceof HSSFComment)) {
         textboxes.add(shape);
       }
     }
 
-    drawingPatriarch.getChildren().removeAll(textboxes);
+    for (HSSFShape textbox : textboxes) {
+      drawingPatriarch.removeShape(textbox);
+    }
   }
 
   private void addHSSFTextBox(HSSFSheet hssfSheet, TextBox textBox) {
     TextBoxStyle style = textBox.getStyle();
 
     HSSFPatriarch drawingPatriarch = hssfSheet.createDrawingPatriarch();
-    HSSFClientAnchor anchor = drawingPatriarch.createAnchor(0, 0, 0, 0, style.getCol1() - 1, style.getRow1() - 1, style.getCol2() - 1, style.getRow2() - 1);
+    HSSFClientAnchor anchor = drawingPatriarch
+        .createAnchor(0, 0, 0, 0, style.getCol1() - 1, style.getRow1() - 1, style.getCol2() - 1, style.getRow2() - 1);
 
     HSSFTextbox textbox = drawingPatriarch.createTextbox(anchor);
     textbox.setString(new HSSFRichTextString(textBox.getMessage()));

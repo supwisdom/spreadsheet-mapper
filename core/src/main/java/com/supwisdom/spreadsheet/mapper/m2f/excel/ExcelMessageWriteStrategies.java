@@ -1,5 +1,6 @@
-package com.supwisdom.spreadsheet.mapper.model.msg;
+package com.supwisdom.spreadsheet.mapper.m2f.excel;
 
+import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.shapes.Comment;
 import com.supwisdom.spreadsheet.mapper.model.shapes.TextBox;
 
@@ -7,10 +8,10 @@ import com.supwisdom.spreadsheet.mapper.model.shapes.TextBox;
  * {@link Message}写入时的策略常量
  * Created by hanwen on 2017/1/3.
  */
-public class MessageWriteStrategies {
+public class ExcelMessageWriteStrategies {
 
-  private MessageWriteStrategies() {
-    // default constructor
+  private ExcelMessageWriteStrategies() {
+    // singleton
   }
 
   /**
@@ -18,12 +19,12 @@ public class MessageWriteStrategies {
    *
    * @see Comment
    */
-  public static final String COMMENT = "comment";
+  public static final String COMMENT = "COMMENT";
 
   /**
    * 文本框
    *
    * @see TextBox
    */
-  public static final String TEXT_BOX = "text_box";
+  public static final String TEXT_BOX = "TEXT_BOX";
 }

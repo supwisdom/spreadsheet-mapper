@@ -1,20 +1,18 @@
-package com.supwisdom.spreadsheet.mapper.m2f.excel.strategy;
+package com.supwisdom.spreadsheet.mapper.m2f.excel;
 
 import com.supwisdom.spreadsheet.mapper.m2f.MessageWriteStrategy;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
+import com.supwisdom.spreadsheet.mapper.model.shapes.CommentBean;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.util.CellAddress;
-import com.supwisdom.spreadsheet.mapper.model.shapes.CommentBean;
 
 import java.util.*;
 
 /**
- * use comment to write messages strategy and one cell one comment
- * <p>
+ * 将{@link Message}以注释的形式，写到excel文件中的策略。<br>
+ * 注意：在写入注释之前，会将excel文件中原先存在的注释都删除掉。
  * Created by hanwen on 2017/1/3.
  */
 public class SingleCommentInCellStrategy implements MessageWriteStrategy {
@@ -23,7 +21,7 @@ public class SingleCommentInCellStrategy implements MessageWriteStrategy {
 
   @Override
   public String getStrategy() {
-    return MessageWriteStrategies.COMMENT;
+    return ExcelMessageWriteStrategies.COMMENT;
   }
 
   @Override
@@ -91,7 +89,8 @@ public class SingleCommentInCellStrategy implements MessageWriteStrategy {
         for (Map.Entry<Integer, List<String>> columnEntry : rowEntry.getValue().entrySet()) {
 
           comments.add(
-              new CommentBean(StringUtils.join(columnEntry.getValue(), ENTER_SEPARATOR), sheetEntry.getKey(), rowEntry.getKey(), columnEntry.getKey()));
+              new CommentBean(StringUtils.join(columnEntry.getValue(), ENTER_SEPARATOR), sheetEntry.getKey(),
+                  rowEntry.getKey(), columnEntry.getKey()));
 
         }
       }

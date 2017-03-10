@@ -1,6 +1,10 @@
 package com.supwisdom.spreadsheet.mapper.m2f.excel;
 
+import com.supwisdom.spreadsheet.mapper.f2w.WorkbookReadException;
+import com.supwisdom.spreadsheet.mapper.m2f.MessageWriteStrategy;
 import com.supwisdom.spreadsheet.mapper.m2f.MessageWriter;
+import com.supwisdom.spreadsheet.mapper.model.msg.Message;
+import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriteException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -8,12 +12,6 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.supwisdom.spreadsheet.mapper.f2w.WorkbookReadException;
-import com.supwisdom.spreadsheet.mapper.m2f.MessageWriteStrategy;
-import com.supwisdom.spreadsheet.mapper.m2f.excel.strategy.SingleCommentInCellStrategy;
-import com.supwisdom.spreadsheet.mapper.m2f.excel.strategy.SingleTextBoxInSheetStrategy;
-import com.supwisdom.spreadsheet.mapper.model.msg.Message;
-import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriteException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,13 +22,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * message to excel writer decorator
- * <p>
+ * 将{@link Message}写到excel文件的工具
  * Created by hanwen on 2017/1/3.
  */
-public class Message2ExcelWriter implements MessageWriter {
+public class ExcelMessageWriter implements MessageWriter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Message2ExcelWriter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ExcelMessageWriter.class);
 
   private Map<String, MessageWriteStrategy> strategy2writeStrategy = new HashMap<>();
 
@@ -42,29 +39,29 @@ public class Message2ExcelWriter implements MessageWriter {
   }
 
   /**
-   * default new excel with xlsx
+   * 创建xlsx的{@link ExcelMessageWriter}
    *
-   * @see #Message2ExcelWriter(boolean)
+   * @see #ExcelMessageWriter(boolean)
    */
-  public Message2ExcelWriter() {
+  public ExcelMessageWriter() {
     this(true);
   }
 
   /**
-   * this will create a new excel workbook to write messages
+   * 构造函数
    *
-   * @param xlsx true use {@link XSSFWorkbook} else use {@link HSSFWorkbook}
+   * @param xlsx true 使用 {@link XSSFWorkbook}，false 使用 {@link HSSFWorkbook}
    */
-  public Message2ExcelWriter(boolean xlsx) {
+  public ExcelMessageWriter(boolean xlsx) {
     workbook = xlsx ? new XSSFWorkbook() : new HSSFWorkbook();
   }
 
   /**
-   * this will copy a excel workbook from supplied input stream to write messages
+   * 构造函数，区别在于预先读入Excel文件，然后{@link Message}都写到这个Excel文件中。
    *
    * @param inputStream auto close
    */
-  public Message2ExcelWriter(InputStream inputStream) {
+  public ExcelMessageWriter(InputStream inputStream) {
     try {
       workbook = WorkbookFactory.create(inputStream);
     } catch (Exception e) {
@@ -94,7 +91,7 @@ public class Message2ExcelWriter implements MessageWriter {
     for (String writeStrategy : messageWriteStrategyMap.keySet()) {
       MessageWriteStrategy messageWriteStrategy = strategy2writeStrategy.get(writeStrategy);
       if (messageWriteStrategy == null) {
-        throw new WorkbookWriteException("no message write strategy of [" + writeStrategy + "]");
+        throw new WorkbookWriteException("No message write strategy found for [" + writeStrategy + "]");
       }
 
       messageWriteStrategy.write(workbook, messageWriteStrategyMap.get(writeStrategy));
