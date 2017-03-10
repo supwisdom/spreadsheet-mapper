@@ -6,7 +6,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
-import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriterStrategies;
+import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriteStrategies;
 import com.supwisdom.spreadsheet.mapper.validation.engine.CellGroupValidationEngine;
 import com.supwisdom.spreadsheet.mapper.validation.validator.Dependant;
 import com.supwisdom.spreadsheet.mapper.validation.validator.cell.CellValidator;
@@ -90,10 +90,10 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
 
   /**
    * <ul>
-   *   <li>{@link SheetValidator}校验失败的消息是{@link ExcelMessageWriterStrategies#TEXT_BOX}</li>
-   *   <li>{@link RowValidator}校验失败的消息是{@link ExcelMessageWriterStrategies#COMMENT}，在每个{@link RowValidator#getErrorFields()}上</li>
-   *   <li>{@link CellValidator}校验失败的消息是{@link ExcelMessageWriterStrategies#COMMENT}，在失败的field上</li>
-   *   <li>{@link UnionCellValidator}校验失败的消息是{@link ExcelMessageWriterStrategies#COMMENT}，在失败的field上</li>
+   *   <li>{@link SheetValidator}校验失败的消息是{@link ExcelMessageWriteStrategies#TEXT_BOX}</li>
+   *   <li>{@link RowValidator}校验失败的消息是{@link ExcelMessageWriteStrategies#COMMENT}，在每个{@link RowValidator#getErrorFields()}上</li>
+   *   <li>{@link CellValidator}校验失败的消息是{@link ExcelMessageWriteStrategies#COMMENT}，在失败的field上</li>
+   *   <li>{@link UnionCellValidator}校验失败的消息是{@link ExcelMessageWriteStrategies#COMMENT}，在失败的field上</li>
    * </ul>
    *
    */
@@ -143,7 +143,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
 
         if (StringUtils.isNotBlank(errorMessage)) {
 
-          errorMessages.add(new MessageBean(ExcelMessageWriterStrategies.TEXT_BOX, errorMessage, sheet.getIndex()));
+          errorMessages.add(new MessageBean(ExcelMessageWriteStrategies.TEXT_BOX, errorMessage, sheet.getIndex()));
         }
       }
     }
@@ -169,7 +169,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
 
             FieldMeta fieldMeta = sheetMeta.getFieldMeta(messageOnField);
             errorMessages.add(
-                new MessageBean(ExcelMessageWriterStrategies.COMMENT, errorMessage, row.getSheet().getIndex(), row.getIndex(),
+                new MessageBean(ExcelMessageWriteStrategies.COMMENT, errorMessage, row.getSheet().getIndex(), row.getIndex(),
                     fieldMeta.getColumnIndex()));
           }
         }

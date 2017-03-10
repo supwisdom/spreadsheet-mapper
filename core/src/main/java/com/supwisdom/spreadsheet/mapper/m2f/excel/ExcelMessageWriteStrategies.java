@@ -8,9 +8,9 @@ import com.supwisdom.spreadsheet.mapper.model.shapes.TextBox;
  * {@link Message}写入时的策略常量
  * Created by hanwen on 2017/1/3.
  */
-public class ExcelMessageWriterStrategies {
+public class ExcelMessageWriteStrategies {
 
-  private ExcelMessageWriterStrategies() {
+  private ExcelMessageWriteStrategies() {
     // singleton
   }
 

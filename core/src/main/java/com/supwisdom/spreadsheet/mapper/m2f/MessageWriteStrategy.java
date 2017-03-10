@@ -1,6 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.m2f;
 
-import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriterStrategies;
+import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriteStrategies;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -13,7 +13,7 @@ import java.util.Collection;
 public interface MessageWriteStrategy {
 
   /**
-   * @return {@link ExcelMessageWriterStrategies}
+   * @return {@link ExcelMessageWriteStrategies}
    */
   String getStrategy();
 

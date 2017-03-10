@@ -25,7 +25,7 @@ public class SingleTextBoxInSheetStrategy implements MessageWriteStrategy {
 
   @Override
   public String getStrategy() {
-    return ExcelMessageWriterStrategies.TEXT_BOX;
+    return ExcelMessageWriteStrategies.TEXT_BOX;
   }
 
   @Override

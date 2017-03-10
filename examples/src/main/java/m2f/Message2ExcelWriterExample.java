@@ -2,7 +2,7 @@ package m2f;
 
 import com.supwisdom.spreadsheet.mapper.m2f.MessageWriter;
 import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriter;
-import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriterStrategies;
+import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriteStrategies;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
 
@@ -22,8 +22,8 @@ public class Message2ExcelWriterExample {
   public static void main(String[] args) throws IOException {
 
     List<Message> messages = new ArrayList<>();
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.COMMENT, "COMMENT123", 1, 1, 1));
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.TEXT_BOX, "TEXT_BOX", 1, 1, 2));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.COMMENT, "COMMENT123", 1, 1, 1));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.TEXT_BOX, "TEXT_BOX", 1, 1, 2));
 
     Message2ExcelWriterExample example = new Message2ExcelWriterExample();
     example.writeToXls(messages);

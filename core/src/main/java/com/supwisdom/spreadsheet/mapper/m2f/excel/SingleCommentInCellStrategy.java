@@ -21,7 +21,7 @@ public class SingleCommentInCellStrategy implements MessageWriteStrategy {
 
   @Override
   public String getStrategy() {
-    return ExcelMessageWriterStrategies.COMMENT;
+    return ExcelMessageWriteStrategies.COMMENT;
   }
 
   @Override

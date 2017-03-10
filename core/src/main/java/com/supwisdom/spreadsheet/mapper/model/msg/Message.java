@@ -1,6 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.model.msg;
 
-import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriterStrategies;
+import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriteStrategies;
 
 import java.io.Serializable;
 
@@ -12,10 +12,10 @@ import java.io.Serializable;
 public interface Message extends Serializable {
 
   /**
-   * if use {@link ExcelMessageWriterStrategies#TEXT_BOX}, {@link #getRowIndex()} &amp; {@link #getColumnIndex()} will ignore
+   * if use {@link ExcelMessageWriteStrategies#TEXT_BOX}, {@link #getRowIndex()} &amp; {@link #getColumnIndex()} will ignore
    *
    * @return use which message write strategy to write message
-   * @see ExcelMessageWriterStrategies
+   * @see ExcelMessageWriteStrategies
    */
   String getMessageWriteStrategy();
 

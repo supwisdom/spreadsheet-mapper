@@ -27,14 +27,14 @@ public class ExcelMessageWriterTest {
 
     List<Message> messages = new ArrayList<>();
 
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.COMMENT, "test1", 1, 1, 1));
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.COMMENT, "test2", 1, 1, 2));
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.COMMENT, "test3", 1, 1, 3));
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.COMMENT, "test4", 1, 1, 4));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.COMMENT, "test1", 1, 1, 1));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.COMMENT, "test2", 1, 1, 2));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.COMMENT, "test3", 1, 1, 3));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.COMMENT, "test4", 1, 1, 4));
 
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.TEXT_BOX, "test5", 1));
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.TEXT_BOX, "test6", 1));
-    messages.add(new MessageBean(ExcelMessageWriterStrategies.TEXT_BOX, "test7", 1));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.TEXT_BOX, "test5", 1));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.TEXT_BOX, "test6", 1));
+    messages.add(new MessageBean(ExcelMessageWriteStrategies.TEXT_BOX, "test7", 1));
 
     return new Object[][] {
         new Object[] { messages }
