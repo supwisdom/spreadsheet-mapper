@@ -169,7 +169,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
 
             FieldMeta fieldMeta = sheetMeta.getFieldMeta(messageOnField);
             errorMessages.add(
-                new MessageBean(ExcelMessageWriteStrategies.COMMENT, errorMessage, row.getSheet().getIndex(), row.getIndex(),
+                new MessageBean(ExcelMessageWriteStrategies.COMMENT, StringUtils.defaultIfBlank(errorMessage, "Invalid"), row.getSheet().getIndex(), row.getIndex(),
                     fieldMeta.getColumnIndex()));
           }
         }
@@ -183,7 +183,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
 
     boolean result = cellGroupValidationEngine.validate(row, sheetMeta);
     errorMessages.addAll(cellGroupValidationEngine.getErrorMessages());
-
+    cellGroupValidationEngine.clearResults();
     return result;
   }
 
