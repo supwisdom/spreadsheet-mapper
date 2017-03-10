@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -68,7 +69,7 @@ public class Excel2WorkbookReaderTest {
     assertNotNull(row2);
     assertEquals(row2.getCells().size(), 13);
 
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 
     assertCellGood(row2.getCell(1), 1, "树维");
     assertCellGood(row2.getCell(2), 2, "123456");
