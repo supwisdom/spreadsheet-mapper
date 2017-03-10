@@ -127,7 +127,7 @@ public class WorkbookValidatorExample {
         .matchFields("code", "identityCardNo")
         .errorMessage("不唯一")
         .end()
-    
+
     ;
     validatorBuilder.addToSheetValidationJob(sheetValidationJob);
 
