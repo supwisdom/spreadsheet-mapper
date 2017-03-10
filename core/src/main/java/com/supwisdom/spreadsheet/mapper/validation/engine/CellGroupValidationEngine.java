@@ -296,7 +296,7 @@ public class CellGroupValidationEngine {
 
     if (UnionCellValidator.class.isAssignableFrom(dependant.getClass())) {
 
-      return executeValidator((UnionCellValidator) dependant, sheetMeta, row, columnIndices);
+      return executeValidator(columnIndices, sheetMeta, row, (UnionCellValidator) dependant);
 
     } else if (CellValidator.class.isAssignableFrom(dependant.getClass())) {
 
@@ -308,8 +308,8 @@ public class CellGroupValidationEngine {
     return false;
   }
 
-  private boolean executeValidator(UnionCellValidator validator, SheetMeta sheetMeta, Row row,
-      List<Integer> columnIndices) {
+  private boolean executeValidator(List<Integer> columnIndices, SheetMeta sheetMeta, Row row,
+      UnionCellValidator validator) {
 
     if (CollectionUtils.isEmpty(columnIndices)) {
       LOGGER.debug("Skip UnionCellValidator [{}]", validator.getClass().getName());
