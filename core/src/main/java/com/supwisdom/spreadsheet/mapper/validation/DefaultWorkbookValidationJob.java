@@ -6,9 +6,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.WorkbookMeta;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.model.msg.MessageBean;
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
-import com.supwisdom.spreadsheet.mapper.validation.validator.row.RowValidator;
-import com.supwisdom.spreadsheet.mapper.validation.validator.sheet.SheetValidator;
+import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriterStrategies;
 import com.supwisdom.spreadsheet.mapper.validation.validator.workbook.WorkbookValidator;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -87,7 +85,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob<Defau
 
   /**
    * <ul>
-   *   <li>{@link WorkbookValidator}校验失败的消息是{@link MessageWriteStrategies#TEXT_BOX}，在每个{@link WorkbookValidator#getErrorSheetIndices()}上</li>
+   *   <li>{@link WorkbookValidator}校验失败的消息是{@link ExcelMessageWriterStrategies#TEXT_BOX}，在每个{@link WorkbookValidator#getErrorSheetIndices()}上</li>
    *   <li>{@link DefaultSheetValidationJob#getErrorMessages()}</li>
    * </ul>
    */
@@ -105,7 +103,7 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob<Defau
       if (!validator.validate(workbook, workbookMeta)) {
 
         for (Integer sheetIndex : validator.getErrorSheetIndices()) {
-          errorMessages.add(new MessageBean(MessageWriteStrategies.TEXT_BOX, validator.getErrorMessage(), sheetIndex));
+          errorMessages.add(new MessageBean(ExcelMessageWriterStrategies.TEXT_BOX, validator.getErrorMessage(), sheetIndex));
         }
 
       }

@@ -1,25 +1,24 @@
 package com.supwisdom.spreadsheet.mapper.m2f;
 
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
-import org.apache.poi.ss.usermodel.Workbook;
+import com.supwisdom.spreadsheet.mapper.m2f.excel.ExcelMessageWriterStrategies;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.Collection;
 
 /**
- * message write strategy
- * <p>
+ * {@link Message}写入策略
  * Created by hanwen on 2017/1/3.
  */
 public interface MessageWriteStrategy {
 
   /**
-   * @return {@link MessageWriteStrategies}
+   * @return {@link ExcelMessageWriterStrategies}
    */
   String getStrategy();
 
   /**
-   * write messages
+   * 写{@link Message}
    *
    * @param workbook {@link Workbook}
    * @param messages {@link Message}

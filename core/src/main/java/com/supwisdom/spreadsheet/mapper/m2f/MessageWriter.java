@@ -1,7 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.m2f;
 
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
-import com.supwisdom.spreadsheet.mapper.model.msg.MessageWriteStrategies;
 
 import java.io.OutputStream;
 import java.util.Collection;
@@ -13,7 +12,7 @@ import java.util.Collection;
 public interface MessageWriter {
 
   /**
-   * {@link MessageWriteStrategy} unique with {@link MessageWriteStrategies} (one to one)
+   * 添加 {@link MessageWriteStrategy}
    *
    * @param messageWriteStrategy {@link MessageWriteStrategy}
    * @return {@link MessageWriter}
@@ -21,10 +20,10 @@ public interface MessageWriter {
   MessageWriter addMessageWriteStrategy(MessageWriteStrategy messageWriteStrategy);
 
   /**
-   * write messages to supplied output stream
+   * 写 {@link Message} 到输出流
    *
    * @param messages     {@link Message}
-   * @param outputStream notice close the stream
+   * @param outputStream 输出流，注意这里不会关闭此流
    */
   void write(Collection<Message> messages, OutputStream outputStream);
 }
