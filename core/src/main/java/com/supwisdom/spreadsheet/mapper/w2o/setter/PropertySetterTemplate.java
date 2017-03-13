@@ -3,16 +3,8 @@ package com.supwisdom.spreadsheet.mapper.w2o.setter;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.w2o.Workbook2ObjectComposeException;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.*;
+import jodd.bean.BeanUtil;
 import org.apache.commons.lang3.StringUtils;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Calendar;
 
 /**
  * 自定义{@link PropertySetter}的抽象类，只需实现{@link #convertToProperty(String)} 即可。
@@ -23,26 +15,7 @@ import java.util.Calendar;
  */
 public abstract class PropertySetterTemplate<T, V extends PropertySetterTemplate> implements PropertySetter<T> {
 
-  static {
-    // FIXME 以下代码会影响到client code里的BeanUtils
-    ConvertUtils.register(new DateConverter(null), java.util.Date.class);
-    ConvertUtils.register(new CalendarConverter(null), Calendar.class);
-    ConvertUtils.register(new SqlDateConverter(null), java.sql.Date.class);
-    ConvertUtils.register(new SqlTimeConverter(null), Time.class);
-    ConvertUtils.register(new SqlTimestampConverter(null), Timestamp.class);
-    ConvertUtils.register(new StringConverter(null), String.class);
-    ConvertUtils.register(new BooleanConverter(null), Boolean.class);
-    ConvertUtils.register(new BigIntegerConverter(null), BigInteger.class);
-    ConvertUtils.register(new BigDecimalConverter(null), BigDecimal.class);
-    ConvertUtils.register(new LongConverter(null), Long.class);
-    ConvertUtils.register(new IntegerConverter(null), Integer.class);
-    ConvertUtils.register(new DoubleConverter(null), Double.class);
-    ConvertUtils.register(new FloatConverter(null), Float.class);
-    ConvertUtils.register(new ShortConverter(null), Short.class);
-    ConvertUtils.register(new ByteConverter(null), Byte.class);
-  }
-
-  private String matchField;
+  protected String matchField;
 
   final public V matchField(String matchField) {
     this.matchField = matchField;
@@ -60,12 +33,18 @@ public abstract class PropertySetterTemplate<T, V extends PropertySetterTemplate
     String value = cell.getValue();
     String field = fieldMeta.getName();
 
+    if (StringUtils.isNotBlank(value)) {
+      setProperty(object, field, convertToProperty(value));
+    } else {
+      setProperty(object, field, null);
+    }
+
+  }
+
+  protected void setProperty(T object, String property, Object propertyValue) {
+
     try {
-      if (value == null) {
-        BeanUtils.setProperty(object, field, null);
-      } else {
-        BeanUtils.setProperty(object, field, convertToProperty(value));
-      }
+      BeanUtil.pojo.setProperty(object, property, propertyValue);
     } catch (Exception e) {
       throw new Workbook2ObjectComposeException(e);
     }

@@ -18,6 +18,12 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>org.jodd</groupId>
+      <artifactId>jodd-bean</artifactId>
+      <version>3.8.1</version>
+    </dependency>
+
     <!-- poi -->
     <dependency>
       <groupId>org.apache.poi</groupId>

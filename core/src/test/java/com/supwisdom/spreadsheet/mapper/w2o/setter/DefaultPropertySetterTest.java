@@ -1,8 +1,8 @@
 package com.supwisdom.spreadsheet.mapper.w2o.setter;
 
-import com.supwisdom.spreadsheet.mapper.TestBean;
-import com.supwisdom.spreadsheet.mapper.model.core.CellBean;
-import com.supwisdom.spreadsheet.mapper.model.meta.FieldMetaBean;
+import com.supwisdom.spreadsheet.mapper.bean.Bar;
+import com.supwisdom.spreadsheet.mapper.bean.Foo;
+import com.supwisdom.spreadsheet.mapper.w2o.Workbook2ObjectComposeException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -11,9 +11,6 @@ import java.math.BigDecimal;
 
 import static org.testng.Assert.assertEquals;
 
-/**
- * Created by hanwen on 2017/1/5.
- */
 public class DefaultPropertySetterTest {
 
   @DataProvider
@@ -46,17 +43,68 @@ public class DefaultPropertySetterTest {
         new Object[] { "bigDecimal", "12", BigDecimal.valueOf(12) },
         new Object[] { "bigDecimal", null, null },
 
+        new Object[] { "bar.stringProperty", null, null },
+        new Object[] { "bar.stringProperty", "ABC", "ABC" },
+
     };
   }
 
+  /**
+   * 测试正常情况下的propertySet
+   *
+   * @param field
+   * @param cellValue
+   * @param expected
+   * @throws Exception
+   */
   @Test(dataProvider = "testSetPropertyParam")
   public void testSetProperty(String field, String cellValue, Object expected) throws Exception {
 
     DefaultPropertySetter setter = new DefaultPropertySetter();
-    TestBean testBean = new TestBean();
-    setter.setProperty(testBean, new CellBean(cellValue), new FieldMetaBean(field, 1));
+    Foo foo = new Foo();
+    foo.setBar(new Bar());
+    setter.setProperty(foo, field, cellValue);
 
-    assertEquals(PropertyUtils.getProperty(testBean, field), expected);
+    assertEquals(PropertyUtils.getProperty(foo, field), expected);
   }
+
+  @Test(expectedExceptions = Workbook2ObjectComposeException.class)
+  public void testNestPropertyNull() {
+
+    DefaultPropertySetter setter = new DefaultPropertySetter();
+    Foo foo = new Foo();
+    setter.setProperty(foo, "bar.stringProperty", "ABC");
+
+  }
+
+  @Test(expectedExceptions = Workbook2ObjectComposeException.class)
+  public void testOnlyGetterProperty() {
+
+    DefaultPropertySetter setter = new DefaultPropertySetter();
+    Foo foo = new Foo();
+    setter.setProperty(foo, "onlyGetterProperty", "ABC");
+
+    assertEquals(foo.getOnlyGetterProperty(), "ABC");
+
+  }
+
+  @Test
+  public void testOnlySetterProperty() {
+
+    DefaultPropertySetter setter = new DefaultPropertySetter();
+    Foo foo = new Foo();
+    setter.setProperty(foo, "onlySetterProperty", "ABC");
+
+  }
+
+  @Test(expectedExceptions = Workbook2ObjectComposeException.class)
+  public void testNotExistProperty() {
+
+    DefaultPropertySetter setter = new DefaultPropertySetter();
+    Foo foo = new Foo();
+    setter.setProperty(foo, "notExistProperty", "ABC");
+
+  }
+
 
 }
