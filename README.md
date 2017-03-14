@@ -71,6 +71,16 @@ compile 'com.supwisdom:spreadsheet-mapper:1.0.0-SNAPSHOT'
 1. package w2o：添加java 8 time数据类型的支持。
 1. package validation：添加java 8 lambda表达式的支持。
 
+### 例子
+
+1. 读取excel文件并生成Workbook的例子：[WorkbookReaderExample](examples/src/main/java/f2w/WorkbookReaderExample.java)
+1. 校验workbook的例子：[WorkbookValidatorExample](examples/src/main/java/f2w/WorkbookValidatorExample.java) [WorkbookValidatorWithValidatorBuilderExample](examples/src/main/java/f2w/WorkbookValidatorWithValidatorBuilderExample.java)
+1. 将Workbook转换成Object的例子：[Workbook2ObjectComposerExample](examples/src/main/java/f2w/Workbook2ObjectComposerExample.java)
+1. 将Object转换成Workbook的例子：[Object2WorkbookExample](examples/src/main/java/f2w/Object2WorkbookExample.java)
+1. 将Workbook写到excel文件的例子：[Workbook2ExcelWriterExample](examples/src/main/java/f2w/Workbook2ExcelWriterExample.java)
+1. 将Message写到excel文件的例子：[Message2ExcelWriterExample](examples/src/main/java/f2w/Message2ExcelWriterExample.java)
+
+
 ##*License*
 
 Released under the [Apache 2.0 license](license).
