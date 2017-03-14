@@ -39,6 +39,8 @@ public class Foo {
 
   private BigDecimal bigDecimal;
 
+  private Loo loo;
+
   public int getIntProperty() {
     return intProperty;
   }
@@ -158,4 +160,9 @@ public class Foo {
   public void setOnlySetterProperty(String onlySetterProperty) {
     this.onlySetterProperty = onlySetterProperty;
   }
+
+  public void setLoo(Loo loo) {
+    this.loo = loo;
+  }
+
 }

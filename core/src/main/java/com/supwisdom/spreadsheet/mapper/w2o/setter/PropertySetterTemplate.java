@@ -1,9 +1,11 @@
 package com.supwisdom.spreadsheet.mapper.w2o.setter;
 
+import com.supwisdom.spreadsheet.mapper.bean.BeanHelper;
+import com.supwisdom.spreadsheet.mapper.bean.BeanHelperBean;
+import com.supwisdom.spreadsheet.mapper.bean.BeanPropertyWriteException;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.w2o.Workbook2ObjectComposeException;
-import jodd.bean.BeanUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -16,6 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 public abstract class PropertySetterTemplate<T, V extends PropertySetterTemplate> implements PropertySetter<T> {
 
   protected String matchField;
+
+  protected BeanHelper beanHelper = new BeanHelperBean();
 
   final public V matchField(String matchField) {
     this.matchField = matchField;
@@ -30,22 +34,17 @@ public abstract class PropertySetterTemplate<T, V extends PropertySetterTemplate
   @Override
   public void setProperty(T object, Cell cell, FieldMeta fieldMeta) {
 
-    String value = cell.getValue();
-    String field = fieldMeta.getName();
-
-    if (StringUtils.isNotBlank(value)) {
-      setProperty(object, field, convertToProperty(value));
-    } else {
-      setProperty(object, field, null);
-    }
-
-  }
-
-  protected void setProperty(T object, String property, Object propertyValue) {
+    String propertyPath = fieldMeta.getName();
+    String propertyValue = cell.getValue();
 
     try {
-      BeanUtil.pojo.setProperty(object, property, propertyValue);
-    } catch (Exception e) {
+      if (StringUtils.isNotBlank(propertyValue)) {
+        beanHelper.setProperty(object, propertyPath, convertToProperty(propertyValue));
+      } else {
+        beanHelper.setProperty(object, propertyPath, null);
+      }
+
+    } catch (BeanPropertyWriteException e) {
       throw new Workbook2ObjectComposeException(e);
     }
 

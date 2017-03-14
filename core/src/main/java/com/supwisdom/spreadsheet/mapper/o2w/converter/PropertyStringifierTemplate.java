@@ -1,14 +1,10 @@
 package com.supwisdom.spreadsheet.mapper.o2w.converter;
 
-import com.supwisdom.spreadsheet.mapper.bean.BeanUtilsBeanFactory;
-import com.supwisdom.spreadsheet.mapper.bean.DefaultBeanUtilsBeanFactory;
+import com.supwisdom.spreadsheet.mapper.bean.BeanHelper;
+import com.supwisdom.spreadsheet.mapper.bean.BeanHelperBean;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.o2w.Object2WorkbookComposeException;
-import jodd.bean.BeanUtil;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.NestedNullException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,22 +17,11 @@ public abstract class PropertyStringifierTemplate<T, V extends PropertyStringifi
 
   protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-  protected BeanUtilsBeanFactory beanUtilsBeanFactory = new DefaultBeanUtilsBeanFactory();
-
   protected String matchField;
 
   protected String nullString;
 
-  /**
-   * 设置新的 {@link BeanUtilsBeanFactory}
-   *
-   * @param beanUtilsBeanFactory
-   * @return
-   */
-  final public V beanUtilsBeanFactory(BeanUtilsBeanFactory beanUtilsBeanFactory) {
-    this.beanUtilsBeanFactory = beanUtilsBeanFactory;
-    return (V) this;
-  }
+  protected BeanHelper beanHelper = new BeanHelperBean();
 
   /**
    * 匹配哪个{@link FieldMeta#getName()}
@@ -68,28 +53,17 @@ public abstract class PropertyStringifierTemplate<T, V extends PropertyStringifi
   @Override
   public String getPropertyString(T object, FieldMeta fieldMeta) {
 
-    String fieldName = fieldMeta.getName();
-    Object property = getProperty(object, fieldName);
-    if (property != null) {
-      return convertProperty(property);
-    }
-    return nullString;
-
-  }
-
-  protected Object getProperty(T object, String property) {
-
-    BeanUtilsBean beanUtilsBean = beanUtilsBeanFactory.getInstance();
-    Object propertyValue = null;
-
+    String propertyPath = fieldMeta.getName();
+    Object propertyValue;
     try {
-      propertyValue = beanUtilsBean.getPropertyUtils().getProperty(object, property);
-    } catch (NestedNullException e) {
-      logger.debug("Nested property is null", e);
+      propertyValue = beanHelper.getProperty(object, propertyPath);
     } catch (Exception e) {
       throw new Object2WorkbookComposeException("Sheet compose error", e);
     }
-    return propertyValue;
+    if (propertyValue != null) {
+      return convertProperty(propertyValue);
+    }
+    return nullString;
 
   }
 
