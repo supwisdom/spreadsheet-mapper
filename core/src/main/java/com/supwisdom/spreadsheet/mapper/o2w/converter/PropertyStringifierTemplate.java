@@ -1,10 +1,10 @@
 package com.supwisdom.spreadsheet.mapper.o2w.converter;
 
+import com.supwisdom.spreadsheet.mapper.bean.BeanHelper;
+import com.supwisdom.spreadsheet.mapper.bean.BeanHelperBean;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 import com.supwisdom.spreadsheet.mapper.o2w.Object2WorkbookComposeException;
-import org.apache.commons.beanutils.NestedNullException;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +20,8 @@ public abstract class PropertyStringifierTemplate<T, V extends PropertyStringifi
   protected String matchField;
 
   protected String nullString;
+
+  protected BeanHelper beanHelper = new BeanHelperBean();
 
   /**
    * 匹配哪个{@link FieldMeta#getName()}
@@ -51,18 +53,15 @@ public abstract class PropertyStringifierTemplate<T, V extends PropertyStringifi
   @Override
   public String getPropertyString(T object, FieldMeta fieldMeta) {
 
-    String fieldName = fieldMeta.getName();
-    Object property = null;
+    String propertyPath = fieldMeta.getName();
+    Object propertyValue;
     try {
-      property = PropertyUtils.getProperty(object, fieldName);
-    } catch (NestedNullException e) {
-      logger.debug("Nested property is null", e);
+      propertyValue = beanHelper.getProperty(object, propertyPath);
     } catch (Exception e) {
       throw new Object2WorkbookComposeException("Sheet compose error", e);
     }
-
-    if (property != null) {
-      return convertProperty(property);
+    if (propertyValue != null) {
+      return convertProperty(propertyValue);
     }
     return nullString;
 

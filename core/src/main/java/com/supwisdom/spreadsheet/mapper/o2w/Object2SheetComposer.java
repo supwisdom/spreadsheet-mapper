@@ -7,13 +7,14 @@ import com.supwisdom.spreadsheet.mapper.o2w.converter.PropertyStringifier;
 import java.util.List;
 
 /**
- * sheet compose helper, generated all cell type is string (include number, date etc.).
+ * 将List&lt;Object&gt;转换为{@link Sheet}的工具 <br>
  * Created by hanwen on 15-12-16.
  */
 public interface Object2SheetComposer<T> {
 
   /**
-   * {@link PropertyStringifier} unique with {@link PropertyStringifier#getMatchField()} in one sheet (one to one)
+   * 添加{@link PropertyStringifier}。<br>
+   * {@link PropertyStringifier#getMatchField()} 不能重复
    *
    * @param propertyStringifier {@link PropertyStringifier}
    * @return {@link Object2SheetComposer}
@@ -21,9 +22,10 @@ public interface Object2SheetComposer<T> {
   Object2SheetComposer<T> addFieldConverter(PropertyStringifier propertyStringifier);
 
   /**
-   * @param dataOfSheet list of data, may null
+   * @param dataOfSheet List&lt;Object&gt;，数据，可以为null
    * @param sheetMeta   {@link SheetMeta}
    * @return {@link Sheet}
    */
   Sheet compose(List<T> dataOfSheet, SheetMeta sheetMeta);
+  
 }

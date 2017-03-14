@@ -4,7 +4,7 @@ import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
 
 /**
- * 将要转换成{@link Row}的某个property转换成String的转换器
+ * 将要转换成{@link Row}的某个Object的property转换成String的转换器
  *
  * @param <T> 要转换成{@link Row}的Object的类型
  */

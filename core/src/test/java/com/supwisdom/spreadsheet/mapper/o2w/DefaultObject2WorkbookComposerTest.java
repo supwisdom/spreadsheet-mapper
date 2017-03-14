@@ -1,6 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.o2w;
 
-import com.supwisdom.spreadsheet.mapper.TestBean;
+import com.supwisdom.spreadsheet.mapper.bean.Foo;
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
@@ -25,7 +25,7 @@ public class DefaultObject2WorkbookComposerTest {
 
     Object2WorkbookComposer object2WorkbookComposer = new DefaultObject2WorkbookComposer();
 
-    Object2SheetComposer<TestBean> object2SheetComposer = new DefaultObject2SheetComposer<>();
+    Object2SheetComposer<Foo> object2SheetComposer = new DefaultObject2SheetComposer<>();
 
     SheetMeta sheetMeta1 = new SheetMetaBean("sheet-a", 1);
     SheetMeta sheetMeta2 = new SheetMetaBean("sheet-b", 1);

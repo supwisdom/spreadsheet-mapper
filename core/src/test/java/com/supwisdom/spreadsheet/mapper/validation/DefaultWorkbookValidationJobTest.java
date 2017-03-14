@@ -1,107 +1,89 @@
 package com.supwisdom.spreadsheet.mapper.validation;
 
-import com.supwisdom.spreadsheet.mapper.TestFactory;
+import com.supwisdom.spreadsheet.mapper.ExecutionRecorder;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.core.SheetBean;
-import com.supwisdom.spreadsheet.mapper.model.core.WorkbookBean;
-import com.supwisdom.spreadsheet.mapper.validation.validator.workbook.SheetAmountValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
+import com.supwisdom.spreadsheet.mapper.model.core.WorkbookBean;
+import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
+import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.WorkbookMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.WorkbookMetaBean;
-
-import com.supwisdom.spreadsheet.mapper.validation.testvalidator.*;
+import com.supwisdom.spreadsheet.mapper.validation.validator.ExecRecordWorkbookValidator;
+import org.apache.commons.lang3.StringUtils;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 /**
- * Created by hanwen on 2017/1/19.
+ * Created by qianjia on 2017/3/13.
  */
-@Test(dependsOnGroups = {"defaultSheetValidationJobTest"})
 public class DefaultWorkbookValidationJobTest {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(DefaultWorkbookValidationJobTest.class);
-
-  @BeforeClass
-  public void before() {
-    LOGGER.debug("-------------------starting test workbook validation job-------------------");
-  }
-
-  @Test
-  public void testValid() throws Exception {
-
-    Counter counter = new Counter();
-
-    WorkbookValidationJob workbookValidationJob = new DefaultWorkbookValidationJob();
-
-    SheetValidationJob sheetValidationJob = new DefaultSheetValidationJob();
-    TestCellValidator testCellValidator1 = new TestCellValidator(counter);
-    testCellValidator1.matchField("int1");
-    testCellValidator1.group("int1");
-    sheetValidationJob.addValidator(testCellValidator1);
-    TestCellValidator testCellValidator2 = new TestCellValidator(counter);
-    testCellValidator2.matchField("int2");
-    testCellValidator2.group("int2");
-    sheetValidationJob.addValidator(testCellValidator2);
-    TestCellValidator testCellValidator3 = new TestCellValidator(counter);
-    testCellValidator3.matchField("long1");
-    testCellValidator3.group("long1");
-    sheetValidationJob.addValidator(testCellValidator3);
-    TestCellValidator testCellValidator4 = new TestCellValidator(counter);
-    testCellValidator4.matchField("long2");
-    testCellValidator4.group("long2");
-    sheetValidationJob.addValidator(testCellValidator4);
-    TestCellValidator testCellValidator5 = new TestCellValidator(counter);
-    testCellValidator5.matchField("float1");
-    testCellValidator5.group("float1");
-    sheetValidationJob.addValidator(testCellValidator5);
-    TestCellValidator testCellValidator6 = new TestCellValidator(counter);
-    testCellValidator6.matchField("float2");
-    testCellValidator6.group("float2");
-    sheetValidationJob.addValidator(testCellValidator6);
-    TestCellValidator testCellValidator7 = new TestCellValidator(counter);
-    testCellValidator7.matchField("string");
-    testCellValidator7.group("string");
-    sheetValidationJob.addValidator(testCellValidator6);
-
-    TestMultiValidator testMultiValidator1 = new TestMultiValidator(counter);
-    testMultiValidator1.group("int1");
-    testMultiValidator1.matchFields("int1", "int2");
-    sheetValidationJob.addValidator(testMultiValidator1);
-    TestMultiValidator testMultiValidator2 = new TestMultiValidator(counter);
-    testMultiValidator2.group("int2");
-    testMultiValidator2.matchFields("int1", "int2");
-    sheetValidationJob.addValidator(testMultiValidator2);
-
+  @DataProvider
+  public Object[][] provideWorkbookAndMeta() {
 
     Workbook workbook = new WorkbookBean();
-    workbook.addSheet(getSheet());
-    workbook.addSheet(getSheet());
+
+    Sheet sheet1 = new SheetBean("Sheet-1");
+    workbook.addSheet(sheet1);
+
+    Sheet sheet2 = new SheetBean("Sheet-2");
+    workbook.addSheet(sheet2);
 
     WorkbookMeta workbookMeta = new WorkbookMetaBean();
-    workbookMeta.addSheetMeta(TestFactory.createSheetMeta(true));
-    workbookMeta.addSheetMeta(TestFactory.createSheetMeta(true));
+    SheetMeta sheetMeta1 = new SheetMetaBean(1);
+    SheetMeta sheetMeta2 = new SheetMetaBean(2);
+    workbookMeta.addSheetMeta(sheetMeta1);
+    workbookMeta.addSheetMeta(sheetMeta2);
 
-    boolean result = workbookValidationJob
-        .addValidator(new SheetAmountValidator(2))
-        .addSheetValidationJob(sheetValidationJob)
-        .addSheetValidationJob(sheetValidationJob)
-        .validate(workbook, workbookMeta);
+    return new Object[][] {
+        new Object[] { workbook, workbookMeta }
+    };
 
-    assertTrue(result);
-    assertEquals(counter.hitTime(), (7 + 2) * 2);
   }
 
-  private Sheet getSheet() {
-    Sheet baseSheet = TestFactory.createSheet();
-    Sheet sheet = new SheetBean();
-    sheet.addRow(baseSheet.getRow(1));
-    sheet.addRow(baseSheet.getRow(2));
-    return sheet;
+  /**
+   * 测试 WorkbookValidator, SheetValidationJob 校验顺序
+   */
+  @Test(dataProvider = "provideWorkbookAndMeta")
+  public void testDifferentKindValidatorExecutionOrder(Workbook workbook, WorkbookMeta workbookMeta) {
+
+    DefaultWorkbookValidationJob validationJob = new DefaultWorkbookValidationJob();
+    ExecutionRecorder executionRecorder = new ExecutionRecorder();
+
+    validationJob.addValidator(new ExecRecordWorkbookValidator("wb-validator", true, executionRecorder));
+    validationJob.addSheetValidationJob(new ExecRecordSheetValidationJob("sheet-validator-job-1", true, executionRecorder));
+    validationJob.addSheetValidationJob(new ExecRecordSheetValidationJob("sheet-validator-job-2", true, executionRecorder));
+    validationJob.validate(workbook, workbookMeta);
+
+    assertEquals(
+        StringUtils.join(executionRecorder.getExecutions(), ','),
+        "wb-validator#validate,sheet-validator-job-1#validate,sheet-validator-job-2#validate"
+    );
+
+  }
+
+  /**
+   * 测试 一个 SheetValidationJob 的失败不影响另一个
+   */
+  @Test(dataProvider = "provideWorkbookAndMeta")
+  public void testDifferentSheetValidationJobFailNotInfluence(Workbook workbook, WorkbookMeta workbookMeta) {
+
+    DefaultWorkbookValidationJob validationJob = new DefaultWorkbookValidationJob();
+    ExecutionRecorder executionRecorder = new ExecutionRecorder();
+
+    validationJob.addValidator(new ExecRecordWorkbookValidator("wb-validator", true, executionRecorder));
+    validationJob.addSheetValidationJob(new ExecRecordSheetValidationJob("sheet-validator-job-1", false, executionRecorder));
+    validationJob.addSheetValidationJob(new ExecRecordSheetValidationJob("sheet-validator-job-2", true, executionRecorder));
+    validationJob.validate(workbook, workbookMeta);
+
+    assertEquals(
+        StringUtils.join(executionRecorder.getExecutions(), ','),
+        "wb-validator#validate,sheet-validator-job-1#validate,sheet-validator-job-2#validate"
+    );
+
   }
 
 }

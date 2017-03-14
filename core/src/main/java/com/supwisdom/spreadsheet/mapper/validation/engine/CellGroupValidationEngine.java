@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * use simply validateGroup to do dependency validate, depends on dependencies no cycle {@link GraphCyclicChecker}
+ * 针对{@link Dependant}的两个实现{@link CellValidator}、{@link UnionCellValidator}的校验引擎。
  * Created by hanwen on 2017/1/6.
  */
 public class CellGroupValidationEngine {
@@ -38,9 +38,13 @@ public class CellGroupValidationEngine {
   // group -> validator -> columns
   private transient Map<String, Map<Dependant, List<Integer>>> group2Validator2Columns = new HashMap<>();
 
-  private transient Map<String, Boolean> result = new HashMap<>();
+  private transient Map<String, ValidateResult> result = new HashMap<>();
 
   private transient List<Message> errorMessages = new ArrayList<>();
+
+  private enum ValidateResult {
+    PASS, FAIL, SKIP
+  }
 
   public CellGroupValidationEngine(SheetMeta sheetMeta, List<Dependant> cellValidators) {
 
@@ -234,7 +238,7 @@ public class CellGroupValidationEngine {
       }
     }
 
-    return !result.values().contains(Boolean.FALSE);
+    return !result.values().contains(ValidateResult.FAIL);
   }
 
   public List<Message> getErrorMessages() {
@@ -259,14 +263,14 @@ public class CellGroupValidationEngine {
 
     // 判断上游group是否通过，如果没有通过则跳过
     for (String upstreamGroup : upstreamGroups) {
-      if (result.get(upstreamGroup) == null) {
+      if (result.get(upstreamGroup) == ValidateResult.SKIP) {
         LOGGER.debug("Skip validation group [{}] because upstream group [{}] skip", group, upstreamGroup);
-        result.put(group, null);
+        result.put(group, ValidateResult.SKIP);
         return;
       }
-      if (!result.get(upstreamGroup)) {
+      if (result.get(upstreamGroup) == ValidateResult.FAIL) {
         LOGGER.debug("Skip validation group [{}] because upstream group [{}] failure", group, upstreamGroup);
-        result.put(group, null);
+        result.put(group, ValidateResult.SKIP);
         return;
       }
     }
@@ -288,7 +292,7 @@ public class CellGroupValidationEngine {
         break;
       }
     }
-    result.put(group, groupSucceeded);
+    result.put(group, groupSucceeded ? ValidateResult.PASS : ValidateResult.FAIL);
 
   }
 

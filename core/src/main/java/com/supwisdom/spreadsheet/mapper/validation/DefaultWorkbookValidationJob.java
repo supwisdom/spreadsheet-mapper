@@ -75,7 +75,10 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob<Defau
       SheetMeta sheetMeta = workbookMeta.getSheetMeta(i);
 
       if (!sheetValidationJob.validate(sheet, sheetMeta)) {
-        errorMessages.addAll(sheetValidationJob.getErrorMessages());
+        List<Message> errorMessages = sheetValidationJob.getErrorMessages();
+        if (CollectionUtils.isNotEmpty(errorMessages)) {
+          this.errorMessages.addAll(errorMessages);
+        }
         sheetValidResult = false;
       }
     }
@@ -102,6 +105,9 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob<Defau
     for (WorkbookValidator validator : workbookValidators) {
       if (!validator.validate(workbook, workbookMeta)) {
 
+        if (CollectionUtils.isEmpty(validator.getErrorSheetIndices())) {
+          continue;
+        }
         for (Integer sheetIndex : validator.getErrorSheetIndices()) {
           errorMessages.add(new MessageBean(ExcelMessageWriteStrategies.TEXT_BOX, validator.getErrorMessage(), sheetIndex));
         }

@@ -1,8 +1,8 @@
 package com.supwisdom.spreadsheet.mapper.validation.validator.workbook;
 
-import com.supwisdom.spreadsheet.mapper.TestFactory;
 import com.supwisdom.spreadsheet.mapper.model.core.SheetBean;
 import com.supwisdom.spreadsheet.mapper.model.core.Workbook;
+import com.supwisdom.spreadsheet.mapper.model.core.WorkbookBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.WorkbookMetaBean;
 import org.testng.annotations.Test;
 
@@ -19,7 +19,8 @@ public class SheetAmountValidatorTest {
 
     SheetAmountValidator sheetAmountValidator = new SheetAmountValidator(2);
 
-    Workbook workbook = TestFactory.createWorkbook();
+    Workbook workbook = new WorkbookBean();
+    workbook.addSheet(new SheetBean());
 
     assertFalse(sheetAmountValidator.validate(workbook, new WorkbookMetaBean()));
 

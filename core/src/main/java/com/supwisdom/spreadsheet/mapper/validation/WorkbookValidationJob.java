@@ -33,7 +33,12 @@ public interface WorkbookValidationJob<T extends WorkbookValidationJob<T>> {
   T addSheetValidationJob(SheetValidationJob sheetValidationJob);
 
   /**
-   * 先执行{@link WorkbookValidator}，然后执行{@link SheetValidationJob#validate(Sheet, SheetMeta)}
+   * 执行校验。执行顺序是这样的：
+   * <ol>
+   * <li>{@link WorkbookValidator}</li>
+   * <li>针对每个{@link Sheet}执行{@link SheetValidationJob#validate(Sheet, SheetMeta)}</li>
+   * </ol>
+   * 如果前一步骤失败，那么就不会执行后面的步骤。
    *
    * @param workbook     {@link Workbook}
    * @param workbookMeta {@link WorkbookMeta}

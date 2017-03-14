@@ -1,6 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.w2o.setter;
 
-import com.supwisdom.spreadsheet.mapper.TestBean;
+import com.supwisdom.spreadsheet.mapper.bean.Foo;
 import com.supwisdom.spreadsheet.mapper.model.core.CellBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMetaBean;
 import org.testng.annotations.DataProvider;
@@ -32,9 +32,9 @@ public class BooleanPropertySetterTest {
     FieldMetaBean fieldMeta = new FieldMetaBean("boolean2", 1);
     BooleanPropertySetter setter = new BooleanPropertySetter(Collections.singleton("true"), Collections.singleton("false"));
 
-    TestBean testBean = new TestBean();
-    setter.setProperty(testBean, new CellBean(cellValue), fieldMeta);
-    assertEquals(testBean.getBoolean2(), expected);
+    Foo foo = new Foo();
+    setter.setProperty(foo, new CellBean(cellValue), fieldMeta);
+    assertEquals(foo.getBoolean2(), expected);
 
   }
 
