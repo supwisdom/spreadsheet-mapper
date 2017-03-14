@@ -1,6 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.o2w;
 
-import com.supwisdom.spreadsheet.mapper.TestBean;
+import com.supwisdom.spreadsheet.mapper.bean.Foo;
 import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
@@ -155,8 +155,8 @@ public class DefaultObject2SheetComposerTest {
     SheetMeta sheetMeta = new SheetMetaBean("sheet", dataStartRowIndex);
 
     List datum = new ArrayList<>(2);
-    datum.add(new TestBean());
-    datum.add(new TestBean());
+    datum.add(new Foo());
+    datum.add(new Foo());
 
     DefaultObject2SheetComposer sheetComposer = new DefaultObject2SheetComposer();
     Sheet sheet = sheetComposer.compose(datum, sheetMeta);
@@ -188,8 +188,8 @@ public class DefaultObject2SheetComposerTest {
     sheetMeta.addFieldMeta(fieldMeta1);
     sheetMeta.addFieldMeta(fieldMeta2);
 
-    TestBean t1 = new TestBean();
-    TestBean t2 = new TestBean();
+    Foo t1 = new Foo();
+    Foo t2 = new Foo();
 
     t1.setInt1(100);
     t1.setInt2(101);
@@ -243,8 +243,8 @@ public class DefaultObject2SheetComposerTest {
     sheetMeta.addFieldMeta(fieldMeta1);
     sheetMeta.addFieldMeta(fieldMeta2);
 
-    TestBean t1 = new TestBean();
-    TestBean t2 = new TestBean();
+    Foo t1 = new Foo();
+    Foo t2 = new Foo();
 
     t1.setInt1(100);
     t1.setInt2(101);

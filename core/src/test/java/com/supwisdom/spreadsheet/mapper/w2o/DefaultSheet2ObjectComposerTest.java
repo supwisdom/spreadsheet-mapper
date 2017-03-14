@@ -1,24 +1,19 @@
 package com.supwisdom.spreadsheet.mapper.w2o;
 
-import com.supwisdom.spreadsheet.mapper.AssertUtil;
-import com.supwisdom.spreadsheet.mapper.TestBean;
-import com.supwisdom.spreadsheet.mapper.TestFactory;
-import com.supwisdom.spreadsheet.mapper.model.core.Cell;
-import com.supwisdom.spreadsheet.mapper.model.core.Row;
-import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
-import com.supwisdom.spreadsheet.mapper.model.meta.FieldMeta;
+import com.supwisdom.spreadsheet.mapper.ExecutionRecorder;
+import com.supwisdom.spreadsheet.mapper.bean.Foo;
+import com.supwisdom.spreadsheet.mapper.model.core.*;
+import com.supwisdom.spreadsheet.mapper.model.meta.FieldMetaBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
-import com.supwisdom.spreadsheet.mapper.w2o.listener.CellProcessListener;
-import com.supwisdom.spreadsheet.mapper.w2o.listener.RowProcessListener;
-import com.supwisdom.spreadsheet.mapper.w2o.listener.SheetProcessListener;
-import com.supwisdom.spreadsheet.mapper.w2o.setter.BooleanPropertySetter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeClass;
+import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordCellProcessListener;
+import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordRowProcessListener;
+import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordSheetProcessListener;
+import com.supwisdom.spreadsheet.mapper.w2o.setter.ExecRecordPropertySetter;
+import org.apache.commons.lang3.StringUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -29,138 +24,79 @@ import static org.testng.Assert.assertEquals;
 @Test(groups = "defaultSheet2ObjectComposerTest")
 public class DefaultSheet2ObjectComposerTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSheet2ObjectComposerTest.class);
+  @DataProvider
+  public Object[][] provideSheetAndMeta() {
 
-  @BeforeClass
-  public void before() {
-    LOGGER.debug("-------------------starting test sheet process helper-------------------");
-  }
+    Sheet sheet = new SheetBean();
 
-  @Test
-  public void testProcess() throws Exception {
+    RowBean row1 = new RowBean();
+    row1.addCell(new CellBean("11"));
+    row1.addCell(new CellBean("12"));
+    sheet.addRow(row1);
 
-    Sheet sheet = TestFactory.createSheet();
-    SheetMeta sheetMeta1 = TestFactory.createSheetMeta(true);
+    RowBean row2 = new RowBean();
+    row2.addCell(new CellBean("21"));
+    row2.addCell(new CellBean("22"));
+    sheet.addRow(row2);
 
-    Counter counter = new Counter();
-    Sheet2ObjectComposer<TestBean> processor1 = new DefaultSheet2ObjectComposer<TestBean>()
-        .setObjectFactory(new TestBeanObjectFactory())
-        .setSheetProcessorListener(new TestSheetProcessListener(counter))
-        .setRowProcessorListener(new TestRowProcessListener(counter))
-        .setCellProcessorListener(new TestCellProcessListener(counter));
+    SheetMeta sheetMeta = new SheetMetaBean("SheAt", 1);
+    FieldMetaBean fieldMeta1 = new FieldMetaBean("int1", 1);
+    sheetMeta.addFieldMeta(fieldMeta1);
 
-    addSetter(processor1);
+    FieldMetaBean fieldMeta2 = new FieldMetaBean("long1", 2);
+    sheetMeta.addFieldMeta(fieldMeta2);
 
-    List<TestBean> list1 = processor1.compose(sheet, sheetMeta1);
-
-    // 2 sheet, 2 row, 12 columns
-    assertEquals(counter.hitTime(), 2 + 2 * 2 + 12 * 2 * 2);
-
-    assertEquals(list1.size(), 2);
-
-    AssertUtil.assertTestBean1Equals(list1.get(0));
-    AssertUtil.assertTestBean2Equals(list1.get(1));
-
-    SheetMeta sheetMeta2 = new SheetMetaBean(sheetMeta1.getDataStartRowIndex());
-
-    Sheet2ObjectComposer<TestBean> processor2 = new DefaultSheet2ObjectComposer<TestBean>()
-        .setObjectFactory(new TestBeanObjectFactory());
-
-    List<TestBean> list2 = processor2.compose(sheet, sheetMeta2);
-
-    assertEquals(list2.size(), 2);
-    for (TestBean testBean : list2) {
-      AssertUtil.assertTestBeanNull(testBean);
-    }
-  }
-
-  static void addSetter(Sheet2ObjectComposer<TestBean> processor1) {
-    processor1.addFieldSetter(new BooleanPropertySetter(
-        Collections.singleton("pass"),
-        Collections.singleton("failure")
-    ).matchField("boolean1"));
-    processor1.addFieldSetter(new BooleanPropertySetter(
-        Collections.singleton("pass"),
-        Collections.singleton("failure")
-    )
-    .matchField("boolean2"));
+    return new Object[][] {
+        new Object[] { sheet, sheetMeta }
+    };
 
   }
 
-  static class TestBeanObjectFactory implements ObjectFactory<TestBean> {
+  @Test(dataProvider = "provideSheetAndMeta")
+  public void testListenerExecutionOrder(Sheet sheet, SheetMeta sheetMeta) throws Exception {
 
-    @Override
-    public TestBean create(Row row, SheetMeta sheetMeta) {
-      return new TestBean();
-    }
+    ExecutionRecorder executionRecorder = new ExecutionRecorder();
+    Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<Foo>()
+        .setObjectFactory(new FooFactory())
+        .setSheetProcessorListener(new ExecRecordSheetProcessListener(executionRecorder))
+        .setRowProcessorListener(new ExecRecordRowProcessListener(executionRecorder))
+        .setCellProcessorListener(new ExecRecordCellProcessListener(executionRecorder));
+
+    composer.compose(sheet, sheetMeta);
+
+    List<String> executions = executionRecorder.getExecutions();
+    assertEquals(
+        StringUtils.join(executions, ','),
+        "sheet-listener#before[SheAt],"
+
+            + "row-listener#before[SheAt,1],"
+            + "cell-listener#before[int1,1,1],cell-listener#after[int1,1,1],cell-listener#before[long1,1,2],cell-listener#after[long1,1,2],"
+            + "row-listener#after[SheAt,1],"
+
+            + "row-listener#before[SheAt,2],"
+            + "cell-listener#before[int1,2,1],cell-listener#after[int1,2,1],cell-listener#before[long1,2,2],cell-listener#after[long1,2,2],"
+            + "row-listener#after[SheAt,2],"
+
+            + "sheet-listener#after[SheAt]"
+    );
+
   }
 
-  private class TestSheetProcessListener implements SheetProcessListener<TestBean> {
+  @Test(dataProvider = "provideSheetAndMeta")
+  public void testPropertySetterExecutionOrder(Sheet sheet, SheetMeta sheetMeta) throws Exception {
 
-    private Counter counter;
+    ExecutionRecorder executionRecorder = new ExecutionRecorder();
 
-    public TestSheetProcessListener(Counter counter) {
-      this.counter = counter;
-    }
+    Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<Foo>();
+    composer.setObjectFactory(new FooFactory());
+    composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("int1"));
+    composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("long1"));
 
-    @Override
-    public void before(Sheet sheet, SheetMeta sheetMeta) {
-      counter.hit();
-    }
+    composer.compose(sheet, sheetMeta);
 
-    @Override
-    public void after(List<TestBean> objects, Sheet sheet, SheetMeta sheetMeta) {
-      counter.hit();
-    }
+    List<String> executions = executionRecorder.getExecutions();
+    assertEquals(StringUtils.join(executions, ','), "property-setter#setProperty[int1,1,1],property-setter#setProperty[long1,1,2],property-setter#setProperty[int1,2,1],property-setter#setProperty[long1,2,2]");
+
   }
 
-  private class TestRowProcessListener implements RowProcessListener<TestBean> {
-
-    private Counter counter;
-
-    public TestRowProcessListener(Counter counter) {
-      this.counter = counter;
-    }
-
-    @Override
-    public void before(TestBean object, Row row, SheetMeta sheetMeta) {
-      counter.hit();
-    }
-
-    @Override
-    public void after(TestBean object, Row row, SheetMeta sheetMeta) {
-      counter.hit();
-    }
-  }
-
-  private class TestCellProcessListener implements CellProcessListener<TestBean> {
-
-    private Counter counter;
-
-    public TestCellProcessListener(Counter counter) {
-      this.counter = counter;
-    }
-
-    @Override
-    public void before(TestBean object, Cell cell, FieldMeta fieldMeta) {
-      counter.hit();
-    }
-
-    @Override
-    public void after(TestBean object, Cell cell, FieldMeta fieldMeta) {
-      counter.hit();
-    }
-  }
-
-  static class Counter {
-    private int count = 0;
-
-    void hit() {
-      count++;
-    }
-
-    int hitTime() {
-      return count;
-    }
-  }
 }

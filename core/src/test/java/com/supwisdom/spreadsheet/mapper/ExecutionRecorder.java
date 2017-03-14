@@ -1,4 +1,4 @@
-package com.supwisdom.spreadsheet.mapper.validation.validator;
+package com.supwisdom.spreadsheet.mapper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -13,7 +13,7 @@ public class CellBean implements Cell {
 
   private String value;
 
-  private Row row;
+  private transient Row row;
 
   public CellBean() {
     // default constructor, empty cell
@@ -71,4 +71,5 @@ public class CellBean implements Cell {
   void setIndex(int index) {
     this.index = index;
   }
+
 }

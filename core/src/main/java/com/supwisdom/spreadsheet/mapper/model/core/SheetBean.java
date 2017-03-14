@@ -16,7 +16,7 @@ public class SheetBean implements Sheet {
 
   private List<Row> rows = new ArrayList<>();
 
-  private Workbook workbook;
+  private transient Workbook workbook;
 
   public SheetBean() {
     // default constructor
@@ -88,5 +88,25 @@ public class SheetBean implements Sheet {
 
   void setIndex(int index) {
     this.index = index;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    SheetBean sheetBean = (SheetBean) o;
+
+    if (index != sheetBean.index) return false;
+    if (name != null ? !name.equals(sheetBean.name) : sheetBean.name != null) return false;
+    return rows != null ? rows.equals(sheetBean.rows) : sheetBean.rows == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = index;
+    result = 31 * result + (name != null ? name.hashCode() : 0);
+    result = 31 * result + (rows != null ? rows.hashCode() : 0);
+    return result;
   }
 }

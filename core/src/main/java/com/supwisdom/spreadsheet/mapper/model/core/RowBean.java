@@ -14,7 +14,7 @@ public class RowBean implements Row {
 
   private List<Cell> cells = new ArrayList<>();
 
-  private Sheet sheet;
+  private transient Sheet sheet;
 
   @Override
   public int getIndex() {
@@ -72,5 +72,23 @@ public class RowBean implements Row {
 
   void setIndex(int index) {
     this.index = index;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    RowBean rowBean = (RowBean) o;
+
+    if (index != rowBean.index) return false;
+    return cells != null ? cells.equals(rowBean.cells) : rowBean.cells == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = index;
+    result = 31 * result + (cells != null ? cells.hashCode() : 0);
+    return result;
   }
 }

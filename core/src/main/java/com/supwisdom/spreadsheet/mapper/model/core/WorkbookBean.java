@@ -42,4 +42,19 @@ public class WorkbookBean implements Workbook {
   public Sheet getFirstSheet() {
     return getSheet(1);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    WorkbookBean that = (WorkbookBean) o;
+
+    return sheets != null ? sheets.equals(that.sheets) : that.sheets == null;
+  }
+
+  @Override
+  public int hashCode() {
+    return sheets != null ? sheets.hashCode() : 0;
+  }
 }
