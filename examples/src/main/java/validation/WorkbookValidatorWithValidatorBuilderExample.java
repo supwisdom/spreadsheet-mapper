@@ -11,10 +11,13 @@ import com.supwisdom.spreadsheet.mapper.model.meta.WorkbookMetaBean;
 import com.supwisdom.spreadsheet.mapper.model.msg.Message;
 import com.supwisdom.spreadsheet.mapper.validation.DefaultSheetValidationJob;
 import com.supwisdom.spreadsheet.mapper.validation.DefaultWorkbookValidationJob;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.RequireValidator;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.UniqueValidator;
-import com.supwisdom.spreadsheet.mapper.validation.validator.cell.ValueScopeValidator;
-import com.supwisdom.spreadsheet.mapper.validation.validator.unioncell.LambdaUnionCellValidator;
+import com.supwisdom.spreadsheet.mapper.validation.builder.CellValidatorBatchBuilder;
+import com.supwisdom.spreadsheet.mapper.validation.builder.cell.RequireValidatorFactory;
+import com.supwisdom.spreadsheet.mapper.validation.builder.cell.UniqueValidatorFactory;
+import com.supwisdom.spreadsheet.mapper.validation.builder.cell.ValueScopeParam;
+import com.supwisdom.spreadsheet.mapper.validation.builder.cell.ValueScopeValidatorFactory;
+import com.supwisdom.spreadsheet.mapper.validation.builder.unioncell.LambdaUnionCellValidatorFactory;
+import com.supwisdom.spreadsheet.mapper.validation.builder.unioncell.LambdaUnionCellValidatorParam;
 import com.supwisdom.spreadsheet.mapper.validation.validator.workbook.SheetAmountValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,20 +29,19 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * 校验excel的例子。
- * 这个例子里面使用了{@link Excel2WorkbookReader}，{@link ExcelMessageWriter}
+ * 校验excel的例子。使用了 {@link CellValidatorBatchBuilder}
  * Created by qianjia on 2017/3/10.
  */
-public class WorkbookValidatorExample {
+public class WorkbookValidatorWithValidatorBuilderExample {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(WorkbookValidatorExample.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(WorkbookValidatorWithValidatorBuilderExample.class);
 
   public static void main(String[] args) throws IOException {
 
     // 先从excel文件中读取成 Workbook
     WorkbookReader workbookReader = new Excel2WorkbookReader();
     Workbook workbook;
-    try (InputStream inputStream = WorkbookValidatorExample.class.getResourceAsStream("test.xlsx")) {
+    try (InputStream inputStream = WorkbookValidatorWithValidatorBuilderExample.class.getResourceAsStream("test.xlsx")) {
       workbook = workbookReader.read(inputStream);
     }
 
@@ -74,52 +76,69 @@ public class WorkbookValidatorExample {
     DefaultSheetValidationJob sheetValidationJob = new DefaultSheetValidationJob();
     workbookValidationJob.addSheetValidationJob(sheetValidationJob);
 
-    sheetValidationJob.addValidator(new RequireValidator().matchField("code").group("code").errorMessage("必填"));
-    sheetValidationJob.addValidator(new RequireValidator().matchField("gender").group("gender").errorMessage("必填"));
-    sheetValidationJob.addValidator(new RequireValidator().matchField("xueli").group("xueli").errorMessage("必填"));
-    sheetValidationJob.addValidator(
-        new RequireValidator().matchField("identityCardType").group("identityCardType").errorMessage("必填"));
-    sheetValidationJob
-        .addValidator(new RequireValidator().matchField("identityCardNo").group("identityCardNo").errorMessage("必填"));
-    sheetValidationJob.addValidator(new RequireValidator().matchField("grade").group("grade").errorMessage("必填"));
-    sheetValidationJob.addValidator(new RequireValidator().matchField("college").group("college").errorMessage("必填"));
-    sheetValidationJob.addValidator(new RequireValidator().matchField("major").group("major").errorMessage("必填"));
-    sheetValidationJob
-        .addValidator(new RequireValidator().matchField("adminclass").group("adminclass").errorMessage("必填"));
+    CellValidatorBatchBuilder validatorBuilder = new CellValidatorBatchBuilder();
+    validatorBuilder
+        // 给这些Field添加必填校验
+        .start(RequireValidatorFactory.getInstance())
+        .matchFields("code", "gender", "xueli", "identityCardType", "identityCardNo", "grade", "college", "major",
+            "adminclass")
+        .errorMessage("必填")
+        .end()
 
-    sheetValidationJob.addValidator(
-        new ValueScopeValidator(new String[] { "男", "女" }).matchField("gender").group("gender")
-            .errorMessage("只能填写：男、女"));
-    sheetValidationJob.addValidator(
-        new ValueScopeValidator(new String[] { "是", "否" }).matchField("xueli").group("xueli").errorMessage("只能填写：是、否"));
-    sheetValidationJob.addValidator(
-        new ValueScopeValidator(new String[] { "居民身份证", "护照", "港澳通行证" }).matchField("identityCardType")
-            .group("identityCardType").errorMessage("只能填写。居民身份证、护照、港澳通行证"));
-    sheetValidationJob.addValidator(
-        new LambdaUnionCellValidator((cells, metas) -> {
+        // 性别 只能填男、女
+        .start(ValueScopeValidatorFactory.getInstance())
+        .matchFields("gender")
+        .param(new ValueScopeParam(new String[] { "男", "女" }))
+        .errorMessage("只能填写：男、女")
+        .end()
+
+        // 是否学历生 只能填 是、否
+        .start(ValueScopeValidatorFactory.getInstance())
+        .matchFields("xueli")
+        .param(new ValueScopeParam(new String[] { "是", "否" }))
+        .errorMessage("只能填写：是、否")
+        .end()
+
+        // 证件类型 只能填 居民身份证、护照、港澳通行证
+        .start(ValueScopeValidatorFactory.getInstance())
+        .matchFields("identityCardType")
+        .param(new ValueScopeParam(new String[] { "居民身份证", "护照", "港澳通行证" }))
+        .errorMessage("只能填写。居民身份证、护照、港澳通行证")
+        .end()
+
+        // 证件号码 如果是 居民身份证，号码必须18位
+        // 因为是联合几个Cell的校验，因此要定义group
+        .start(LambdaUnionCellValidatorFactory.getInstance())
+        .group("identity")
+        .matchFields("identityCardType", "identityCardNo")
+        .dependsOn("identityCardType")
+        .param(new LambdaUnionCellValidatorParam((cells, metas) -> {
           String idcardType = cells.get(0).getValue();
           String idcardNo = cells.get(1).getValue();
           if (idcardType.equals("居民身份证")) {
             return idcardNo.length() == 18;
           }
           return true;
-        })
-            .group("identity")
-            .errorMessage("证件号码长度不符合")
-            .matchFields("identityCardType", "identityCardNo")
-            .dependsOn("identityCardType")
-    );
+        }))
+        .errorMessage("证件号码长度不符合")
+        .end()
 
-    sheetValidationJob.addValidator(new UniqueValidator().matchField("code").group("code").errorMessage("不唯一"));
-    sheetValidationJob
-        .addValidator(new UniqueValidator().matchField("identityCardNo").group("identityCardNo").errorMessage("不唯一"));
+        // 学号、证件号码 在excel文件里唯一
+        .start(UniqueValidatorFactory.getInstance())
+        .matchFields("code", "identityCardNo")
+        .errorMessage("不唯一")
+        .end()
+
+    ;
+    validatorBuilder.addToSheetValidationJob(sheetValidationJob);
 
     // 开始校验
     boolean valid = workbookValidationJob.validate(workbook, workbookMeta);
     List<Message> workbookErrors = workbookValidationJob.getErrorMessages();
 
     MessageWriter messageWriter = null;
-    try (InputStream resourceAsStream = WorkbookValidatorExample.class.getResourceAsStream("test.xlsx")) {
+    try (InputStream resourceAsStream = WorkbookValidatorWithValidatorBuilderExample.class
+        .getResourceAsStream("test.xlsx")) {
       // 读取excel内容
       messageWriter = new ExcelMessageWriter(resourceAsStream);
 
