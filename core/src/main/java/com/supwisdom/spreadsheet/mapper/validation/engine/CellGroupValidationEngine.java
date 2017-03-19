@@ -205,11 +205,12 @@ public class CellGroupValidationEngine {
   private Integer getValidateColumnIndex(SheetMeta sheetMeta, CellValidator validator) {
 
     String matchField = validator.getMatchField();
-    FieldMeta fieldMeta = sheetMeta.getFieldMeta(matchField);
+    FieldMeta fieldMeta = sheetMeta.getUniqueFieldMeta(matchField);
     if (fieldMeta == null) {
       LOGGER.debug("Couldn't find field [{}] for CellValidator [{}]", matchField, validator.getClass().getName());
       return null;
     }
+
     return fieldMeta.getColumnIndex();
 
   }
@@ -218,7 +219,7 @@ public class CellGroupValidationEngine {
 
     LinkedHashSet<Integer> columnIndices = new LinkedHashSet<>(validator.getMatchFields().size());
     for (String matchField : validator.getMatchFields()) {
-      FieldMeta fieldMeta = sheetMeta.getFieldMeta(matchField);
+      FieldMeta fieldMeta = sheetMeta.getUniqueFieldMeta(matchField);
       if (fieldMeta == null) {
         LOGGER
             .debug("Couldn't find field [{}] for UnionCellValidator [{}]", matchField, validator.getClass().getName());
@@ -325,7 +326,7 @@ public class CellGroupValidationEngine {
 
     for (Integer columnIndex : columnIndices) {
       cells.add(row.getCell(columnIndex));
-      fieldMetas.add(sheetMeta.getFieldMeta(columnIndex));
+      fieldMetas.add(sheetMeta.getFieldMetas(columnIndex));
     }
 
     boolean result = validator.validate(cells, fieldMetas);
@@ -357,7 +358,7 @@ public class CellGroupValidationEngine {
     int columnIndex = columnIndices.get(0);
 
     Cell cell = row.getCell(columnIndex);
-    FieldMeta fieldMeta = sheetMeta.getFieldMeta(columnIndex);
+    FieldMeta fieldMeta = sheetMeta.getFieldMetas(columnIndex);
 
     boolean result = validator.validate(cell, fieldMeta);
 

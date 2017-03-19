@@ -321,6 +321,23 @@ public class DefaultSheetValidationJobTest {
 
   }
 
+  @Test(expectedExceptions = WorkbookValidateException.class, expectedExceptionsMessageRegExp = ".*SheetMeta contains duplicate FieldMeta.*")
+  public void testDuplicateFieldMeta() {
+
+    DefaultSheetValidationJob validationJob = new DefaultSheetValidationJob();
+
+    SheetBean sheetBean = new SheetBean();
+    SheetMetaBean sheetMetaBean = new SheetMetaBean(1);
+
+    FieldMetaBean fieldMeta1 = new FieldMetaBean("a", 1);
+    FieldMetaBean fieldMeta2 = new FieldMetaBean("a", 2);
+
+    sheetMetaBean.addFieldMeta(fieldMeta1);
+    sheetMetaBean.addFieldMeta(fieldMeta2);
+
+    validationJob.validate(sheetBean, sheetMetaBean);
+  }
+
 }
 
 

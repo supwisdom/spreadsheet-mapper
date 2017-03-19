@@ -5,6 +5,7 @@ import com.supwisdom.spreadsheet.mapper.model.core.Cell;
 import com.supwisdom.spreadsheet.mapper.model.core.Row;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMetaBean;
+import com.supwisdom.spreadsheet.mapper.model.meta.HeaderMetaBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
 import com.supwisdom.spreadsheet.mapper.o2w.converter.NumberPropertyStringifier;
@@ -279,6 +280,62 @@ public class DefaultObject2SheetComposerTest {
     assertEquals(row2.getCell(2).getValue(), "100");
 
     assertEquals(row3.getCell(1).getValue(), "202");
+    assertEquals(row3.getCell(2).getValue(), "200");
+
+  }
+
+  /**
+   * 测试有两个相同name的FieldMeta，有Data
+   * 预期结果：
+   * 1) 有3行数据
+   * 2) 相同field的值出现两次，也就是有两个columnIndex不一样，但是值一样的Cell
+   */
+  @Test
+  public void testComposeDuplicatedFieldMeta() {
+
+    SheetMeta sheetMeta = new SheetMetaBean("sheet", 2);
+
+    FieldMetaBean fieldMeta1 = new FieldMetaBean("int1", 1);
+    fieldMeta1.addHeaderMeta(new HeaderMetaBean(1, "int1字段"));
+
+    FieldMetaBean fieldMeta2 = new FieldMetaBean("int1", 2);
+    fieldMeta2.addHeaderMeta(new HeaderMetaBean(1, "int1字段-重复"));
+
+    sheetMeta.addFieldMeta(fieldMeta1);
+    sheetMeta.addFieldMeta(fieldMeta2);
+
+    Foo t1 = new Foo();
+    Foo t2 = new Foo();
+
+    t1.setInt1(100);
+    t2.setInt1(200);
+
+    List datum = new ArrayList<>(2);
+    datum.add(t1);
+    datum.add(t2);
+
+    DefaultObject2SheetComposer sheetComposer = new DefaultObject2SheetComposer();
+    sheetComposer.addFieldConverter(new NumberPropertyStringifier().matchField("int1"));
+    Sheet sheet = sheetComposer.compose(datum, sheetMeta);
+
+    assertEquals(sheet.getName(), "sheet");
+
+    assertEquals(sheet.getRows().size(), datum.size() + 1);
+
+    Row row1 = sheet.getRow(1);
+    Row row2 = sheet.getRow(2);
+    Row row3 = sheet.getRow(3);
+
+    assertEquals(row1.getCells().size(), 2);
+    assertEquals(row1.getCell(1).getValue(), "int1字段");
+    assertEquals(row1.getCell(2).getValue(), "int1字段-重复");
+
+    assertEquals(row2.getCells().size(), 2);
+    assertEquals(row2.getCell(1).getValue(), "100");
+    assertEquals(row2.getCell(2).getValue(), "100");
+
+    assertEquals(row3.getCells().size(), 2);
+    assertEquals(row3.getCell(1).getValue(), "200");
     assertEquals(row3.getCell(2).getValue(), "200");
 
   }

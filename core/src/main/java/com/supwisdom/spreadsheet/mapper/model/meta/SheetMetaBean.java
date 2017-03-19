@@ -1,5 +1,6 @@
 package com.supwisdom.spreadsheet.mapper.model.meta;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.*;
@@ -17,9 +18,9 @@ public class SheetMetaBean implements SheetMeta {
 
   private WorkbookMeta workbookMeta;
 
-  private Map<String, FieldMeta> name2FieldMeta = new HashMap<>();
-
   private Map<Integer, FieldMeta> column2FieldMeta = new HashMap<>();
+
+  private Map<String, List<FieldMeta>> name2FieldMetas = new HashMap<>();
 
   public SheetMetaBean(int dataStartRowIndex) {
     this(null, dataStartRowIndex);
@@ -47,21 +48,38 @@ public class SheetMetaBean implements SheetMeta {
 
   @Override
   public List<FieldMeta> getFieldMetas() {
-    List<FieldMeta> fieldMetas = new ArrayList<>(this.name2FieldMeta.values());
+    List<FieldMeta> fieldMetas = new ArrayList<>(this.column2FieldMeta.values());
     Collections.sort(fieldMetas);
     return fieldMetas;
   }
 
   @Override
-  public FieldMeta getFieldMeta(String fieldName) {
-    if (name2FieldMeta.isEmpty()) {
+  public List<FieldMeta> getFieldMetas(String fieldName) {
+    if (name2FieldMetas.isEmpty()) {
       return null;
     }
-    return name2FieldMeta.get(fieldName);
+    List<FieldMeta> fieldMetas = new ArrayList<>(name2FieldMetas.get(fieldName));
+    if (fieldMetas == null) {
+      return Collections.emptyList();
+    }
+    Collections.sort(fieldMetas);
+    return fieldMetas;
   }
 
   @Override
-  public FieldMeta getFieldMeta(int columnIndex) {
+  public FieldMeta getUniqueFieldMeta(String fieldName) {
+    List<FieldMeta> fieldMetas = getFieldMetas(fieldName);
+    if (CollectionUtils.isEmpty(fieldMetas)) {
+      return null;
+    }
+    if (fieldMetas.size() == 1) {
+      return fieldMetas.get(0);
+    }
+    throw new IllegalStateException("This sheetMeta has duplicated FieldMeta for name [" + fieldName + "]");
+  }
+
+  @Override
+  public FieldMeta getFieldMetas(int columnIndex) {
     if (column2FieldMeta.isEmpty()) {
       return null;
     }
@@ -70,11 +88,17 @@ public class SheetMetaBean implements SheetMeta {
 
   @Override
   public void removeFieldMeta(String fieldName) {
-    if (name2FieldMeta.isEmpty()) {
+    if (name2FieldMetas.isEmpty()) {
       return;
     }
-    FieldMeta fieldMeta = name2FieldMeta.remove(fieldName);
-    if (fieldMeta != null) {
+
+    List<FieldMeta> fieldMetas = getFieldMetas(fieldName);
+    if (CollectionUtils.isEmpty(fieldMetas)) {
+      return;
+    }
+
+    for (FieldMeta fieldMeta : fieldMetas) {
+      name2FieldMetas.get(fieldName).remove(fieldMeta);
       column2FieldMeta.remove(fieldMeta.getColumnIndex());
     }
 
@@ -89,15 +113,20 @@ public class SheetMetaBean implements SheetMeta {
     String fieldName = fieldMeta.getName();
     int columnIndex = fieldMeta.getColumnIndex();
 
-    if (name2FieldMeta.containsKey(fieldName)) {
-      throw new IllegalArgumentException("This sheetMeta already has FieldMeta for name [" + fieldName + "]");
-    }
+
     if (column2FieldMeta.containsKey(columnIndex)) {
       throw new IllegalArgumentException("This sheetMeta already has FieldMeta for column [" + columnIndex + "]");
     }
 
+    //
     ((FieldMetaBean) fieldMeta).setSheetMeta(this);
-    name2FieldMeta.put(fieldName, fieldMeta);
+    List<FieldMeta> internalFieldMetas = name2FieldMetas.get(fieldName);
+    if (internalFieldMetas == null) {
+      internalFieldMetas = new ArrayList<>();
+      name2FieldMetas.put(fieldName, internalFieldMetas);
+    }
+    internalFieldMetas.add(fieldMeta);
+
     column2FieldMeta.put(columnIndex, fieldMeta);
 
   }

@@ -17,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -105,6 +106,8 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
   @Override
   public boolean validate(Sheet sheet, SheetMeta sheetMeta) {
 
+    assertNoDuplicatedFieldMeta(sheetMeta);
+
     if (!executeSheetValidators(sheet, sheetMeta)) {
       return false;
     }
@@ -128,6 +131,21 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
     }
 
     return result;
+  }
+
+  /**
+   * 检查不存在相同name的FieldMeta
+   *
+   * @param sheetMeta
+   */
+  private void assertNoDuplicatedFieldMeta(SheetMeta sheetMeta) {
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    Set<String> fieldNames = new HashSet<>(fieldMetas.size());
+    for (FieldMeta fieldMeta : fieldMetas) {
+      if (!fieldNames.add(fieldMeta.getName())) {
+        throw new WorkbookValidateException("SheetMeta contains duplicate FieldMeta [" + fieldMeta.getName() + "]");
+      }
+    }
   }
 
   private boolean executeSheetValidators(Sheet sheet, SheetMeta sheetMeta) {
@@ -162,17 +180,20 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
 
         String errorMessage = validator.getErrorMessage();
 
-        Set<String> messageOnFields = validator.getErrorFields();
-        if (StringUtils.isNotBlank(errorMessage) && CollectionUtils.isNotEmpty(messageOnFields)) {
+        Set<String> errorFields = validator.getErrorFields();
 
-          for (String messageOnField : messageOnFields) {
-
-            FieldMeta fieldMeta = sheetMeta.getFieldMeta(messageOnField);
-            errorMessages.add(
-                new MessageBean(ExcelMessageWriteStrategies.COMMENT, StringUtils.defaultIfBlank(errorMessage, "Invalid"), row.getSheet().getIndex(), row.getIndex(),
-                    fieldMeta.getColumnIndex()));
-          }
+        if (StringUtils.isBlank(errorMessage) || CollectionUtils.isEmpty(errorFields)) {
+          continue;
         }
+
+        for (String messageOnField : errorFields) {
+
+          FieldMeta fieldMeta = sheetMeta.getUniqueFieldMeta(messageOnField);
+          errorMessages.add(
+              new MessageBean(ExcelMessageWriteStrategies.COMMENT, StringUtils.defaultIfBlank(errorMessage, "Invalid"), row.getSheet().getIndex(), row.getIndex(),
+                  fieldMeta.getColumnIndex()));
+        }
+
       }
     }
 
