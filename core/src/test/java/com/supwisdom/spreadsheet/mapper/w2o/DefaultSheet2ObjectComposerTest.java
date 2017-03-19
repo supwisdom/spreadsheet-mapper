@@ -6,6 +6,8 @@ import com.supwisdom.spreadsheet.mapper.model.core.*;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMetaBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
+import com.supwisdom.spreadsheet.mapper.validation.DefaultSheetValidationJob;
+import com.supwisdom.spreadsheet.mapper.validation.WorkbookValidateException;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordCellProcessListener;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordRowProcessListener;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordSheetProcessListener;
@@ -97,6 +99,24 @@ public class DefaultSheet2ObjectComposerTest {
     List<String> executions = executionRecorder.getExecutions();
     assertEquals(StringUtils.join(executions, ','), "property-setter#setProperty[int1,1,1],property-setter#setProperty[long1,1,2],property-setter#setProperty[int1,2,1],property-setter#setProperty[long1,2,2]");
 
+  }
+
+  @Test(expectedExceptions = Workbook2ObjectComposeException.class, expectedExceptionsMessageRegExp = ".*SheetMeta contains duplicate FieldMeta.*")
+  public void testDuplicateFieldMeta() {
+
+    Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<Foo>();
+    composer.setObjectFactory(new FooFactory());
+
+    SheetBean sheetBean = new SheetBean();
+    SheetMetaBean sheetMetaBean = new SheetMetaBean(1);
+
+    FieldMetaBean fieldMeta1 = new FieldMetaBean("a", 1);
+    FieldMetaBean fieldMeta2 = new FieldMetaBean("a", 2);
+
+    sheetMetaBean.addFieldMeta(fieldMeta1);
+    sheetMetaBean.addFieldMeta(fieldMeta2);
+
+    composer.compose(sheetBean, sheetMetaBean);
   }
 
 }

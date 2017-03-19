@@ -115,6 +115,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
     if (objectFactory == null) {
       throw new Workbook2ObjectComposeException("setProperty object factory first");
     }
+    assertNoDuplicatedFieldMeta(sheetMeta);
 
     List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
     Map<Integer, FieldMeta> columnIndex2fieldMeta = buildFieldMetaMap(fieldMetas);
@@ -170,4 +171,20 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
     }
     return columnIndex2fieldMeta;
   }
+
+  /**
+   * 检查不存在相同name的FieldMeta
+   *
+   * @param sheetMeta
+   */
+  private void assertNoDuplicatedFieldMeta(SheetMeta sheetMeta) {
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    Set<String> fieldNames = new HashSet<>(fieldMetas.size());
+    for (FieldMeta fieldMeta : fieldMetas) {
+      if (!fieldNames.add(fieldMeta.getName())) {
+        throw new Workbook2ObjectComposeException("SheetMeta contains duplicate FieldMeta [" + fieldMeta.getName() + "]");
+      }
+    }
+  }
+
 }
