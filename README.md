@@ -10,21 +10,21 @@
 <dependency>
     <groupId>com.supwisdom</groupId>
     <artifactId>spreadsheet-mapper-core</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.4-SNAPSHOT</version>
 </dependency>
 
 <!-- （可选）对joda的支持 -->
 <dependency>
     <groupId>com.supwisdom</groupId>
     <artifactId>spreadsheet-mapper-joda</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.4-SNAPSHOT</version>
 </dependency>
 
 <!-- （可选）对java8的支持 -->
 <dependency>
     <groupId>com.supwisdom</groupId>
     <artifactId>spreadsheet-mapper-java8</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.4-SNAPSHOT</version>
 </dependency>
 
 ```
@@ -32,7 +32,7 @@
 ## Gradle
 
 ``` groovy
-compile 'com.supwisdom:spreadsheet-mapper:1.0.4'
+compile 'com.supwisdom:spreadsheet-mapper:1.0.4-SNAPSHOT'
 ```
 
 ## 项目一览
