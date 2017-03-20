@@ -1,7 +1,7 @@
 # spreadsheet-mapper
 [![Build Status](https://travis-ci.org/supwisdom/spreadsheet-mapper.svg?branch=develop)](https://travis-ci.org/supwisdom/spreadsheet-mapper)
 [![codecov](https://codecov.io/gh/supwisdom/spreadsheet-mapper/branch/develop/graph/badge.svg)](https://codecov.io/gh/supwisdom/spreadsheet-mapper)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.supwisdom/spreadsheet-mapper/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.supwisdom/spreadsheet-mapper)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.supwisdom/spreadsheet-mapper-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.supwisdom/spreadsheet-mapper-core)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## Maven
@@ -32,7 +32,9 @@
 ## Gradle
 
 ``` groovy
-compile 'com.supwisdom:spreadsheet-mapper:1.0.6-SNAPSHOT'
+compile 'com.supwisdom:spreadsheet-mapper-core:1.0.6-SNAPSHOT'
+compile 'com.supwisdom:spreadsheet-mapper-java8:1.0.6-SNAPSHOT'
+compile 'com.supwisdom:spreadsheet-mapper-joda:1.0.6-SNAPSHOT'
 ```
 
 ## 项目一览
@@ -81,6 +83,6 @@ compile 'com.supwisdom:spreadsheet-mapper:1.0.6-SNAPSHOT'
 1. 将Message写到excel文件的例子：[Message2ExcelWriterExample](examples/src/main/java/m2f/Message2ExcelWriterExample.java)
 
 
-##*License*
+## License
 
 Released under the [Apache 2.0 license](license).
