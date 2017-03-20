@@ -139,7 +139,7 @@ public class DefaultSheetValidationJob implements SheetValidationJob<DefaultShee
    * @param sheetMeta
    */
   private void assertNoDuplicatedFieldMeta(SheetMeta sheetMeta) {
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMeta();
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
     Set<String> fieldNames = new HashSet<>(fieldMetas.size());
     for (FieldMeta fieldMeta : fieldMetas) {
       if (!fieldNames.add(fieldMeta.getName())) {

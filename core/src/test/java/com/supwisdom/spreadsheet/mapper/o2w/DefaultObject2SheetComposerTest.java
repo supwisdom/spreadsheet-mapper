@@ -94,7 +94,7 @@ public class DefaultObject2SheetComposerTest {
     for (int i = 0; i < expectedRows; i++) {
       Row row = sheet.getRows().get(i);
       assertEquals(row.getIndex(), i + 1);
-      assertEquals(row.getCells().size(), sheetMeta.getFieldMeta().size());
+      assertEquals(row.getCells().size(), sheetMeta.getFieldMetas().size());
 
       for (int j = 0; j < row.getCells().size(); j++) {
         Cell cell = row.getCells().get(j);
@@ -133,7 +133,7 @@ public class DefaultObject2SheetComposerTest {
     for (int i = 0; i < expectedRows; i++) {
       Row row = sheet.getRows().get(i);
       assertEquals(row.getIndex(), i + 1);
-      assertEquals(row.getCells().size(), sheetMeta.getFieldMeta().size());
+      assertEquals(row.getCells().size(), sheetMeta.getFieldMetas().size());
 
       for (int j = 0; j < row.getCells().size(); j++) {
         Cell cell = row.getCells().get(j);
