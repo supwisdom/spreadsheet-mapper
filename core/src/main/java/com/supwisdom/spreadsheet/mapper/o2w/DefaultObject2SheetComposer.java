@@ -86,7 +86,7 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
   }
 
   private void createHeaderCellsIfNecessary(Row row, SheetMeta sheetMeta) {
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMeta();
 
     int lastColumnNum = getMaxColNum(fieldMetas);
     Map<Integer, FieldMeta> columnIndex2fieldMeta = buildFieldMetaMap(fieldMetas);
@@ -120,7 +120,7 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
 
   private void createDataCells(T object, Row row, SheetMeta sheetMeta) {
 
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMeta();
     int lastColumnNum = getMaxColNum(fieldMetas);
     Map<Integer, FieldMeta> columnIndex2fieldMeta = buildFieldMetaMap(fieldMetas);
 

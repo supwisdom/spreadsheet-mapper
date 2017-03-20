@@ -117,7 +117,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
     }
     assertNoDuplicatedFieldMeta(sheetMeta);
 
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMeta();
     Map<Integer, FieldMeta> columnIndex2fieldMeta = buildFieldMetaMap(fieldMetas);
 
     List<T> dataOfSheet = new ArrayList<>();
@@ -178,7 +178,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
    * @param sheetMeta
    */
   private void assertNoDuplicatedFieldMeta(SheetMeta sheetMeta) {
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMeta();
     Set<String> fieldNames = new HashSet<>(fieldMetas.size());
     for (FieldMeta fieldMeta : fieldMetas) {
       if (!fieldNames.add(fieldMeta.getName())) {

@@ -27,7 +27,7 @@ public class RequireFieldValidator extends SheetValidatorTemplate<RequireFieldVa
   @Override
   public boolean validate(Sheet sheet, SheetMeta sheetMeta) {
 
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMeta();
 
     List<String> fields = new ArrayList<>();
     for (FieldMeta fieldMeta : fieldMetas) {

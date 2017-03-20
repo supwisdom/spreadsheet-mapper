@@ -33,7 +33,7 @@ public interface SheetMeta extends Serializable {
   /**
    * @return {@link FieldMeta}s
    */
-  List<FieldMeta> getFieldMetas();
+  List<FieldMeta> getFieldMeta();
 
   /**
    * 根据{@link FieldMeta#getName()}来获得{@link FieldMeta}
@@ -41,7 +41,7 @@ public interface SheetMeta extends Serializable {
    * @param fieldName field name
    * @return {@link FieldMeta}。如果存在相同name的FieldMeta，则可能返回多个。
    */
-  List<FieldMeta> getFieldMetas(String fieldName);
+  List<FieldMeta> getFieldMeta(String fieldName);
 
   /**
    * 根据{@link FieldMeta#getName()}来获得唯一的一个{@link FieldMeta}。
@@ -57,7 +57,7 @@ public interface SheetMeta extends Serializable {
    * @param columnIndex
    * @return {@link FieldMeta}
    */
-  FieldMeta getFieldMetas(int columnIndex);
+  FieldMeta getFieldMeta(int columnIndex);
 
   /**
    * 根据{@link FieldMeta#getName()}来获移除{@link FieldMeta}

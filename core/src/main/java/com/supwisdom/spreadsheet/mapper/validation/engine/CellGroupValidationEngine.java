@@ -326,7 +326,7 @@ public class CellGroupValidationEngine {
 
     for (Integer columnIndex : columnIndices) {
       cells.add(row.getCell(columnIndex));
-      fieldMetas.add(sheetMeta.getFieldMetas(columnIndex));
+      fieldMetas.add(sheetMeta.getFieldMeta(columnIndex));
     }
 
     boolean result = validator.validate(cells, fieldMetas);
@@ -358,7 +358,7 @@ public class CellGroupValidationEngine {
     int columnIndex = columnIndices.get(0);
 
     Cell cell = row.getCell(columnIndex);
-    FieldMeta fieldMeta = sheetMeta.getFieldMetas(columnIndex);
+    FieldMeta fieldMeta = sheetMeta.getFieldMeta(columnIndex);
 
     boolean result = validator.validate(cell, fieldMeta);
 

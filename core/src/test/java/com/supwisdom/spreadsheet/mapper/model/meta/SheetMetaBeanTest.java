@@ -23,14 +23,14 @@ public class SheetMetaBeanTest {
     sheetMetaBean.addFieldMeta(fieldMeta1);
     sheetMetaBean.addFieldMeta(fieldMeta2);
 
-    assertEquals(sheetMetaBean.getFieldMetas("a").size(), 1);
-    assertTrue(sheetMetaBean.getFieldMetas("a").contains(fieldMeta1));
+    assertEquals(sheetMetaBean.getFieldMeta("a").size(), 1);
+    assertTrue(sheetMetaBean.getFieldMeta("a").contains(fieldMeta1));
 
-    assertEquals(sheetMetaBean.getFieldMetas("b").size(), 1);
-    assertTrue(sheetMetaBean.getFieldMetas("b").contains(fieldMeta2));
+    assertEquals(sheetMetaBean.getFieldMeta("b").size(), 1);
+    assertTrue(sheetMetaBean.getFieldMeta("b").contains(fieldMeta2));
 
-    assertEquals(sheetMetaBean.getFieldMetas(1), fieldMeta1);
-    assertEquals(sheetMetaBean.getFieldMetas(2), fieldMeta2);
+    assertEquals(sheetMetaBean.getFieldMeta(1), fieldMeta1);
+    assertEquals(sheetMetaBean.getFieldMeta(2), fieldMeta2);
 
   }
 
@@ -58,7 +58,7 @@ public class SheetMetaBeanTest {
     sheetMetaBean.addFieldMeta(fieldMeta2);
     sheetMetaBean.addFieldMeta(fieldMeta1);
 
-    List<FieldMeta> actualFieldMetas = sheetMetaBean.getFieldMetas("a");
+    List<FieldMeta> actualFieldMetas = sheetMetaBean.getFieldMeta("a");
     assertEquals(actualFieldMetas.size(), 2);
     assertEquals(actualFieldMetas.get(0), fieldMeta1);
     assertEquals(actualFieldMetas.get(1), fieldMeta2);
@@ -108,8 +108,8 @@ public class SheetMetaBeanTest {
 
     sheetMetaBean.removeFieldMeta("a");
 
-    assertTrue(CollectionUtils.isEmpty(sheetMetaBean.getFieldMetas("a")));
-    assertNull(sheetMetaBean.getFieldMetas(1));
+    assertTrue(CollectionUtils.isEmpty(sheetMetaBean.getFieldMeta("a")));
+    assertNull(sheetMetaBean.getFieldMeta(1));
 
   }
 
@@ -119,8 +119,8 @@ public class SheetMetaBeanTest {
     SheetMetaBean sheetMetaBean = new SheetMetaBean(1);
     sheetMetaBean.removeFieldMeta("a");
 
-    assertTrue(CollectionUtils.isEmpty(sheetMetaBean.getFieldMetas("a")));
-    assertNull(sheetMetaBean.getFieldMetas(1));
+    assertTrue(CollectionUtils.isEmpty(sheetMetaBean.getFieldMeta("a")));
+    assertNull(sheetMetaBean.getFieldMeta(1));
 
   }
 

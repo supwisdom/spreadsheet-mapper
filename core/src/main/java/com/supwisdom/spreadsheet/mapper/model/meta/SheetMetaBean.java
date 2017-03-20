@@ -47,28 +47,28 @@ public class SheetMetaBean implements SheetMeta {
   }
 
   @Override
-  public List<FieldMeta> getFieldMetas() {
+  public List<FieldMeta> getFieldMeta() {
     List<FieldMeta> fieldMetas = new ArrayList<>(this.column2FieldMeta.values());
     Collections.sort(fieldMetas);
     return fieldMetas;
   }
 
   @Override
-  public List<FieldMeta> getFieldMetas(String fieldName) {
+  public List<FieldMeta> getFieldMeta(String fieldName) {
     if (name2FieldMetas.isEmpty()) {
       return null;
     }
-    List<FieldMeta> fieldMetas = new ArrayList<>(name2FieldMetas.get(fieldName));
-    if (fieldMetas == null) {
+    if (CollectionUtils.isEmpty(name2FieldMetas.get(fieldName))) {
       return Collections.emptyList();
     }
+    List<FieldMeta> fieldMetas = new ArrayList<>(name2FieldMetas.get(fieldName));
     Collections.sort(fieldMetas);
     return fieldMetas;
   }
 
   @Override
   public FieldMeta getUniqueFieldMeta(String fieldName) {
-    List<FieldMeta> fieldMetas = getFieldMetas(fieldName);
+    List<FieldMeta> fieldMetas = getFieldMeta(fieldName);
     if (CollectionUtils.isEmpty(fieldMetas)) {
       return null;
     }
@@ -79,7 +79,7 @@ public class SheetMetaBean implements SheetMeta {
   }
 
   @Override
-  public FieldMeta getFieldMetas(int columnIndex) {
+  public FieldMeta getFieldMeta(int columnIndex) {
     if (column2FieldMeta.isEmpty()) {
       return null;
     }
@@ -92,7 +92,7 @@ public class SheetMetaBean implements SheetMeta {
       return;
     }
 
-    List<FieldMeta> fieldMetas = getFieldMetas(fieldName);
+    List<FieldMeta> fieldMetas = getFieldMeta(fieldName);
     if (CollectionUtils.isEmpty(fieldMetas)) {
       return;
     }

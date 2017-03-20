@@ -26,7 +26,7 @@ public class FieldScopeValidator extends SheetValidatorTemplate<FieldScopeValida
   @Override
   public boolean validate(Sheet sheet, SheetMeta sheetMeta) {
 
-    List<FieldMeta> fieldMetas = sheetMeta.getFieldMetas();
+    List<FieldMeta> fieldMetas = sheetMeta.getFieldMeta();
 
     for (FieldMeta fieldMeta : fieldMetas) {
       if (!fieldScopes.contains(fieldMeta.getName())) {
