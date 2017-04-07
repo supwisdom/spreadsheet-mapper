@@ -45,7 +45,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
   }
 
   @Override
-  public Sheet2ObjectComposer<T> addFieldSetter(PropertySetter propertySetter) {
+  public Sheet2ObjectComposer<T> addPropertySetter(PropertySetter propertySetter) {
     if (propertySetter == null) {
       throw new IllegalArgumentException("PropertySetter can not be null");
     }

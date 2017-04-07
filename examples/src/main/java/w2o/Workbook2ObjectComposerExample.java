@@ -50,8 +50,8 @@ public class Workbook2ObjectComposerExample {
     // 定义对象工厂，用来创建对象的
     sheet2ObjectComposer.setObjectFactory((row, sheetMeta1) -> new Foo());
     // 数字、字符串类型不需要特别的 PropertySetter
-    sheet2ObjectComposer.addFieldSetter(new BooleanPropertySetter(Collections.singleton("及格"), Collections.singleton("不及格")).matchField("passed"));
-    sheet2ObjectComposer.addFieldSetter(new LambdaPropertySetter(propertyString -> new Bar()).matchField("bar2"));
+    sheet2ObjectComposer.addPropertySetter(new BooleanPropertySetter(Collections.singleton("及格"), Collections.singleton("不及格")).matchField("passed"));
+    sheet2ObjectComposer.addPropertySetter(new LambdaPropertySetter(propertyString -> new Bar()).matchField("bar2"));
 
     workbook2ObjectComposer.addSheet2ObjectComposer(sheet2ObjectComposer);
 

@@ -32,7 +32,7 @@ public interface Sheet2ObjectComposer<T> {
    * @param propertySetter {@link PropertySetter}
    * @return 自己
    */
-  Sheet2ObjectComposer<T> addFieldSetter(PropertySetter propertySetter);
+  Sheet2ObjectComposer<T> addPropertySetter(PropertySetter propertySetter);
 
   /**
    * 设置{@link ObjectFactory}。<br>

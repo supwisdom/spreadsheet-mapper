@@ -89,8 +89,8 @@ public class DefaultSheet2ObjectComposerTest {
 
     Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<>();
     composer.setObjectFactory(new FooFactory());
-    composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("int1"));
-    composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("long1"));
+    composer.addPropertySetter(new ExecRecordPropertySetter(executionRecorder).matchField("int1"));
+    composer.addPropertySetter(new ExecRecordPropertySetter(executionRecorder).matchField("long1"));
 
     composer.compose(sheet, sheetMeta);
 
@@ -126,8 +126,8 @@ public class DefaultSheet2ObjectComposerTest {
     composer.ignoreFields("int1");
 
     composer.setObjectFactory(new FooFactory());
-    composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("int1"));
-    composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("long1"));
+    composer.addPropertySetter(new ExecRecordPropertySetter(executionRecorder).matchField("int1"));
+    composer.addPropertySetter(new ExecRecordPropertySetter(executionRecorder).matchField("long1"));
 
     composer.compose(sheet, sheetMeta);
 
