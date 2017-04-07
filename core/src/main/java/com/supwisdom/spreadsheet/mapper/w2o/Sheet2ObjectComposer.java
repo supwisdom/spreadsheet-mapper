@@ -18,6 +18,14 @@ import java.util.List;
 public interface Sheet2ObjectComposer<T> {
 
   /**
+   * 设置忽略的field。如果设置了ignore fields，那么这些fields肯定不会被设置值。
+   *
+   * @param field       field
+   * @param otherFields 其他field
+   */
+  void ignoreFields(String field, String... otherFields);
+
+  /**
    * 添加{@link PropertySetter}，一个field只能有一个FieldSetter。<br>
    * 在{@link #compose(Sheet, SheetMeta)}之前必须要设置
    *
@@ -55,7 +63,6 @@ public interface Sheet2ObjectComposer<T> {
 
   /**
    * 将Sheet转换成List&lt;Object&gt;
-   *
    *
    * @param sheet     {@link Sheet}，这里面包含{@link Row}数据
    * @param sheetMeta {@link SheetMeta}，这里包含{@link FieldMeta}，{@link FieldMeta}是和Object里的每个property对应的。

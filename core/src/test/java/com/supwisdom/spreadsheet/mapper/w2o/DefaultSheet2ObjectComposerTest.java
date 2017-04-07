@@ -6,8 +6,6 @@ import com.supwisdom.spreadsheet.mapper.model.core.*;
 import com.supwisdom.spreadsheet.mapper.model.meta.FieldMetaBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
-import com.supwisdom.spreadsheet.mapper.validation.DefaultSheetValidationJob;
-import com.supwisdom.spreadsheet.mapper.validation.WorkbookValidateException;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordCellProcessListener;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordRowProcessListener;
 import com.supwisdom.spreadsheet.mapper.w2o.listener.ExecRecordSheetProcessListener;
@@ -89,7 +87,7 @@ public class DefaultSheet2ObjectComposerTest {
 
     ExecutionRecorder executionRecorder = new ExecutionRecorder();
 
-    Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<Foo>();
+    Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<>();
     composer.setObjectFactory(new FooFactory());
     composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("int1"));
     composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("long1"));
@@ -104,7 +102,7 @@ public class DefaultSheet2ObjectComposerTest {
   @Test(expectedExceptions = Workbook2ObjectComposeException.class, expectedExceptionsMessageRegExp = ".*SheetMeta contains duplicate FieldMeta.*")
   public void testDuplicateFieldMeta() {
 
-    Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<Foo>();
+    Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<>();
     composer.setObjectFactory(new FooFactory());
 
     SheetBean sheetBean = new SheetBean();
@@ -119,4 +117,22 @@ public class DefaultSheet2ObjectComposerTest {
     composer.compose(sheetBean, sheetMetaBean);
   }
 
+  @Test(dataProvider = "provideSheetAndMeta")
+  public void testIgnoreFields(Sheet sheet, SheetMeta sheetMeta) {
+
+    ExecutionRecorder executionRecorder = new ExecutionRecorder();
+
+    Sheet2ObjectComposer<Foo> composer = new DefaultSheet2ObjectComposer<>();
+    composer.ignoreFields("int1");
+
+    composer.setObjectFactory(new FooFactory());
+    composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("int1"));
+    composer.addFieldSetter(new ExecRecordPropertySetter(executionRecorder).matchField("long1"));
+
+    composer.compose(sheet, sheetMeta);
+
+    List<String> executions = executionRecorder.getExecutions();
+    assertEquals(StringUtils.join(executions, ','), "property-setter#setProperty[long1,1,2],property-setter#setProperty[long1,2,2]");
+
+  }
 }

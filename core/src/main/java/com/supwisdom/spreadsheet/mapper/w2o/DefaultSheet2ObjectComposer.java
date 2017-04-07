@@ -34,19 +34,29 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
 
   private DefaultPropertySetter defaultPropertySetter = new DefaultPropertySetter();
 
+  private Set<String> ignoreFields = new HashSet<>();
+
+  @Override
+  public void ignoreFields(String field, String... otherFields) {
+    ignoreFields.add(field);
+    for (String otherField : otherFields) {
+      ignoreFields.add(otherField);
+    }
+  }
+
   @Override
   public Sheet2ObjectComposer<T> addFieldSetter(PropertySetter propertySetter) {
     if (propertySetter == null) {
-      throw new IllegalArgumentException("field setter can not be null");
+      throw new IllegalArgumentException("PropertySetter can not be null");
     }
 
     String matchField = propertySetter.getMatchField();
     if (StringUtils.isBlank(matchField)) {
-      throw new IllegalArgumentException("field value setter match field can not be null");
+      throw new IllegalArgumentException("PropertySetter's matchField can not be blank");
     }
+
     if (field2PropertySetter.containsKey(matchField)) {
-      throw new IllegalArgumentException(
-          "sheet process helper contains multi field setter at field[" + matchField + "]");
+      throw new IllegalArgumentException("Already has PropertySetter for field[" + matchField + "]");
     }
 
     field2PropertySetter.put(matchField, propertySetter);
@@ -56,7 +66,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
   @Override
   public Sheet2ObjectComposer<T> setObjectFactory(ObjectFactory<T> objectFactory) {
     if (objectFactory == null) {
-      throw new IllegalArgumentException("object factory can not be null");
+      throw new IllegalArgumentException("Object factory can not be null");
     }
 
     this.objectFactory = objectFactory;
@@ -66,7 +76,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
   @Override
   public Sheet2ObjectComposer<T> setSheetProcessorListener(SheetProcessListener<T> sheetProcessListener) {
     if (sheetProcessListener == null) {
-      throw new IllegalArgumentException("sheet process listener can not be null");
+      throw new IllegalArgumentException("Sheet process listener can not be null");
     }
 
     this.sheetProcessListener = sheetProcessListener;
@@ -76,7 +86,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
   @Override
   public Sheet2ObjectComposer<T> setRowProcessorListener(RowProcessListener<T> rowProcessListener) {
     if (rowProcessListener == null) {
-      throw new IllegalArgumentException("row process listener can not be null");
+      throw new IllegalArgumentException("Row process listener can not be null");
     }
 
     this.rowProcessListener = rowProcessListener;
@@ -86,7 +96,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
   @Override
   public Sheet2ObjectComposer<T> setCellProcessorListener(CellProcessListener<T> cellProcessListener) {
     if (cellProcessListener == null) {
-      throw new IllegalArgumentException("cell process listener can not be null");
+      throw new IllegalArgumentException("Cell process listener can not be null");
     }
 
     this.cellProcessListener = cellProcessListener;
@@ -113,7 +123,7 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
   @Override
   public List<T> compose(Sheet sheet, SheetMeta sheetMeta) {
     if (objectFactory == null) {
-      throw new Workbook2ObjectComposeException("setProperty object factory first");
+      throw new Workbook2ObjectComposeException("ObjectFactory not provided");
     }
     assertNoDuplicatedFieldMeta(sheetMeta);
 
@@ -137,7 +147,12 @@ public class DefaultSheet2ObjectComposer<T> implements Sheet2ObjectComposer<T> {
         if (fieldMeta == null) {
           // if missing field meta skip the cell(same column index with field meta)
           LOGGER.debug(
-              "no field meta at row index:[" + cell.getIndex() + "], cell value:[" + cell.getValue() + "] ignored");
+              "No field meta at row index:[" + cell.getIndex() + "], cell value:[" + cell.getValue() + "] ignored");
+          continue;
+        }
+
+        if (ignoreFields.contains(fieldMeta.getName())) {
+          // 当前fieldMeta在ignore field范围内
           continue;
         }
 
