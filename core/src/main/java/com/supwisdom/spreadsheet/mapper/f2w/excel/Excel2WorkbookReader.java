@@ -70,16 +70,17 @@ public class Excel2WorkbookReader implements WorkbookReader {
         for (int j = 0; j <= sheet.getLastRowNum(); j++) {
 
           org.apache.poi.ss.usermodel.Row row = sheet.getRow(j);
-          if (row == null) {
-            continue;
-          }
           Row excelRow = createRow();
           excelSheet.addRow(excelRow);
 
           for (int k = 0; k < maxColNum; k++) {
 
-            org.apache.poi.ss.usermodel.Cell cell = row.getCell(k);
-            excelRow.addCell(createCell(cell));
+            if (row == null) {
+              excelRow.addCell(new CellBean());
+            } else {
+              org.apache.poi.ss.usermodel.Cell cell = row.getCell(k);
+              excelRow.addCell(createCell(cell));
+            }
           }
         }
       }
