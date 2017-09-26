@@ -70,6 +70,9 @@ public class Excel2WorkbookReader implements WorkbookReader {
         for (int j = 0; j <= sheet.getLastRowNum(); j++) {
 
           org.apache.poi.ss.usermodel.Row row = sheet.getRow(j);
+          if (row == null) {
+            continue;
+          }
           Row excelRow = createRow();
           excelSheet.addRow(excelRow);
 
@@ -166,6 +169,9 @@ public class Excel2WorkbookReader implements WorkbookReader {
     int maxColNum = 0;
     for (int j = 0; j <= sheet.getLastRowNum(); j++) {
       org.apache.poi.ss.usermodel.Row row = sheet.getRow(j);
+      if (row == null) {
+        continue;
+      }
       maxColNum = Math.max(row.getLastCellNum(), maxColNum);
     }
     return maxColNum;
