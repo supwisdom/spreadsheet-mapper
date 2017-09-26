@@ -5,12 +5,12 @@
   <parent>
     <groupId>com.supwisdom</groupId>
     <artifactId>spreadsheet-mapper-parent</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8-SNAPSHOT</version>
   </parent>
   
   <groupId>com.supwisdom</groupId>
   <artifactId>spreadsheet-mapper-core</artifactId>
-  <version>1.0.7</version>
+  <version>1.0.8-SNAPSHOT</version>
   <name>Spreadsheet Mapper - Core</name>
   <description>Spreadsheet Mapper - Core</description>
   <packaging>jar</packaging>
