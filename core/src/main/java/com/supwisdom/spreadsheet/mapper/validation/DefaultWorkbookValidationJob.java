@@ -50,14 +50,9 @@ public class DefaultWorkbookValidationJob implements WorkbookValidationJob<Defau
     int sizeOfSheetMetas = workbookMeta.sizeOfSheetMetas();
     int sizeOfHelper = sheetValidationJobs.size();
 
-    if (sizeOfSheets != sizeOfSheetMetas) {
-      throw new WorkbookValidateException(
-          "workbook's sheet size[" + sizeOfSheets + "] not equals workbook meta's sheet meta size[" + sizeOfSheetMetas
-              + "]");
-    }
-    if (sizeOfSheets != sizeOfHelper) {
-      throw new WorkbookValidateException(
-          "workbook's sheet size[" + sizeOfSheets + "] not equals sheet validation job size[" + sizeOfHelper + "]");
+    if (sizeOfSheets != sizeOfSheetMetas || sizeOfSheets != sizeOfHelper) {
+      this.errorMessages.add(new MessageBean(ExcelMessageWriteStrategies.COMMENT, "存在异常sheet，请删除", 2, 1, 1));
+      return false;
     }
 
     validWorkbook(workbook, workbookMeta);
