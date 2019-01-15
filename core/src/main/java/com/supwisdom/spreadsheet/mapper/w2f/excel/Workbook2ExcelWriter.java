@@ -9,7 +9,10 @@ import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +65,10 @@ public class Workbook2ExcelWriter implements WorkbookWriter {
         org.apache.poi.ss.usermodel.Row row = createRow(sheet, excelRow);
 
         for (Cell excelCell : excelRow.getCells()) {
-          createCell(row, excelCell);
+
+          setSuitWidth(excelCell, excelRow, sheet);
+
+          createCell(row, excelCell, excelRow, poiWorkbook);
         }
       }
     }
@@ -87,6 +93,24 @@ public class Workbook2ExcelWriter implements WorkbookWriter {
 
   }
 
+  private void setSuitWidth(Cell excelCell, Row excelRow, org.apache.poi.ss.usermodel.Sheet sheet) {
+
+    int rowIndex = excelRow.getIndex();
+    if (excelCell.getValue() == null || (rowIndex != 1 && rowIndex != 2)) {
+      return;
+    }
+    // 合适的宽度
+    int suitWidth = excelCell.getValue().getBytes().length * 256;
+    int columnIndex = excelCell.getIndex() - 1;
+
+    if (rowIndex == 1 && excelCell.getValue() != null) {
+      sheet.setColumnWidth(columnIndex, suitWidth);
+    }
+    if (rowIndex == 2 && excelCell.getValue() != null && suitWidth > sheet.getColumnWidth(columnIndex)) {
+      sheet.setColumnWidth(columnIndex, suitWidth);
+    }
+  }
+
   private org.apache.poi.ss.usermodel.Sheet createSheet(org.apache.poi.ss.usermodel.Workbook workbook, Sheet sheet) {
     String sheetName = sheet.getName();
 
@@ -104,10 +128,17 @@ public class Workbook2ExcelWriter implements WorkbookWriter {
     return sheet.createRow(excelRow.getIndex() - 1);
   }
 
-  private void createCell(org.apache.poi.ss.usermodel.Row row, Cell excelCell) {
+  private void createCell(org.apache.poi.ss.usermodel.Row row, Cell excelCell, Row excelRow, org.apache.poi.ss.usermodel.Workbook poiWorkbook) {
     String value = excelCell.getValue();
     org.apache.poi.ss.usermodel.Cell cell = row.createCell(excelCell.getIndex() - 1, CellType.STRING);
     cell.setCellValue(value == null ? EMPTY_VALUE : value);
+
+    if (excelRow.getIndex() == 3 && value != null && value.contains("必填")) {
+      CellStyle cellStyle = poiWorkbook.createCellStyle();
+      cellStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+      cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+      cell.setCellStyle(cellStyle);
+    }
   }
 
 }

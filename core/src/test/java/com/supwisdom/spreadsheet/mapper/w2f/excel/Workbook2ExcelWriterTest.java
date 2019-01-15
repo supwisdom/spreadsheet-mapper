@@ -5,6 +5,7 @@ import com.supwisdom.spreadsheet.mapper.f2w.excel.Excel2WorkbookReader;
 import com.supwisdom.spreadsheet.mapper.model.core.*;
 import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriter;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -26,10 +27,16 @@ public class Workbook2ExcelWriterTest {
 
     for (int i = 0; i < 2; i++) {
       Sheet sheet = new SheetBean("Sheet" + i);
-      for (int j = 0; j < 2; j++) {
+      for (int j = 0; j < 3; j++) {
         Row row = new RowBean();
         for (int k = 0; k < 2; k++) {
-          row.addCell(new CellBean(RandomStringUtils.randomAlphabetic(6)));
+//          row.addCell(new CellBean(RandomStringUtils.random(RandomUtils.nextInt(1, 10), 0x4e00, 0x9fa5, false, false)));
+          if (j == 0) {
+            row.addCell(new CellBean("代码"));
+          }
+          if (j == 1) {
+            row.addCell(new CellBean("code"));
+          }
         }
         sheet.addRow(row);
       }
