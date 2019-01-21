@@ -27,7 +27,7 @@ public class Workbook2ExcelWriterTest {
 
     for (int i = 0; i < 2; i++) {
       Sheet sheet = new SheetBean("Sheet" + i);
-      for (int j = 0; j < 3; j++) {
+      for (int j = 0; j < 2; j++) {
         Row row = new RowBean();
         for (int k = 0; k < 2; k++) {
 //          row.addCell(new CellBean(RandomStringUtils.random(RandomUtils.nextInt(1, 10), 0x4e00, 0x9fa5, false, false)));
