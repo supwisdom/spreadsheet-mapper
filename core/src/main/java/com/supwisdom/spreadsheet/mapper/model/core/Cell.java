@@ -1,5 +1,7 @@
 package com.supwisdom.spreadsheet.mapper.model.core;
 
+import org.apache.poi.ss.usermodel.CellType;
+
 import java.io.Serializable;
 
 /**
@@ -22,4 +24,9 @@ public interface Cell extends Serializable {
    * @return 所属的 {@link Row}
    */
   Row getRow();
+
+  /**
+   * @return 列的数值属性
+   */
+  CellType getCellType();
 }
