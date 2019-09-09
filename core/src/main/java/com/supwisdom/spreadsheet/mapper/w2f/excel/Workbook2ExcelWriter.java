@@ -101,6 +101,7 @@ public class Workbook2ExcelWriter implements WorkbookWriter {
     }
     // 合适的宽度
     int suitWidth = excelCell.getValue().getBytes().length * 256;
+    suitWidth = suitWidth > 65280 ? 65280 : suitWidth;
     int columnIndex = excelCell.getIndex() - 1;
 
     if (rowIndex == 1 && excelCell.getValue() != null) {
