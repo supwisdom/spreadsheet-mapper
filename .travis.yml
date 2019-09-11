@@ -2,7 +2,7 @@ language: java
 sudo: false # faster builds
 
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 branches:
   only:
@@ -18,5 +18,5 @@ after_success:
 
 notifications:
   email:
-    - xfslove@gmail.com
     - chanjarster@gmail.com
+    - jianbing.cao@supwisdom.com
