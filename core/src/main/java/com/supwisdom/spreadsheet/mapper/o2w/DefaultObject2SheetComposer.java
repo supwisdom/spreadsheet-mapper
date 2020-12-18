@@ -8,6 +8,7 @@ import com.supwisdom.spreadsheet.mapper.o2w.converter.DefaultPropertyStringifier
 import com.supwisdom.spreadsheet.mapper.o2w.converter.PropertyStringifier;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.CellType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultObject2SheetComposer.class);
 
   private LinkedHashMap<String, PropertyStringifier<T>> field2Converter = new LinkedHashMap<>();
+  private LinkedHashMap<String, CellType> field2CellType = new LinkedHashMap<>();
 
   private DefaultPropertyStringifier defaultToStringConverter = new DefaultPropertyStringifier();
 
@@ -43,6 +45,17 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
     }
 
     field2Converter.put(matchField, propertyStringifier);
+    return this;
+  }
+
+  @Override
+  public Object2SheetComposer<T> addFieldCellType(String field, CellType cellType) {
+
+    if (field2CellType.containsKey(field)) {
+      throw new IllegalArgumentException(
+          "sheet compose helper contains multi field converter at field[" + field + "]");
+    }
+    field2CellType.put(field, cellType);
     return this;
   }
 
@@ -144,7 +157,12 @@ public class DefaultObject2SheetComposer<T> implements Object2SheetComposer<T> {
 
       PropertyStringifier converter = field2Converter.get(fieldName);
       converter = converter == null ? defaultToStringConverter : converter;
-      row.addCell(new CellBean(converter.getPropertyString(object, fieldMeta)));
+      CellType cellType = field2CellType.get(fieldName);
+      if (cellType != null) {
+        row.addCell(new CellBean(converter.getPropertyString(object, fieldMeta), cellType));
+      } else {
+        row.addCell(new CellBean(converter.getPropertyString(object, fieldMeta)));
+      }
 
     }
   }

@@ -9,6 +9,7 @@ import com.supwisdom.spreadsheet.mapper.model.meta.HeaderMetaBean;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMetaBean;
 import com.supwisdom.spreadsheet.mapper.o2w.converter.NumberPropertyStringifier;
+import org.apache.poi.ss.usermodel.CellType;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -30,10 +31,10 @@ public class DefaultObject2SheetComposerTest {
    */
   @DataProvider
   public Object[][] sheetMetaBeanParam() {
-    return new Object[][] {
-        new Object[] { 1 },
-        new Object[] { 2 },
-        new Object[] { 3 },
+    return new Object[][]{
+        new Object[]{1},
+        new Object[]{2},
+        new Object[]{3},
     };
   }
 
@@ -337,6 +338,50 @@ public class DefaultObject2SheetComposerTest {
     assertEquals(row3.getCells().size(), 2);
     assertEquals(row3.getCell(1).getValue(), "200");
     assertEquals(row3.getCell(2).getValue(), "200");
+
+  }
+
+
+  /**
+   * 测试Compose 增加CellType
+   * 预期结果：
+   * Cell里面CellType和通过@{@link DefaultObject2SheetComposer#addFieldCellType}进去的CellType一致
+   */
+  @Test
+  public void testComposeFieldCellTypeFieldMeta() {
+
+    SheetMeta sheetMeta = new SheetMetaBean("sheet", 2);
+
+    FieldMetaBean fieldMeta1 = new FieldMetaBean("string", 1);
+    fieldMeta1.addHeaderMeta(new HeaderMetaBean(1, "string字段"));
+
+    sheetMeta.addFieldMeta(fieldMeta1);
+
+    Foo t1 = new Foo();
+
+    t1.setString("00100");
+
+    List datum = new ArrayList<>(1);
+    datum.add(t1);
+
+    DefaultObject2SheetComposer sheetComposer = new DefaultObject2SheetComposer();
+    sheetComposer.addFieldCellType("string", CellType.NUMERIC);
+    Sheet sheet = sheetComposer.compose(datum, sheetMeta);
+
+    assertEquals(sheet.getName(), "sheet");
+
+    assertEquals(sheet.getRows().size(), datum.size() + 1);
+
+    Row row1 = sheet.getRow(1);
+    Row row2 = sheet.getRow(2);
+
+    assertEquals(row1.getCells().size(), 1);
+    assertEquals(row1.getCell(1).getValue(), "string字段");
+
+    assertEquals(row2.getCells().size(), 1);
+    assertEquals(row2.getCell(1).getValue(), "00100");
+    assertEquals(row2.getCell(1).getCellType(), CellType.NUMERIC);
+
 
   }
 

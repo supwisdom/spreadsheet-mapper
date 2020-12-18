@@ -3,6 +3,7 @@ package com.supwisdom.spreadsheet.mapper.o2w;
 import com.supwisdom.spreadsheet.mapper.model.core.Sheet;
 import com.supwisdom.spreadsheet.mapper.model.meta.SheetMeta;
 import com.supwisdom.spreadsheet.mapper.o2w.converter.PropertyStringifier;
+import org.apache.poi.ss.usermodel.CellType;
 
 import java.util.List;
 
@@ -21,11 +22,21 @@ public interface Object2SheetComposer<T> {
    */
   Object2SheetComposer<T> addFieldConverter(PropertyStringifier propertyStringifier);
 
+
+  /**
+   * 添加cellType属性
+   *
+   * @param field
+   * @param cellType
+   * @return
+   */
+  Object2SheetComposer<T> addFieldCellType(String field, CellType cellType);
+
   /**
    * @param dataOfSheet List&lt;Object&gt;，数据，可以为null
    * @param sheetMeta   {@link SheetMeta}
    * @return {@link Sheet}
    */
   Sheet compose(List<T> dataOfSheet, SheetMeta sheetMeta);
-  
+
 }

@@ -8,6 +8,7 @@ import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriteException;
 import com.supwisdom.spreadsheet.mapper.w2f.WorkbookWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -19,6 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 将WorkBook写到Excel的工具
@@ -29,6 +32,8 @@ public class Workbook2ExcelWriter implements WorkbookWriter {
   private static final Logger LOGGER = LoggerFactory.getLogger(Workbook2ExcelWriter.class);
 
   private static final String EMPTY_VALUE = "";
+
+  private static final Pattern NUMBER_PATTERN = Pattern.compile("-?[0-9]+.?[0-9]+");
 
   private org.apache.poi.ss.usermodel.Workbook poiWorkbook;
 
@@ -68,7 +73,7 @@ public class Workbook2ExcelWriter implements WorkbookWriter {
 
           setSuitWidth(excelCell, excelRow, sheet);
 
-          createCell(row, excelCell, excelRow, poiWorkbook);
+          createCell(row, excelCell, excelRow);
         }
       }
     }
@@ -129,10 +134,31 @@ public class Workbook2ExcelWriter implements WorkbookWriter {
     return sheet.createRow(excelRow.getIndex() - 1);
   }
 
-  private void createCell(org.apache.poi.ss.usermodel.Row row, Cell excelCell, Row excelRow, org.apache.poi.ss.usermodel.Workbook poiWorkbook) {
+  /**
+   * 对于cellType的调整
+   * 如果内容是数值类型，并且要求cellType是数值类型，则转换内容为数值型
+   *
+   * @param row
+   * @param excelCell
+   * @param excelRow
+   */
+  private void createCell(org.apache.poi.ss.usermodel.Row row, Cell excelCell, Row excelRow) {
     String value = excelCell.getValue();
-    org.apache.poi.ss.usermodel.Cell cell = row.createCell(excelCell.getIndex() - 1, CellType.STRING);
-    cell.setCellValue(value == null ? EMPTY_VALUE : value);
+    CellType cellType = excelCell.getCellType();
+    org.apache.poi.ss.usermodel.Cell cell = row.createCell(excelCell.getIndex() - 1, cellType != null ? cellType : CellType.STRING);
+    if (value == null) {
+      cell.setCellValue(EMPTY_VALUE);
+    } else if (CellType.NUMERIC.equals(cellType)) {
+      Matcher isNum = NUMBER_PATTERN.matcher(value);
+      if (isNum.matches()) {
+        cell.setCellValue(NumberUtils.createDouble(value));
+      } else {
+        cell.setCellValue(value);
+      }
+    } else {
+      cell.setCellValue(value);
+    }
+
 
     if (excelRow.getIndex() == 3 && value != null && value.contains("必填")) {
       CellStyle cellStyle = poiWorkbook.createCellStyle();

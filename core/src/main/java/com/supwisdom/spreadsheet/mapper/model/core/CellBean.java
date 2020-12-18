@@ -1,6 +1,7 @@
 package com.supwisdom.spreadsheet.mapper.model.core;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.poi.ss.usermodel.CellType;
 
 import java.util.Objects;
 
@@ -15,12 +16,19 @@ public class CellBean implements Cell {
 
   private transient Row row;
 
+  private CellType cellType;
+
   public CellBean() {
     // default constructor, empty cell
   }
 
   public CellBean(String value) {
     this.value = value;
+  }
+
+  public CellBean(String value, CellType cellType) {
+    this.value = value;
+    this.cellType = cellType;
   }
 
   @Override
@@ -48,12 +56,13 @@ public class CellBean implements Cell {
     }
     CellBean cell = (CellBean) obj;
     return Objects.equals(index, cell.index) &&
-        Objects.equals(value, cell.value);
+        Objects.equals(value, cell.value) &&
+        Objects.equals(cellType, cell.cellType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(index, value);
+    return Objects.hash(index, value, cellType);
   }
 
   @Override
@@ -61,6 +70,7 @@ public class CellBean implements Cell {
     return new ToStringBuilder(this)
         .append("value", value)
         .append("index", index)
+        .append("cellType", cellType)
         .toString();
   }
 
@@ -72,4 +82,12 @@ public class CellBean implements Cell {
     this.index = index;
   }
 
+  @Override
+  public CellType getCellType() {
+    return cellType;
+  }
+
+  public void setCellType(CellType cellType) {
+    this.cellType = cellType;
+  }
 }
